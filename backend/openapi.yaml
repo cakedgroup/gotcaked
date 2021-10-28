@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  description: OpenAPI for GotCaked Server
+  version: "0.0.1"
+  title: GotCaked API
+tags:
+  - name: Status
+    description: status requests
+  - name: recipes
+    description: recipe based requests
+servers:
+  - url: 'https://api.gotcaked.eu'
+    description: production
+paths:
+  /:
+    get:
+      description: Returns a welcome message.
+      summary: Welcome message.
+      tags:
+        - "Status"
+      responses:
+        '200':
+          description: Welcome message.
+          content:
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  version:
+                    type: string
+                example:
+                  message: Welcome to our backend!
+                  version: v0.0.1
+  /recipes:
+    get:
+      description: |
+        Simply returns every single existing recipe.
+      summary: Retrieves list of all recipes
+      tags:
+        - "recipes"
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+
+components:
+  schemas:
+    Recipe:
+      type: object
+      required: 
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Best cake.
+
+        
+
+
+      
