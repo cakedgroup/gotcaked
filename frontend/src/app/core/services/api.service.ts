@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {CreateEchoInput, Echo} from '../../models/echo.model';
-import {catchError} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { CreateEchoInput, Echo } from '../../models/echo.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private readonly baseUrl = 'http://localhost:3000/api';
+  private readonly baseUrl = environment.backend;
 
   constructor(private http: HttpClient) {
   }
