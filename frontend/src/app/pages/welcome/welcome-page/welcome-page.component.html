@@ -1,0 +1,26 @@
+<h1>Wilkommen auf der Startseite</h1>
+
+<div>
+  <label>
+    Echo hinzufügen:
+    <input [(ngModel)]="createInput"/>
+    <button (click)="addEcho()">Speichern</button>
+  </label>
+  <label>
+    Echos filtern:
+    <input [(ngModel)]="filterInput"/>
+    <button (click)="loadEchos()">Filtern</button>
+    <button (click)="error()">error</button>
+  </label>
+</div>
+<div>
+  <h2>Echos:</h2>
+  <ul *ngIf="echos?.length > 0; else empty">
+    <li *ngFor="let echo of echos">
+      {{echo.message}}
+    </li>
+  </ul>
+  <ng-template #empty>
+    Keine Echos vorhanden
+  </ng-template>
+</div>

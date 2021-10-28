@@ -1,0 +1,28 @@
+{
+  "name": "beispiel",
+  "version": "0.0.1",
+  "description": "Boilerplate Backend",
+  "main": "app.ts",
+  "scripts": {
+    "start": "ts-node app.ts",
+    "dev": "nodemon"
+  },
+  "keywords": [],
+  "author": "Lukas Paffen",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/nedb": "^1.8.12",
+    "nodemon": "^2.0.14"
+  }
+}

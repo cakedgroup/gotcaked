@@ -1,0 +1,19 @@
+.header {
+  background-color: #000000;
+  padding: 0 24px;
+  height: 56px;
+}
+
+.header-nav {
+  color: #fff;
+  display: inline-block;
+  line-height: 56px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
