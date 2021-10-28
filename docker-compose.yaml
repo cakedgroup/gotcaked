@@ -1,0 +1,22 @@
+version: "3"
+services:  
+  gotcaked:
+    build:
+      context: .
+    image: gotcaked
+    container_name: gotcaked
+    restart: always
+    expose:
+      - 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.gotcaked.rule=Host(`prod.gotcaked.eu`)"
+      - "traefik.http.routers.gotcaked.entrypoints=websecure"
+      - "traefik.http.routers.gotcaked.tls.certresolver=myhttpchallenge"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
