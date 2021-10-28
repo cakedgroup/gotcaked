@@ -8,7 +8,7 @@ echo "Starting Docker-Compose"
 cd ./gotcaked
 
 echo "Starting containers"
-docker-compose up -d
+docker-compose up -d --build
 
 echo "Started Containers..."
 echo "Cleaning Up Source Files"
