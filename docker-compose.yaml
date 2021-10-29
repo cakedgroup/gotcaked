@@ -8,10 +8,12 @@ services:
     restart: always
     expose:
       - 3000
+    volumes:
+      - ../gotcaked-storage:/opt/gotcaked/backend/databases
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.gotcaked.rule=Host(`prod.gotcaked.eu`)"
+      - "traefik.http.routers.gotcaked.rule=Host(`dev.gotcaked.eu`)"
       - "traefik.http.routers.gotcaked.entrypoints=websecure"
       - "traefik.http.routers.gotcaked.tls.certresolver=myhttpchallenge"      
       - "traefik.http.services.gotcaked.loadbalancer.server.port=3000"

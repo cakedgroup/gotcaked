@@ -6,7 +6,7 @@ RUN npm run-script prod
 
 FROM node:16-alpine
 COPY ./backend /opt/gotcaked/backend
-COPY --from=builder /frontend ./opt/gotcaked/frontend
+COPY --from=builder /frontend/dist/ ./opt/gotcaked/frontend/dist
 WORKDIR /opt/gotcaked/backend
 RUN npm install
 
