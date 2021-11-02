@@ -15,4 +15,6 @@ router.use((_req: express.Request, res: express.Response) => {
   res.send('Route does not exist');
 });
 
+
+
 export { router as apiRouter }
