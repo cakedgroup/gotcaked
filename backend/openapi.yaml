@@ -9,8 +9,10 @@ tags:
   - name: recipes
     description: recipe based requests
 servers:
-  - url: 'https://api.gotcaked.eu'
+  - url: 'https://gotcaked.eu/api'
     description: production
+  - url: 'http://127.0.0.1:3000/api'
+    description: development
 paths:
   /:
     get:
@@ -40,6 +42,23 @@ paths:
       summary: Retrieves list of all recipes
       tags:
         - "recipes"
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          description: Limit
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: offset
+          required: false
+          description: Offset
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
       responses:
         '200':
           description: List of recipes
@@ -49,7 +68,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recipe'
-
+  /users:
+    get:
+      description: |
+        Simply returns every single existing user.
+      tags:
+        - "user"
+      responses:
+        '200':
+          description: List all user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      description: |
+        Simply returns every single existing user.
+      summary: Aggg
+      tags:
+        - "user"
+      responses:
+        '200':
+          description: Get specific user.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     Status:
@@ -151,14 +199,3 @@ components:
         description:
           type: string
           example: Just cake
-        
-
-        
-
-  
-        
-
-        
-
-
-      
