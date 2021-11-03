@@ -11,6 +11,8 @@ tags:
 servers:
   - url: 'https://gotcaked.eu/api'
     description: production
+  - url: 'https://dev.gotcaked.eu/api'
+    description: development - live
   - url: 'http://127.0.0.1:3000/api'
     description: development
 paths:
@@ -35,13 +37,26 @@ paths:
                 example:
                   message: Welcome to our backend!
                   version: v0.0.1
+  /status:
+    get:
+      description: Returns a Basic Informations.
+      summary: Current Backend Status.
+      tags:
+        - "Status"
+      responses:
+        '200':
+          description: Basic Informations.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Status'      
   /recipes:
     get:
+      tags:
+        - recipes
+      summary: Retrieves list of all recipes
       description: |
         Simply returns every single existing recipe.
-      summary: Retrieves list of all recipes
-      tags:
-        - "recipes"
       parameters:
         - in: query
           name: limit
@@ -68,6 +83,101 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recipe'
+    post:
+      tags:
+        - recipes
+      summary: Creates a new recipe
+      description: |
+        Creates new recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        description: Recipe to add
+      responses:
+        '201':
+          description: Recipe created
+        '400':
+          description: 'invalid input, object invalid'
+  /recipe/{id}:
+    get:
+      tags:
+        - recipes
+      summary: Get a single recipe
+      description: |
+        Simply returns one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - recipes
+      summary: Update a single recipe
+      description: |
+        Simply update one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        description: Recipe to update (id must match id in path)
+      responses:
+        '200':
+          description: Recipe updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - recipes
+      summary: Delete a single recipe
+      description: |
+        Simply delete one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
+  /recipe/{id}/comments:
+  /recipe/random:
+  /categories:
+  /categories/{id}:
+  /categoreis/{id}/random:
+  /tags:
+  /tags/{id}:
+  /tags/{id}/random:
   /users:
     get:
       description: |
@@ -88,6 +198,14 @@ paths:
       description: |
         Simply returns every single existing user.
       summary: Aggg
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific Reader
+          schema:
+            type: string
+            format: uuid
       tags:
         - "user"
       responses:
@@ -98,6 +216,11 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/User'
+  /users/{id}/recipes:
+  /users/{id}/liked:
+  /users/{id}/list:
+  /auth/login:
+  /auth/logout:
 components:
   schemas:
     Status:
@@ -110,12 +233,16 @@ components:
       properties:
         version:
           type: string
+          example: v0.0.1
         userCount:
           type: integer
+          example: 4
         recipeCount:
           type: integer
+          example: 7
         commentsCount:
           type: integer
+          example: 2
     User:
       type: object
       required:
@@ -128,6 +255,12 @@ components:
         name:
           type: string
           example: User123
+        description:
+          type: string
+          example: Hello..
+        picture_uri:
+          type: string
+          example: /static/pictures/users/{id}/pb.jpg
     Recipe:
       type: object
       required: 
@@ -145,14 +278,33 @@ components:
           type: string
           example: The best cake recipe from my grandma!
         ingredients:
-          type: string
-          example: 2 Apples
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Flour
+              quantity:
+                type: string
+                example: 200g
         preparation:
           type: string
           example: Go to the Kitchen...
         raiting:
-          type: string
-          example: 5 Up, 2 Down
+          type: object
+          properties:
+            up:
+              type: number
+              example: 10
+            down:
+              type: number
+              example: 2
+        pictures:
+          type: array
+          items:
+            type: string
+            example: /static/pictures/thisRecipe/pic_01.jpg
         tags:
           type: array
           items:
@@ -177,6 +329,15 @@ components:
         time:
           type: string
           format: date
+        raiting:
+          type: object
+          properties:
+            up:
+              type: number
+              example: 10
+            down:
+              type: number
+              example: 2
     Tag:
       type: object
       required:
