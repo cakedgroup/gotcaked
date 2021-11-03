@@ -141,6 +141,18 @@ components:
         name:
           type: string
           example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        ingredients:
+          type: string
+          example: 2 Apples
+        preparation:
+          type: string
+          example: Go to the Kitchen...
+        raiting:
+          type: string
+          example: 5 Up, 2 Down
         tags:
           type: array
           items:
