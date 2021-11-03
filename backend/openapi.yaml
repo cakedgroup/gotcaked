@@ -8,6 +8,10 @@ tags:
     description: status requests
   - name: recipes
     description: recipe based requests
+  - name: categories
+    description: category based requests
+  - name: tags
+    description: tag based requests
 servers:
   - url: 'https://gotcaked.eu/api'
     description: production
@@ -100,7 +104,7 @@ paths:
           description: Recipe created
         '400':
           description: 'invalid input, object invalid'
-  /recipe/{id}:
+  /recipes/{id}:
     get:
       tags:
         - recipes
@@ -170,13 +174,215 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found
-  /recipe/{id}/comments:
-  /recipe/random:
+  /recipes/{id}/comments:
+  /recipes/random:
   /categories:
+    get:
+      tags:
+        - categories
+      summary: Retrieves list of all categories.
+      description: |
+        Simply returns every single existing categories.
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - categories
+      summary: Creates a new category
+      description: |
+        Creates new category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+        description: Category to add
+      responses:
+        '201':
+          description: Category created
+        '400':
+          description: 'invalid input, object invalid'
   /categories/{id}:
-  /categoreis/{id}/random:
+    get:
+      tags:
+        - categories
+      summary: Get a specific category
+      description: |
+        Simply returns a specifc category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - categories
+      summary: Update a single category
+      description: |
+        Simply update a specific category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+        description: Category to update (id must match id in path)
+      responses:
+        '200':
+          description: Category updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - categories
+      summary: Delete a single category
+      description: |
+        Simply delete a specific category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found    
+  /categories/{id}/random:
   /tags:
+    get:
+      tags:
+        - tags
+      summary: Retrieves list of all tags.
+      description: |
+        Simply returns every single existing tags.
+      responses:
+        '200':
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+    post:
+      tags:
+        - tags
+      summary: Creates a new tag
+      description: |
+        Creates new tags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+        description: Tag to add
+      responses:
+        '201':
+          description: Tag created
+        '400':
+          description: 'invalid input, object invalid'    
   /tags/{id}:
+    get:
+      tags:
+        - tags
+      summary: Get a specific tag
+      description: |
+        Simply returns a specifc tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - tags
+      summary: Update a single tag
+      description: |
+        Simply update a specific tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+        description: Tag to update (id must match id in path)
+      responses:
+        '200':
+          description: Tag updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - tags
+      summary: Delete a single tag.
+      description: |
+        Simply delete a specific tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found        
   /tags/{id}/random:
   /users:
     get:
