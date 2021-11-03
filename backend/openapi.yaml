@@ -176,6 +176,19 @@ paths:
           description: ID not found
   /recipes/{id}/comments:
   /recipes/random:
+    get:
+      tags:
+        - recipes
+      summary: Get a random recipe
+      description: |
+        Simply returns random recipe.
+      responses:
+        '200':
+          description: Get recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
   /categories:
     get:
       tags:
@@ -279,7 +292,20 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found    
-  /categories/{id}/random:
+  /categories/random:
+    get:
+      tags:
+        - categories
+      summary: Get a random category
+      description: |
+        Simply returns a random category.
+      responses:
+        '200':
+          description: Get random category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'  
   /tags:
     get:
       tags:
@@ -384,6 +410,19 @@ paths:
         '404':
           description: ID not found        
   /tags/{id}/random:
+    get:
+      tags:
+        - tags
+      summary: Get a random tag
+      description: |
+        Simply returns a random tag.
+      responses:
+        '200':
+          description: Get random tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
   /users:
     get:
       description: |
@@ -423,8 +462,83 @@ paths:
                 type: object
                 $ref: '#/components/schemas/User'
   /users/{id}/recipes:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all recipes of a user.
+      description: |
+        Simply returns every single existing recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found               
   /users/{id}/liked:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all liked recipes of a user.
+      description: |
+        Simply returns every liked recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of all liked recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found   
   /users/{id}/list:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all saved recipes of a user.
+      description: |
+        Simply returns every saved recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of all saved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found   
   /auth/login:
   /auth/logout:
 components:
