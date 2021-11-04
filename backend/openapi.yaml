@@ -12,6 +12,10 @@ tags:
     description: category based requests
   - name: tags
     description: tag based requests
+  - name: users
+    description: tag based users
+  - name: auth
+    description: tag based auth
 servers:
   - url: 'https://gotcaked.eu/api'
     description: production
@@ -97,11 +101,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Recipe'
+              $ref: '#/components/schemas/RecipeCreate'
         description: Recipe to add
       responses:
         '201':
           description: Recipe created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Recipe' 
         '400':
           description: 'invalid input, object invalid'
   /recipes/{id}:
@@ -196,6 +204,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+    post:
+      tags:
+        - recipes
+      summary: Creates a new Comment for a recipe
+      description: |
+        Creates new comment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+        description: Comment to add
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Comment' 
+        '400':
+          description: 'invalid input, object invalid'
   /recipes/random:
     get:
       tags:
@@ -238,11 +275,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Category'
+              $ref: '#/components/schemas/CategoryCreate'
         description: Category to add
       responses:
         '201':
           description: Category created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Category' 
         '400':
           description: 'invalid input, object invalid'
   /categories/{id}:
@@ -355,11 +396,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Tag'
+              $ref: '#/components/schemas/TagCreate'
         description: Tag to add
       responses:
         '201':
           description: Tag created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Tag' 
         '400':
           description: 'invalid input, object invalid'    
   /tags/{id}:
@@ -644,7 +689,7 @@ paths:
       description: |
         For User specific interactions you will need a JWT-Key
       tags:
-        - Auth
+        - auth
       requestBody:
         content:
           application/json:
@@ -668,7 +713,7 @@ paths:
       description: |
         To "Logout" a User, the jwt key will be blacklistet
       tags:
-        - Auth
+        - auth
       requestBody:
         content:
           application/json:
@@ -842,6 +887,31 @@ components:
         category:
           type: object
           $ref: '#/components/schemas/Category'
+    RecipeCreate:
+      type: object
+      required: 
+        - name
+      properties:
+        name:
+          type: string
+          example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Flour
+              quantity:
+                type: string
+                example: 200g
+        preparation:
+          type: string
+          example: Go to the Kitchen...
     Comment:
       type: object
       required:
@@ -868,6 +938,14 @@ components:
             down:
               type: number
               example: 2
+    CommentCreate:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          example: Much wow, such cake.
     Tag:
       type: object
       required:
@@ -885,6 +963,18 @@ components:
         description:
           type: string
           example: Does not contain any meat, dairy products, eggs, honey, or any product derived from an animal.
+    TagCreate:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          example: vegan
+        description:
+          type: string
+          example: Does not contain any meat, dairy products, eggs, honey, or any product derived from an animal.
     Category:
       type: object
       required:
@@ -896,6 +986,17 @@ components:
           type: string
           format: uuid
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Cake
+        description:
+          type: string
+          example: Just cake
+    CategoryCreate:
+      type: object
+      required:
+        - name
+      properties:
         name:
           type: string
           example: Cake
