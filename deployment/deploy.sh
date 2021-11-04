@@ -7,8 +7,14 @@ echo "Repo Cloned"
 echo "Starting Docker-Compose"
 cd ./gotcaked
 
+echo "Getting current tag"
+tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+echo "Building from source files"
+docker-compose build --build-arg GITVERSION=$tag
+
 echo "Starting containers"
-docker-compose up -d --build
+docker-compose up -d
 
 echo "Started Containers..."
 echo "Cleaning Up Source Files"
