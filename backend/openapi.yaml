@@ -175,6 +175,27 @@ paths:
         '404':
           description: ID not found
   /recipes/{id}/comments:
+    get:
+      tags:
+        - recipes
+      summary: Get all Comments from on recipe
+      description: |
+        Simply returns comments from a recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get Comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
   /recipes/random:
     get:
       tags:
@@ -188,7 +209,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Recipe'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
   /categories:
     get:
       tags:
@@ -416,6 +439,14 @@ paths:
       summary: Get a random tag
       description: |
         Simply returns a random tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Get random tag
@@ -427,6 +458,7 @@ paths:
     get:
       description: |
         Simply returns every single existing user.
+      summary: Get all users
       tags:
         - "user"
       responses:
@@ -442,7 +474,7 @@ paths:
     get:
       description: |
         Simply returns every single existing user.
-      summary: Aggg
+      summary: Get a single user
       parameters:
         - in: path
           name: id
@@ -540,7 +572,51 @@ paths:
         '404':
           description: ID of user not found   
   /auth/login:
+    post:
+      summary: Returns a JWT Key
+      description: |
+        For User specific interactions you will need a JWT-Key
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        description: Login Credentials
+      responses:
+        '200':
+          description: Status and JWT-Key.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/LoginJWT'   
+        '404':
+          description: 'User does not exist'
+        '400':
+          description: 'invalid input, object invalid'
   /auth/logout:
+    post:
+      summary: Adds JWT Key to Blacklist
+      description: |
+        To "Logout" a User, the jwt key will be blacklistet
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        description: Current JWT-Key
+      responses:
+        '200':
+          description: Status.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/LogoutStatus'   
+        '400':
+          description: 'invalid input, object invalid'
 components:
   schemas:
     Status:
@@ -581,6 +657,39 @@ components:
         picture_uri:
           type: string
           example: /static/pictures/users/{id}/pb.jpg
+    Login:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: user@gotcaked.eu
+        password:
+          type: string
+          example: mysecretpassword
+    LoginJWT:
+      type: object
+      properties:
+        jwt:
+          type: string
+          example: mySpecialJWTeyWithUserInformation....
+        status:
+          type: string
+          example: logged in successfully
+    Logout:
+      type: object
+      properties:
+        jwt:
+          type: string
+          example: mySpecialJWTeyWithUserInformation....
+    LogoutStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: logged out successfully
     Recipe:
       type: object
       required: 
