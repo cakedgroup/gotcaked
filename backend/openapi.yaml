@@ -460,7 +460,7 @@ paths:
         Simply returns every single existing user.
       summary: Get all users
       tags:
-        - "user"
+        - users
       responses:
         '200':
           description: List all user
@@ -470,6 +470,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - users
+      summary: Creates a new User
+      description: |
+        Creates new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        description: User to add
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'  
+        '400':
+          description: 'invalid input, object invalid'
   /users/{id}:
     get:
       description: |
@@ -484,7 +505,7 @@ paths:
             type: string
             format: uuid
       tags:
-        - "user"
+        - "users"
       responses:
         '200':
           description: Get specific user.
@@ -493,6 +514,52 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/User'
+    patch:
+      tags:
+        - users
+      summary: Update a single user
+      description: |
+        Simply update one user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        description: Recipe to update (id must match id in path)
+      responses:
+        '200':
+          description: User updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - users
+      summary: Delete a single user
+      description: |
+        Simply delete one user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
   /users/{id}/recipes:
     get:
       tags:
@@ -657,6 +724,40 @@ components:
         picture_uri:
           type: string
           example: /static/pictures/users/{id}/pb.jpg
+    UserCreate:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        name:
+          type: string
+          example: User123
+        email:
+          type: string
+          example: email@gotcaked.eu
+        password:
+          type: string
+          example: mySecretPassword
+    UserUpdate:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: ChangedMyCoolUserName
+        oldPassowrd:
+          type: string
+          example: mySecretPassword
+        password:
+          type: string
+          example: myNewSpecialPassword
     Login:
       type: object
       required:
