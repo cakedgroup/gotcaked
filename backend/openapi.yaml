@@ -1,0 +1,1005 @@
+openapi: 3.0.0
+info:
+  description: OpenAPI for GotCaked Server
+  version: "0.0.1"
+  title: GotCaked API
+tags:
+  - name: Status
+    description: status requests
+  - name: recipes
+    description: recipe based requests
+  - name: categories
+    description: category based requests
+  - name: tags
+    description: tag based requests
+  - name: users
+    description: tag based users
+  - name: auth
+    description: tag based auth
+servers:
+  - url: 'https://gotcaked.eu/api'
+    description: production
+  - url: 'https://dev.gotcaked.eu/api'
+    description: development - live
+  - url: 'http://127.0.0.1:3000/api'
+    description: development
+paths:
+  /:
+    get:
+      description: Returns a welcome message.
+      summary: Welcome message.
+      tags:
+        - "Status"
+      responses:
+        '200':
+          description: Welcome message.
+          content:
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  version:
+                    type: string
+                example:
+                  message: Welcome to our backend!
+                  version: v0.0.1
+  /status:
+    get:
+      description: Returns a Basic Informations.
+      summary: Current Backend Status.
+      tags:
+        - "Status"
+      responses:
+        '200':
+          description: Basic Informations.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Status'      
+  /recipes:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all recipes
+      description: |
+        Simply returns every single existing recipe.
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          description: Limit
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: offset
+          required: false
+          description: Offset
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+    post:
+      tags:
+        - recipes
+      summary: Creates a new recipe
+      description: |
+        Creates new recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCreate'
+        description: Recipe to add
+      responses:
+        '201':
+          description: Recipe created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Recipe' 
+        '400':
+          description: 'invalid input, object invalid'
+  /recipes/{id}:
+    get:
+      tags:
+        - recipes
+      summary: Get a single recipe
+      description: |
+        Simply returns one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - recipes
+      summary: Update a single recipe
+      description: |
+        Simply update one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        description: Recipe to update (id must match id in path)
+      responses:
+        '200':
+          description: Recipe updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - recipes
+      summary: Delete a single recipe
+      description: |
+        Simply delete one recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
+  /recipes/{id}/comments:
+    get:
+      tags:
+        - recipes
+      summary: Get all Comments from on recipe
+      description: |
+        Simply returns comments from a recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get Comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    post:
+      tags:
+        - recipes
+      summary: Creates a new Comment for a recipe
+      description: |
+        Creates new comment
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+        description: Comment to add
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Comment' 
+        '400':
+          description: 'invalid input, object invalid'
+  /recipes/random:
+    get:
+      tags:
+        - recipes
+      summary: Get a random recipe
+      description: |
+        Simply returns random recipe.
+      responses:
+        '200':
+          description: Get recipe
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: Retrieves list of all categories.
+      description: |
+        Simply returns every single existing categories.
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - categories
+      summary: Creates a new category
+      description: |
+        Creates new category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreate'
+        description: Category to add
+      responses:
+        '201':
+          description: Category created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Category' 
+        '400':
+          description: 'invalid input, object invalid'
+  /categories/{id}:
+    get:
+      tags:
+        - categories
+      summary: Get a specific category
+      description: |
+        Simply returns a specifc category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - categories
+      summary: Update a single category
+      description: |
+        Simply update a specific category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+        description: Category to update (id must match id in path)
+      responses:
+        '200':
+          description: Category updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - categories
+      summary: Delete a single category
+      description: |
+        Simply delete a specific category.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific category to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found    
+  /categories/random:
+    get:
+      tags:
+        - categories
+      summary: Get a random category
+      description: |
+        Simply returns a random category.
+      responses:
+        '200':
+          description: Get random category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'  
+  /tags:
+    get:
+      tags:
+        - tags
+      summary: Retrieves list of all tags.
+      description: |
+        Simply returns every single existing tags.
+      responses:
+        '200':
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+    post:
+      tags:
+        - tags
+      summary: Creates a new tag
+      description: |
+        Creates new tags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+        description: Tag to add
+      responses:
+        '201':
+          description: Tag created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/Tag' 
+        '400':
+          description: 'invalid input, object invalid'    
+  /tags/{id}:
+    get:
+      tags:
+        - tags
+      summary: Get a specific tag
+      description: |
+        Simply returns a specifc tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '404':
+          description: ID not found
+    patch:
+      tags:
+        - tags
+      summary: Update a single tag
+      description: |
+        Simply update a specific tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+        description: Tag to update (id must match id in path)
+      responses:
+        '200':
+          description: Tag updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - tags
+      summary: Delete a single tag.
+      description: |
+        Simply delete a specific tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag to update
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found        
+  /tags/{id}/random:
+    get:
+      tags:
+        - tags
+      summary: Get a random tag
+      description: |
+        Simply returns a random tag.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific tag
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get random tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+  /users:
+    get:
+      description: |
+        Simply returns every single existing user.
+      summary: Get all users
+      tags:
+        - users
+      responses:
+        '200':
+          description: List all user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - users
+      summary: Creates a new User
+      description: |
+        Creates new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        description: User to add
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'  
+        '400':
+          description: 'invalid input, object invalid'
+  /users/{id}:
+    get:
+      description: |
+        Simply returns every single existing user.
+      summary: Get a single user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific Reader
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - "users"
+      responses:
+        '200':
+          description: Get specific user.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/User'
+    patch:
+      tags:
+        - users
+      summary: Update a single user
+      description: |
+        Simply update one user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        description: Recipe to update (id must match id in path)
+      responses:
+        '200':
+          description: User updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: ID not found
+    delete:
+      tags:
+        - users
+      summary: Delete a single user
+      description: |
+        Simply delete one user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
+  /users/{id}/recipes:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all recipes of a user.
+      description: |
+        Simply returns every single existing recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found               
+  /users/{id}/liked:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all liked recipes of a user.
+      description: |
+        Simply returns every liked recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of all liked recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found   
+  /users/{id}/list:
+    get:
+      tags:
+        - recipes
+      summary: Retrieves list of all saved recipes of a user.
+      description: |
+        Simply returns every saved recipe of a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of user to get recipes from.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of all saved recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe' 
+        '404':
+          description: ID of user not found   
+  /auth/login:
+    post:
+      summary: Returns a JWT Key
+      description: |
+        For User specific interactions you will need a JWT-Key
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        description: Login Credentials
+      responses:
+        '200':
+          description: Status and JWT-Key.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/LoginJWT'   
+        '404':
+          description: 'User does not exist'
+        '400':
+          description: 'invalid input, object invalid'
+  /auth/logout:
+    post:
+      summary: Adds JWT Key to Blacklist
+      description: |
+        To "Logout" a User, the jwt key will be blacklistet
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        description: Current JWT-Key
+      responses:
+        '200':
+          description: Status.
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/LogoutStatus'   
+        '400':
+          description: 'invalid input, object invalid'
+components:
+  schemas:
+    Status:
+      type: object
+      required:
+        - version 
+        - userCount
+        - recipeCount
+        - commentsCount
+      properties:
+        version:
+          type: string
+          example: v0.0.1
+        userCount:
+          type: integer
+          example: 4
+        recipeCount:
+          type: integer
+          example: 7
+        commentsCount:
+          type: integer
+          example: 2
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: User123
+        description:
+          type: string
+          example: Hello..
+        picture_uri:
+          type: string
+          example: /static/pictures/users/{id}/pb.jpg
+    UserCreate:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        name:
+          type: string
+          example: User123
+        email:
+          type: string
+          example: email@gotcaked.eu
+        password:
+          type: string
+          example: mySecretPassword
+    UserUpdate:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: ChangedMyCoolUserName
+        oldPassowrd:
+          type: string
+          example: mySecretPassword
+        password:
+          type: string
+          example: myNewSpecialPassword
+    Login:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: user@gotcaked.eu
+        password:
+          type: string
+          example: mysecretpassword
+    LoginJWT:
+      type: object
+      properties:
+        jwt:
+          type: string
+          example: mySpecialJWTeyWithUserInformation....
+        status:
+          type: string
+          example: logged in successfully
+    Logout:
+      type: object
+      properties:
+        jwt:
+          type: string
+          example: mySpecialJWTeyWithUserInformation....
+    LogoutStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: logged out successfully
+    Recipe:
+      type: object
+      required: 
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Flour
+              quantity:
+                type: string
+                example: 200g
+        preparation:
+          type: string
+          example: Go to the Kitchen...
+        raiting:
+          type: object
+          properties:
+            up:
+              type: number
+              example: 10
+            down:
+              type: number
+              example: 2
+        pictures:
+          type: array
+          items:
+            type: string
+            example: /static/pictures/thisRecipe/pic_01.jpg
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        category:
+          type: object
+          $ref: '#/components/schemas/Category'
+    RecipeCreate:
+      type: object
+      required: 
+        - name
+      properties:
+        name:
+          type: string
+          example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Flour
+              quantity:
+                type: string
+                example: 200g
+        preparation:
+          type: string
+          example: Go to the Kitchen...
+    Comment:
+      type: object
+      required:
+        - id
+        - text
+        - time
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        text:
+          type: string
+          example: Much wow, such cake.
+        time:
+          type: string
+          format: date
+        raiting:
+          type: object
+          properties:
+            up:
+              type: number
+              example: 10
+            down:
+              type: number
+              example: 2
+    CommentCreate:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          example: Much wow, such cake.
+    Tag:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: vegan
+        description:
+          type: string
+          example: Does not contain any meat, dairy products, eggs, honey, or any product derived from an animal.
+    TagCreate:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          example: vegan
+        description:
+          type: string
+          example: Does not contain any meat, dairy products, eggs, honey, or any product derived from an animal.
+    Category:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Cake
+        description:
+          type: string
+          example: Just cake
+    CategoryCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Cake
+        description:
+          type: string
+          example: Just cake
