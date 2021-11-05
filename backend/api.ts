@@ -8,6 +8,7 @@ import { userController } from './controllers/user';
 import { categoryController } from './controllers/category';
 import { tagController } from './controllers/tag';
 import { recipeController } from './controllers/recipe';
+import { authController } from './controllers/auth';
 const router = express.Router();
 
 router.use(cors());
@@ -22,6 +23,7 @@ router.use('/users', userController);
 router.use('/categories', categoryController);
 router.use('/tags', tagController);
 router.use('/recipes', recipeController);
+router.use('/auth', authController);
 
 //404 Route
 router.use((_req: express.Request, res: express.Response) => {
