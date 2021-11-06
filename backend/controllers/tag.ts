@@ -1,10 +1,16 @@
 import express from 'express';
+import {createTag, getTag, getTags} from '../models/tag';
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    getTags().then(tags => {
+        res.status(200).json(tags);
+    }).catch(err => {
+        res.status(500).json({
+            error: err
+        });
+    });
 });
 
 router.post('/', (req, res) => {
