@@ -15,7 +15,7 @@ export interface Recipe {
 export function createRecipe(recipe: Recipe): Promise<Recipe> {
     const newId = generateUUID();
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO recipes (id, name, description, ingredients, preparation, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        db.run(`INSERT INTO recipe (id, name, description, ingredients, preparation, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [newId, recipe.name, recipe.description, recipe.ingredients, recipe.preparation, recipe.category_id, recipe.user_id],
             function(err) {
                 if (err) {
