@@ -20,8 +20,9 @@ router.get('/', (req, res) => {
         //Response
         res.status(200);
         res.json(status);
+    }).catch(err => {
+        console.log(err);
     });
-
 });
 
 
