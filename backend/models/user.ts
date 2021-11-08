@@ -38,3 +38,43 @@ export function getUser(name: string): Promise<User> {
         });
     });
 }
+
+export function getUserById(id: string): Promise<User> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM user WHERE id = ?`, [id], function(err, row) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+}
+
+//Update user with specific id
+export function updateUser(user: User): Promise<User> {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE user SET name = ?, description = ?, picture_uri = ?, email = ?, password = ? WHERE id = ?`,
+            [user.name, user.description, user.picture_uri, user.email, user.password, user.id],
+            function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(user);
+                }
+            }
+        );
+    });
+}
+
+export function deleteUser(id: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM user WHERE id = ?`, [id], function(err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
