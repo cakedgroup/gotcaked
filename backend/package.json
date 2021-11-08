@@ -1,15 +1,15 @@
 {
-  "name": "beispiel",
+  "name": "GotCaked",
   "version": "0.0.1",
-  "description": "Boilerplate Backend",
+  "description": "Restful API for GotCaked",
   "main": "app.ts",
   "scripts": {
     "start": "ts-node app.ts",
     "dev": "nodemon"
   },
   "keywords": [],
-  "author": "Lukas Paffen",
-  "license": "ISC",
+  "author": "cakedgroup",
+  "license": "GPLv3",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
