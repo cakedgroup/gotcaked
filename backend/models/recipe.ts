@@ -8,15 +8,19 @@ export interface Recipe {
     description: string;
     ingredients: string[];
     preparation: string;
+    createdAt: Date;
+    difficulty: string;
+    time: Number;
     category_id: string;
     user_id: string;
 }
 
 export function createRecipe(recipe: Recipe): Promise<Recipe> {
     const newId = generateUUID();
+    const createdAt: Date = new Date();
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO recipe (id, name, description, ingredients, preparation, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [newId, recipe.name, recipe.description, recipe.ingredients, recipe.preparation, recipe.category_id, recipe.user_id],
+        db.run(`INSERT INTO recipe (id, name, description, ingredients, preparation, createdAt, difficulty, time. category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [newId, recipe.name, recipe.description, recipe.ingredients, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
             (err) => {
                 if (err) {
                     reject(err);
