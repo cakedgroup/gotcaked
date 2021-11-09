@@ -6,7 +6,7 @@
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
-/databases
+/databases/db.sqlite
 
 # dependencies
 /node_modules
