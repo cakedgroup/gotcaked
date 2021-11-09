@@ -18,6 +18,11 @@ export interface UserPublic {
     email: string;
 }
 
+export interface UserLogin{
+    email: string;
+    password: string;
+}
+
 export function createUser(user: User): Promise<User> {
     user.id = generateUUID();
     return new Promise((resolve, reject) => {
@@ -49,6 +54,18 @@ export function getUser(name: string): Promise<User> {
 export function getUserById(id: string): Promise<User> {
     return new Promise((resolve, reject) => {
         db.get(`SELECT * FROM user WHERE id = ?`, [id], function(err, row) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+}
+
+export function getUserByEmail(email: string): Promise<User> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM user WHERE email = ?`, [email], function(err, row) {
             if (err) {
                 reject(err);
             } else {
