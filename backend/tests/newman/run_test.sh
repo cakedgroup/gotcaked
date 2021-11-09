@@ -2,4 +2,4 @@
 
 echo "Starting newman tests..."
 
-newman run ./Server-API.postman_collection.json -e ./Server-API.$1.postman_environment.json
+newman run ./gotCaked.postman_collection.json -e ./$1.postman_environment.json
