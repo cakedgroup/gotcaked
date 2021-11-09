@@ -1,5 +1,5 @@
-import {db} from './db';
 import { generateUUID } from "../util/uuid";
+import { db } from './db';
 
 export interface User {
     id: string;
@@ -10,12 +10,19 @@ export interface User {
     password: string;
 }
 
-
+export interface UserPublic {
+    id: string;
+    name: string;
+    description: string;
+    picture_uri: string;
+    email: string;
+}
 
 export function createUser(user: User): Promise<User> {
+    user.id = generateUUID();
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO user (id, name, description, picture_uri, email, password) VALUES (?, ?, ?, ?, ?, ?)`,
-            [generateUUID(), user.name, user.description, user.picture_uri, user.email, user.password],
+            [user.id, user.name, user.description, user.picture_uri, user.email, user.password],
             function(err) {
                 if (err) {
                     reject(err);

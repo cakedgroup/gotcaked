@@ -1,4 +1,5 @@
 import express from 'express';
+import { createUserService } from '../services/user';
 
 const router = express.Router();
 
@@ -8,8 +9,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    createUserService(req.body).then(user => {
+        res.status(201);
+        res.json(user);
+    }).catch(err => {
+        res.status(400);
+        res.json({ "message": "User already exists." });
+    });
 });
 
 router.get('/:id', (req, res) => {
@@ -42,4 +48,4 @@ router.get('/:id/list', (req, res) => {
     res.send('To be implemented.');
 });
 
-export {router as userController};
+export { router as userController };
