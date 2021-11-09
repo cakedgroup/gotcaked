@@ -1,21 +1,17 @@
 import express from "express";
-import { getVersion } from "../util/version";
+import { getCurrentStatus } from "../services/status";
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    //Build JSON Object
-    let status = {
-        "version": getVersion(),
-        "userCount": "-",
-        "recipeCount": "-",
-        "commentsCount": "-",
-        "tagsCount": "-",
-        "categoriesCount": "-"
-    }
 
-    //Response
-    res.status(200);
-    res.json(status);
+    getCurrentStatus().then(status => {
+        res.status(200);
+        res.json(status);
+    }).catch(err => {
+        res.status(500);
+        res.send();
+        console.log(err);
+    })
 });
 
 

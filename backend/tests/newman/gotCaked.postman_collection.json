@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "30c59569-2702-44fd-b03f-546d0d28bdaf",
+		"name": "gotCaked",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "main",
+			"item": [
+				{
+					"name": "Main Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Response\", function () {\r",
+									"    pm.expect(data.message).equal(\"Welome to our backend!\");\r",
+									"    pm.expect(data.status).equal(\"/status\");\r",
+									"    pm.expect(data.version).to.exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}",
+							"host": [
+								"{{apiURL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "status",
+			"item": [
+				{
+					"name": "GET  - Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Response\", function () {\r",
+									"    pm.expect(data.version).to.exist;\r",
+									"    pm.expect(data.userCount).to.exist;\r",
+									"    pm.expect(data.recipeCount).to.exist;\r",
+									"    pm.expect(data.commentsCount).to.exist;\r",
+									"    pm.expect(data.tagsCount).to.exist;\r",
+									"    pm.expect(data.categoriesCount).to.exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/status",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"item": []
+		},
+		{
+			"name": "user",
+			"item": []
+		},
+		{
+			"name": "recipe",
+			"item": []
+		},
+		{
+			"name": "category",
+			"item": []
+		},
+		{
+			"name": "tag",
+			"item": []
+		}
+	]
+}
