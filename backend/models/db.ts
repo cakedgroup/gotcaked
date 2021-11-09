@@ -80,6 +80,20 @@ function createTables(){
             console.log('RecipeTag table created.');
         }        
     });
+    //Ingredient
+    db.run(`CREATE TABLE IF NOT EXISTS ingredient (
+        id VARCHAR(36) PRIMARY KEY,
+        name TEXT NOT NULL,
+        amount NUMBER,
+        unit TEXT,
+        recipe_id VARCHAR(36) NOT NULL,
+        FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
+        if (err) {
+            console.error(err.message);
+        }else {
+            console.log('Ingredient table created.');
+        }
+    });
     //Comments
     db.run(`CREATE TABLE IF NOT EXISTS comment (
         id VARCHAR(36) PRIMARY KEY,
