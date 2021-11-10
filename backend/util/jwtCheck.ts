@@ -10,6 +10,7 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
             if (err) {
                 next();
             } else {
+                //TODO Check if payload is on blacklist
                 req.jwtContent = jwtPayloadContentTransformer(payload);
             }
         });

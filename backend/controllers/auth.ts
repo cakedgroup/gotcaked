@@ -7,6 +7,7 @@ router.post('/login', (req, res) => {
     login(req.body).then(result => {
         res.status(200).json(result);
     }).catch(err => {
+        //TODO Create Correct Error Handler for (401, 404)
         res.status(400).json(err);
     });
 });
