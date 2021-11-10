@@ -5,9 +5,9 @@ import { getSecret } from '../util/secret';
 import { jwtContentTransformer } from '../util/transformer';
 import { addJWTToBlacklist } from '../models/blacklist';
 
-export interface jwtContent {
-    id: string;
-    email: string;
+export interface JWTContent {
+    id: string | undefined;
+    email: string | undefined;
 }
 
 export function login(userCredentials: UserLogin): Promise<{}> {
