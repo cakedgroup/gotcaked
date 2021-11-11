@@ -19,16 +19,9 @@ export function jwtContentTransformer(user: User): JWTContent {
     };
 }
 
-export function jwtPayloadContentTransformer(payload: JwtPayload | undefined): JWTContent {
-    if (payload) {
-        return {
-            id: payload.id,
-            email: payload.email
-        };
-    } else {
-        return {
-            id: undefined,
-            email: undefined
-        };
-    }
+export function jwtPayloadContentTransformer(payload: JwtPayload): JWTContent {
+    return {
+        id: payload.id,
+        email: payload.email
+    };
 }

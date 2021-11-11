@@ -1,5 +1,6 @@
 import express from 'express';
 import { createUserService } from '../services/user';
+import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
 
@@ -13,8 +14,7 @@ router.post('/', (req, res) => {
         res.status(201);
         res.json(user);
     }).catch(err => {
-        res.status(400);
-        res.json({ message: "User already exists." });
+        errorHandler(err, req, res);
     });
 });
 

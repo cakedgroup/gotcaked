@@ -28,15 +28,16 @@ export function login(userCredentials: UserLogin): Promise<{}> {
                     });
                 } else {
                     //Failed Password Compare
-                    reject({ status: 'Password don´t match.' });
+                    reject(new Error("Password don´t match"));
                 }
-            }).catch(() => reject({ status: 'Server Error' }));
-        }).catch(() => reject({ status: 'User does not exist.' }));
+            }).catch(() => reject(new Error("Server Error")));
+        }).catch(() => reject(new Error("User does not exist")));
     });
 }
 
 export function logout(jwtKey: string): Promise<{}> {
     return new Promise((resolve, reject) => {
-        addJWTToBlacklist(jwtKey).then(() => resolve({ status: 'success' })).catch(() => reject({ status: 'Server Error' }));
+        if (!jwtKey) {reject(new Error("No JWT Key"))};
+        addJWTToBlacklist(jwtKey).then(() => resolve({ status: 'success' })).catch(() => reject(new Error("Server Error")));
     });
 }

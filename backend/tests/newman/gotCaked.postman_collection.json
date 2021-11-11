@@ -127,7 +127,7 @@
 									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
 									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
 									"pm.globals.set(\"randomUser\", userName);\r",
-									"pm.globals.set(\"randomPaswword\", userPassword);"
+									"pm.globals.set(\"randomPassword\", userPassword);"
 								],
 								"type": "text/javascript"
 							}
@@ -138,7 +138,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"{{randomUser}}@gotcaked.eu\",\r\n    \"name\": \"{{randomUser}}\",\r\n    \"description\": \"Lelelelel\",\r\n    \"password\":\"{{randomPaswword}}\"\r\n}",
+							"raw": "{\r\n    \"email\":\"{{randomUser}}@gotcaked.eu\",\r\n    \"name\": \"{{randomUser}}\",\r\n    \"description\": \"Lelelelel\",\r\n    \"password\":\"{{randomPassword}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -165,14 +165,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 400\", function() {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status Code is 409\", function() {\r",
+									"    pm.response.to.have.status(409);\r",
 									"});\r",
 									"\r",
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
 									"pm.test(\"Correct Message\", function () {\r",
-									"    pm.expect(data.message).to.equal(\"User already exists.\");\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).to.equal(\"User already exists\");\r",
 									"});\r",
 									""
 								],
@@ -299,7 +300,8 @@
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
 									"pm.test(\"Correct Message\", function () {\r",
-									"    pm.expect(data.status).equal(\"Password don´t match.\");\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"Password don´t match\");\r",
 									"});\r",
 									""
 								],
@@ -345,8 +347,9 @@
 									"\r",
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
-									"pm.test(\"Correct Message\", function () {\r",
-									"    pm.expect(data.status).equal(\"User does not exist.\");\r",
+									"pm.test(\"Correct Message\", function () {    \r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"User does not exist\");\r",
 									"});\r",
 									""
 								],
@@ -381,6 +384,63 @@
 				},
 				{
 					"name": "Logut - Valid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"No JWT Key\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/auth/logout",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logut - No JWT",
 					"event": [
 						{
 							"listen": "test",

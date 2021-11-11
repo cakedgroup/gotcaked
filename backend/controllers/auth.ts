@@ -1,5 +1,6 @@
 import express from 'express';
 import { login, logout } from '../services/auth';
+import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
 
@@ -7,8 +8,7 @@ router.post('/login', (req, res) => {
     login(req.body).then(result => {
         res.status(200).json(result);
     }).catch(err => {
-        //TODO Create Correct Error Handler for (401, 404)
-        res.status(400).json(err);
+        errorHandler(err, req, res);
     });
 });
 
@@ -17,7 +17,7 @@ router.post('/logout', (req, res) => {
     logout(jwtToken).then(result => {
         res.status(200).json(result);
     }).catch(err => {
-        res.status(400).json(err);
+        errorHandler(err, req, res);
     });
 });
 
