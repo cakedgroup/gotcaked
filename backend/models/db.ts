@@ -109,4 +109,14 @@ function createTables(){
             console.log('Comment table created.');
         }        
     });
+    //JWT-Blacklist
+    db.run(`CREATE TABLE IF NOT EXISTS jwt_blacklist (
+        id VARCHAR(36) PRIMARY KEY,
+        jwt TEXT NOT NULL);`, (err) => {
+        if (err) {
+            console.error(err.message);
+        }else {
+            console.log('JWT-Blacklist table created.');
+        }        
+    });
 }
