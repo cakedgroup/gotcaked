@@ -1,3 +1,4 @@
+import { sqlPager } from "../util/sql";
 import { generateUUID } from "../util/uuid";
 import { db } from './db';
 
@@ -18,7 +19,7 @@ export interface UserPublic {
     email: string;
 }
 
-export interface UserLogin{
+export interface UserLogin {
     email: string;
     password: string;
 }
@@ -28,7 +29,7 @@ export function createUser(user: User): Promise<User> {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO user (id, name, description, picture_uri, email, password) VALUES (?, ?, ?, ?, ?, ?)`,
             [user.id, user.name, user.description, user.picture_uri, user.email, user.password],
-            function(err) {
+            function (err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -41,7 +42,7 @@ export function createUser(user: User): Promise<User> {
 
 export function getUser(name: string): Promise<User> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM user WHERE name = ?`, [name], function(err, row) {
+        db.get(`SELECT * FROM user WHERE name = ?`, [name], function (err, row) {
             if (err) {
                 reject(err);
             } else {
@@ -53,7 +54,7 @@ export function getUser(name: string): Promise<User> {
 
 export function getUserById(id: string): Promise<User> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM user WHERE id = ?`, [id], function(err, row) {
+        db.get(`SELECT * FROM user WHERE id = ?`, [id], function (err, row) {
             if (err) {
                 reject(err);
             } else {
@@ -65,11 +66,31 @@ export function getUserById(id: string): Promise<User> {
 
 export function getUserByEmail(email: string): Promise<User> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM user WHERE email = ?`, [email], function(err, row) {
+        db.get(`SELECT * FROM user WHERE email = ?`, [email], function (err, row) {
             if (err) {
                 reject(err);
             } else {
                 resolve(row);
+            }
+        });
+    });
+}
+
+//Get All Users with Limits
+export function getAllUsers(limit: number, offset: number): Promise<User[]> {
+    let query: string = `SELECT * FROM user`;
+    query = sqlPager(query, limit, offset);
+
+    return new Promise((resolve, reject) => {
+        db.all(query, function (err, rows) {
+            if (err) {
+                reject(err);
+            } else {
+                let users: User[] = [];
+                rows.forEach((row) => {
+                    users.push(row);
+                });
+                resolve(users);
             }
         });
     });
@@ -80,7 +101,7 @@ export function updateUser(user: User): Promise<User> {
     return new Promise((resolve, reject) => {
         db.run(`UPDATE user SET name = ?, description = ?, picture_uri = ?, email = ?, password = ? WHERE id = ?`,
             [user.name, user.description, user.picture_uri, user.email, user.password, user.id],
-            function(err) {
+            function (err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -93,7 +114,7 @@ export function updateUser(user: User): Promise<User> {
 
 export function deleteUser(id: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        db.run(`DELETE FROM user WHERE id = ?`, [id], function(err) {
+        db.run(`DELETE FROM user WHERE id = ?`, [id], function (err) {
             if (err) {
                 reject(err);
             } else {

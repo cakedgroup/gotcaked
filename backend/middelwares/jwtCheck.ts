@@ -21,3 +21,13 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
         });
     }
 }
+
+export function isAuthorizedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.id === req.params.id) {
+        next();
+    } else {
+        res.status(401).send({
+            message: 'Unauthorized'
+        });
+    }
+}
