@@ -7,8 +7,8 @@ import { recipeController } from './controllers/recipe';
 import { statusController } from './controllers/status';
 import { tagController } from './controllers/tag';
 import { userController } from './controllers/user';
-import { checkJWT } from './util/jwtCheck';
-import * as logger from './util/logger';
+import { checkJWT } from './middelwares/jwtCheck';
+import * as logger from './middelwares/logger';
 import { JWTContent } from './services/auth';
 
 const router = express.Router();

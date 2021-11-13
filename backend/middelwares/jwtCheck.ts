@@ -1,8 +1,8 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
 import { isJWTBlacklisted } from "../models/blacklist";
-import { getSecret } from "./secret";
-import { jwtPayloadContentTransformer } from "./transformer";
+import { getSecret } from "../util/secret";
+import { jwtPayloadContentTransformer } from "../util/transformer";
 
 export function checkJWT(req: express.Request, _res: express.Response, next: express.NextFunction) {
     let jwtToken: string = req.headers['jwt'] as string;
