@@ -92,7 +92,7 @@
 			]
 		},
 		{
-			"name": "user",
+			"name": "user - pre",
 			"item": [
 				{
 					"name": "Create  User - Normal",
@@ -209,7 +209,7 @@
 			]
 		},
 		{
-			"name": "auth",
+			"name": "auth - login",
 			"item": [
 				{
 					"name": "Login - Normal User",
@@ -381,25 +381,190 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
 				{
-					"name": "Logut - Valid JWT",
+					"name": "Get All Users - No Limit",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 400\", function() {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
-									"pm.test(\"Correct Message\", function () {\r",
-									"    pm.expect(data.status).equal(\"error\");\r",
-									"    pm.expect(data.message).equal(\"No JWT Key\");\r",
+									"pm.test(\"Recieving User(s)\", function () {\r",
+									"    pm.expect(data[0]).to.exist;\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/users",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users - Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									""
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving User(s)\", function () {\r",
+									"    pm.expect(data.length).to.eql(1)\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/users?limit=1",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "offset",
+									"value": "22",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User - ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"    pm.expect(data.name).equal(pm.globals.get(\"randomUser\"));\r",
+									"    pm.expect(data.email).equal(pm.globals.get(\"randomUser\")+\"@gotcaked.eu\");\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User - Wrong ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"User not found\");\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/users/abcd-efgh-ijklm-1234-5678",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"abcd-efgh-ijklm-1234-5678"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"    pm.expect(data.name).equal(\"Gustavo Fring - \" + pm.globals.get(\"randomUserNEW\"));\r",
+									"    pm.expect(data.description).equal(\"Volvo\");\r",
+									"}); "
 								],
 								"type": "text/javascript"
 							}
@@ -408,6 +573,125 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gustavo Fring - {{randomUserNEW}}\",\r\n    \"description\": \"Volvo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User (Password)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"pm.globals.set(\"randomPasswordNEW\", userPassword);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"    pm.expect(data.name).equal(\"Gustavo Fring - \" + pm.globals.get(\"randomUserNEW\"));\r",
+									"    pm.expect(data.description).equal(\"Volvo\");\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"{{randomPasswordNEW}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User - Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"Unauthorized\");\r",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -415,7 +699,215 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "123",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gustavo Fring\",\r\n    \"description\": \"Volvo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"User not found\");\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"User not found\");\r",
+									"}); \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gustavo Fring\",\r\n    \"description\": \"Volvo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 401\", function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"Unauthorized\");\r",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -427,20 +919,37 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiURL}}/auth/logout",
+							"raw": "{{apiURL}}/users/{{userID}}",
 							"host": [
 								"{{apiURL}}"
 							],
 							"path": [
-								"auth",
-								"logout"
+								"users",
+								"{{userID}}"
 							]
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "recipe",
+			"item": []
+		},
+		{
+			"name": "category",
+			"item": []
+		},
+		{
+			"name": "tag",
+			"item": []
+		},
+		{
+			"name": "auth - logout",
+			"item": [
 				{
-					"name": "Logut - No JWT",
+					"name": "Logut - Valid JWT",
 					"event": [
 						{
 							"listen": "test",
@@ -500,20 +1009,65 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Logut - No JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 400\", function() {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"No JWT Key\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/auth/logout",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
 				}
 			]
-		},
-		{
-			"name": "recipe",
-			"item": []
-		},
-		{
-			"name": "category",
-			"item": []
-		},
-		{
-			"name": "tag",
-			"item": []
 		}
 	]
 }

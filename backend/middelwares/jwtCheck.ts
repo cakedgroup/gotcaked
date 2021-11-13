@@ -27,7 +27,8 @@ export function isAuthorizedUser(req: express.Request, res: express.Response, ne
         next();
     } else {
         res.status(401).send({
-            message: 'Unauthorized'
+            status: "Unauthorized",
+            message: "You are not authorized to access this resource"
         });
     }
 }

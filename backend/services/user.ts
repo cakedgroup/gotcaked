@@ -42,15 +42,22 @@ export function updateUserService(id: string, newUser: User): Promise<UserPublic
             }
 
             //Update User in DB
-            updateUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User not found")));
-        });
+            updateUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("Error Updating User")));
+        }).catch(() => reject(new Error("User not found")));
     });
 
 }
 
 export function deleteUserService(id: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        //Delete User from DB
-        deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("User not found")));
+        //Check if User exists
+        getUserById(id).then(user => {
+            if (user) {
+                //Delete User from DB
+                deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+            } else {
+                reject(new Error("User not found"));
+            }
+        }).catch(() => reject(new Error("User not found")));
     });
 }
