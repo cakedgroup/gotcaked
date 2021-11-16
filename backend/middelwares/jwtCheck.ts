@@ -32,7 +32,7 @@ export function isAuthorizedUser(req: express.Request, res: express.Response, ne
     if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin") {
         next();
     } else {
-        res.status(401).json(msgUnauthenticated);
+        authHandler(req, res, next);
     }
 }
 
@@ -40,6 +40,15 @@ export function isAuthorizedAdmin(req: express.Request, res: express.Response, n
     if (req.jwtContent?.role === "admin") {
         next();
     } else {
+        authHandler(req, res, next);
+    }
+}
+
+
+function authHandler(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.id === undefined) {
         res.status(401).json(msgUnauthenticated);
+    } else {
+        res.status(403).json(msgUnauthenticated);
     }
 }

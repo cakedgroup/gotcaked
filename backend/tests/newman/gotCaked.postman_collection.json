@@ -92,6 +92,203 @@
 			]
 		},
 		{
+			"name": "user - admin (first run)",
+			"item": [
+				{
+					"name": "Create Admin User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Getting User-ID\", function () {\r",
+									"    pm.globals.set(\"userID-admin\", data.id);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct E-Mail\", function () {\r",
+									"    pm.expect(data.email).to.equal(\"admin@gotcaked.eu\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"pm.globals.set(\"randomAdminPassword\", userPassword);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@gotcaked.eu\",\r\n    \"name\": \"LeLItsMeAdmin\",\r\n    \"description\": \"I AM THE ADMIN\",\r\n    \"password\":\"{{randomAdminPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login as Admin User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving JWT Token\", function () {\r",
+									"    pm.globals.set(\"jwtToken-admin\", data.token);\r",
+									"    pm.expect(data.token).to.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Recieving Correct JWT Token\", function () {\r",
+									"    let decodedData=jwt_decode(data.token);\r",
+									"    pm.expect(decodedData.email).to.equal(\"admin@gotcaked.eu\");\r",
+									"    pm.expect(decodedData.id).to.equal(pm.globals.get(\"userID-admin\"));\r",
+									"    pm.expect(decodedData.role).to.equal(\"admin\");\r",
+									"    pm.globals.set(\"userID_Admin\", decodedData.id);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).to.equal(\"success\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//Decode JWT to get ID\r",
+									"function jwt_decode(input) {\r",
+									"    var parts = input.split('.'); // header, payload, signature\r",
+									"    return JSON.parse(atob(parts[1]));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@gotcaked.eu\",\r\n    \"password\":\"{{randomAdminPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/auth/login",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 403\", function() {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"error\");\r",
+									"    pm.expect(data.message).equal(\"Admin can´t be deleted\");\r",
+									"}); \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID-admin}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID-admin}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "user - pre",
 			"item": [
 				{
@@ -138,7 +335,71 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"{{randomUser}}@gotcaked.eu\",\r\n    \"name\": \"{{randomUser}}\",\r\n    \"description\": \"Lelelelel\",\r\n    \"password\":\"{{randomPassword}}\"\r\n}",
+							"raw": "{\r\n    \"email\":\"{{randomUser}}@gotcaked.eu\",\r\n    \"name\": \"{{randomUser}}\",\r\n    \"description\": \"2nd User\",\r\n    \"password\":\"{{randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create  3rd User - Normal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Getting User-ID\", function () {\r",
+									"    pm.globals.set(\"userID-3\", data.id);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct E-Mail\", function () {\r",
+									"    pm.expect(data.email).to.equal(pm.globals.get(\"randomUser3\") + \"@gotcaked.eu\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"pm.globals.set(\"randomUser3\", userName);\r",
+									"pm.globals.set(\"randomPassword3\", userPassword);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"{{randomUser3}}@gotcaked.eu\",\r\n    \"name\": \"{{randomUser3}}\",\r\n    \"description\": \"3rd User\",\r\n    \"password\":\"{{randomPassword3}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -233,6 +494,7 @@
 									"    let decodedData=jwt_decode(data.token);\r",
 									"    pm.expect(decodedData.email).to.equal(pm.globals.get(\"randomUser\")+\"@gotcaked.eu\");\r",
 									"    pm.expect(decodedData.id).to.equal(pm.globals.get(\"userID\"));\r",
+									"    pm.expect(decodedData.role).to.equal(\"user\");\r",
 									"    pm.globals.set(\"userID\", decodedData.id);\r",
 									"    \r",
 									"});\r",
@@ -267,6 +529,82 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"email\":\"{{randomUser}}@gotcaked.eu\",\r\n    \"password\":\"{{randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/auth/login",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Normal User 3rd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving JWT Token\", function () {\r",
+									"    pm.globals.set(\"jwtToken-3\", data.token);\r",
+									"    pm.expect(data.token).to.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Recieving Correct JWT Token\", function () {\r",
+									"    let decodedData=jwt_decode(data.token);\r",
+									"    pm.expect(decodedData.email).to.equal(pm.globals.get(\"randomUser3\")+\"@gotcaked.eu\");\r",
+									"    pm.expect(decodedData.id).to.equal(pm.globals.get(\"userID-3\"));\r",
+									"    pm.expect(decodedData.role).to.equal(\"user\");\r",
+									"    pm.globals.set(\"userID-3\", decodedData.id);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).to.equal(\"success\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//Decode JWT to get ID\r",
+									"function jwt_decode(input) {\r",
+									"    var parts = input.split('.'); // header, payload, signature\r",
+									"    return JSON.parse(atob(parts[1]));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"{{randomUser3}}@gotcaked.eu\",\r\n    \"password\":\"{{randomPassword3}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,6 +924,132 @@
 							{
 								"key": "jwt",
 								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gustavo Fring - {{randomUserNEW}}\",\r\n    \"description\": \"Volvo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User - With Admin Tolen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"    pm.expect(data.name).equal(\"Gustavo Fring - \" + pm.globals.get(\"randomUserNEW\"));\r",
+									"    pm.expect(data.description).equal(\"Volvo\");\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gustavo Fring - {{randomUserNEW}}\",\r\n    \"description\": \"Volvo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User - 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 403\", function() {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Correct Message\", function () {\r",
+									"    pm.expect(data.status).equal(\"Unauthorized\");\r",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
 								"type": "text"
 							}
 						],
