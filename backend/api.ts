@@ -9,7 +9,7 @@ import { tagController } from './controllers/tag';
 import { userController } from './controllers/user';
 import { checkJWT } from './middelwares/jwtCheck';
 import * as logger from './middelwares/logger';
-import { JWTContent } from './services/auth';
+import { JWTContent } from './models/auth';
 
 const router = express.Router();
 
@@ -36,7 +36,6 @@ router.use('/auth', authController);
 router.use((_req: express.Request, res: express.Response) => {
   res.status(404);
   res.json({ "status": "Route does not exist" });
-  res.send();
 });
 
 

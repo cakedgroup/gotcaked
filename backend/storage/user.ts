@@ -6,8 +6,8 @@ import { db } from './db';
 export function createUser(user: User): Promise<User> {
     user.id = generateUUID();
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO user (id, name, description, picture_uri, email, password) VALUES (?, ?, ?, ?, ?, ?)`,
-            [user.id, user.name, user.description, user.picture_uri, user.email, user.password],
+        db.run(`INSERT INTO user (id, role, name, description, picture_uri, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [user.id, user.role, user.name, user.description, user.picture_uri, user.email, user.password],
             function (err) {
                 if (err) {
                     reject(err);
