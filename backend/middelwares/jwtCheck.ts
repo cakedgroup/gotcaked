@@ -1,15 +1,15 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
-import { isJWTBlacklisted } from "../storage/blacklist";
-import { getSecret } from "../util/secret";
-import { jwtPayloadContentTransformer } from "../util/transformer";
+import {isJWTBlacklisted} from "../storage/blacklist";
+import {getSecret} from "../util/secret";
+import {jwtPayloadContentTransformer} from "../util/transformer";
 
 export function checkJWT(req: express.Request, _res: express.Response, next: express.NextFunction) {
     let jwtToken: string = req.headers['jwt'] as string;
     if (!jwtToken) {
         next();
     } else {
-        jwt.verify(jwtToken, getSecret(), { algorithms: ['HS256'] }, (err, payload) => {
+        jwt.verify(jwtToken, getSecret(), {algorithms: ['HS256']}, (err, payload) => {
             if (err) {
                 next();
             } else {

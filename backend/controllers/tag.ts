@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTags } from '../storage/tag';
+import {getTags} from '../storage/tag';
 
 const router = express.Router();
 

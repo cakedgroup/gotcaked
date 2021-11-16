@@ -2,15 +2,10 @@ import {db} from './db';
 import { generateUUID } from "../util/uuid";
 import { Tag } from '../models/tag';
 
-export function createTag(name: string, description: string) : Promise<Tag> {
+export function createTag(tag:Tag) : Promise<Tag> {
 
     return new Promise((resolve, reject) => {
-        const tag: Tag = {
-            id: generateUUID(),
-            name,
-            description,
-        };
-        db.run(`INSERT INTO tag (id, name, description) VALUES (?, ?, ?)`, [tag.id, tag.name, tag.description], (err) => {
+        db.run(`INSERT INTO tag (name, description) VALUES (?, ?, ?)`, [tag.name, tag.description], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -30,7 +25,6 @@ export function getTag(name: string) : Promise<Tag> {
             //Check if tag exists
             if (row) {
                 let tag : Tag = {
-                    id: row.id,
                     name: row.name,
                     description: row.description,
                 };
@@ -52,7 +46,6 @@ export function getTags() : Promise<Tag[]> {
             let tags : Tag[] = [];
             for (let row of rows) {
                 let tag : Tag = {
-                    id: row.id,
                     name: row.name,
                     description: row.description,
                 };
@@ -63,9 +56,9 @@ export function getTags() : Promise<Tag[]> {
     });
 }
 
-export function updateTag(id: string, name: string, description: string) : Promise<Tag> {
+export function updateTag(name: string, tag : Tag) : Promise<Tag> {
     return new Promise<Tag>((resolve, reject) => {
-        db.run(`UPDATE tag SET name = ?, description = ? WHERE id = ?`, [name, description, id], (err) => {
+        db.run(`UPDATE tag SET description = ? WHERE name = ?`, [tag.description, name], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -89,7 +82,7 @@ export function deleteTag(name: string) : Promise<void> {
 
 export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
     return new Promise<Tag[]>((resolve, reject) => {
-        db.all(`SELECT * FROM tag WHERE id IN (SELECT tag_id FROM recipe_tag WHERE recipe_id = ?)`, [recipeId], (err, rows) => {
+        db.all(`SELECT * FROM tag WHERE name IN (SELECT tag_name FROM recipe_tag WHERE recipe_id = ?)`, [recipeId], (err, rows) => {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -97,7 +90,6 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
             let tags : Tag[] = [];
             for (let row of rows) {
                 let tag : Tag = {
-                    id: row.id,
                     name: row.name,
                     description: row.description,
                 };
@@ -108,9 +100,9 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
     });
 }
 
-export function addRecipeTag(recipeId: string, tagId: string) : Promise<void> {
+export function addRecipeTag(recipeId: string, tagName: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        db.run(`INSERT INTO recipe_tag (recipe_id, tag_id) VALUES (?, ?)`, [recipeId, tagId], (err) => {
+        db.run(`INSERT INTO recipe_tag (recipe_id, tag_id) VALUES (?, ?)`, [recipeId, tagName], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -120,9 +112,10 @@ export function addRecipeTag(recipeId: string, tagId: string) : Promise<void> {
     });
 }
 
-export function deleteRecipeTag(recipeId: string, tagId: string) : Promise<void> {
+
+export function deleteRecipeTagByTagName(tagName: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        db.run(`DELETE FROM recipe_tag WHERE recipe_id = ? AND tag_id = ?`, [recipeId, tagId], (err) => {
+        db.run(`DELETE FROM recipe_tag WHERE tag_name = ?`, [tagName], (err) => {
             if (err) {
                 reject(err);
             } else {
