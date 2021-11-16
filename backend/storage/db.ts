@@ -13,8 +13,7 @@ function createTables(){
     //Create tables
     //Category
     db.run(`CREATE TABLE IF NOT EXISTS category (
-        id VARCHAR(36) PRIMARY KEY,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT UNIQUE NOT NULL PRIMARY KEY,
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);

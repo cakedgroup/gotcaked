@@ -2,14 +2,9 @@ import { Category } from '../models/category';
 import { generateUUID } from "../util/uuid";
 import { db } from './db';
 
-export function createCategory(name: string, description: string): Promise<Category> {
+export function createCategory(category : Category): Promise<Category> {
     return new Promise((resolve, reject) => {
-        const category: Category = {
-            id: generateUUID(),
-            name,
-            description,
-        };
-        db.run(`INSERT INTO Category (id, name, description) VALUES (?, ?, ?)`, [category.id, category.name, category.description], (err) => {
+        db.run(`INSERT INTO Category (name, description) VALUES (?, ?, ?)`, [category.name, category.description], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -29,7 +24,6 @@ export function getCategory(name: string): Promise<Category> {
             //Check if Category exists
             if (row) {
                 let category: Category = {
-                    id: row.id,
                     name: row.name,
                     description: row.description,
                 };
@@ -51,7 +45,6 @@ export function getCategorys(): Promise<Category[]> {
             let categorys: Category[] = [];
             for (let row of rows) {
                 let category: Category = {
-                    id: row.id,
                     name: row.name,
                     description: row.description,
                 };
@@ -62,9 +55,9 @@ export function getCategorys(): Promise<Category[]> {
     });
 }
 
-export function updateCategory(name: string, description: string): Promise<Category> {
+export function updateCategory(name: string, newCategory : Category): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
-        db.run(`UPDATE Category SET description = ? WHERE name = ?`, [description, name], (err) => {
+        db.run(`UPDATE Category SET description = ? WHERE name = ?`, [newCategory.description, name], (err) => {
             if (err) {
                 reject(err);
             } else {
