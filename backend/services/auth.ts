@@ -6,11 +6,6 @@ import { getSecret } from '../util/secret';
 import { UserLogin } from '../models/user';
 import { jwtContentTransformer } from '../util/transformer';
 
-export interface JWTContent {
-    id: string | undefined;
-    email: string | undefined;
-}
-
 export function login(userCredentials: UserLogin): Promise<{}> {
     return new Promise((resolve, reject) => {
         //Get User from DB to check Credentials

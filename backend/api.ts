@@ -9,7 +9,7 @@ import { tagController } from './controllers/tag';
 import { userController } from './controllers/user';
 import { checkJWT } from './middelwares/jwtCheck';
 import * as logger from './middelwares/logger';
-import { JWTContent } from './services/auth';
+import { JWTContent } from './models/auth';
 
 const router = express.Router();
 
