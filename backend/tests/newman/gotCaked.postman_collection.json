@@ -22,7 +22,7 @@
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
 									"pm.test(\"Correct Response\", function () {\r",
-									"    pm.expect(data.message).equal(\"Welome to our backend!\");\r",
+									"    pm.expect(data.message).equal(\"Welcome to our backend!\");\r",
 									"    pm.expect(data.status).equal(\"/status\");\r",
 									"    pm.expect(data.version).to.exist;\r",
 									"});"
