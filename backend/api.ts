@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import { send } from 'process';
 import { authController } from './controllers/auth';
 import { categoryController } from './controllers/category';
 import { welcomeController } from './controllers/main';
@@ -36,7 +37,6 @@ router.use('/auth', authController);
 router.use((_req: express.Request, res: express.Response) => {
   res.status(404);
   res.json({ "status": "Route does not exist" });
-  res.send();
 });
 
 
