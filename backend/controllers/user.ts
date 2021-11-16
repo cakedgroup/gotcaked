@@ -1,6 +1,6 @@
 import express from 'express';
+import * as userService from '../services/user';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
-import { createUserService, deleteUserService, getAllUsersService, getUserByIdService, updateUserService } from '../services/user';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
     //Get All Users from Service
-    getAllUsersService(limit, offset).then(users => {
+    userService.getAllUsers(limit, offset).then(users => {
         res.status(200).json(users);
     }).catch(err => {
         errorHandler(err, req, res);
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     //Create User in Service
-    createUserService(req.body).then(user => {
+    userService.createUser(req.body).then(user => {
         res.status(201);
         res.json(user);
     }).catch(err => {
@@ -31,7 +31,7 @@ router.get('/:id', (req, res) => {
     let id: string = req.params.id;
 
     //Get User from Service
-    getUserByIdService(id).then(user => {
+    userService.getUserById(id).then(user => {
         res.status(200).json(user);
     }).catch(err => {
         errorHandler(err, req, res);
@@ -42,7 +42,7 @@ router.patch('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
 
     //Update User in Service
-    updateUserService(id, req.body).then(user => {
+    userService.updateUser(id, req.body).then(user => {
         res.status(200).json(user);
     }).catch(err => {
         errorHandler(err, req, res);
@@ -54,7 +54,7 @@ router.delete('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
 
     //Delete User in Service
-    deleteUserService(id).then(() => {
+    userService.deleteUser(id).then(() => {
         res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
