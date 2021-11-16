@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     //Build JSON Object
     let welcome = {
-        "message": "Welome to our backend!",
+        "message": "Welcome to our backend!",
         "version": getVersion(),
         "status": "/status"
     }

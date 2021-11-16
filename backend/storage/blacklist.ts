@@ -1,9 +1,5 @@
 import { generateUUID } from '../util/uuid';
 import { db } from './db';
-export interface JWTBlacklistItem {
-    id: string;
-    jwt: string;
-}
 
 export function addJWTToBlacklist(jwt: string): Promise<{}> {
     let id: string = generateUUID();

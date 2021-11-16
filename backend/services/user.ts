@@ -1,35 +1,36 @@
 import * as bcrypt from 'bcrypt';
-import { createUser, deleteUser, getAllUsers, getUserById, updateUser, User, UserPublic } from "../models/user";
+import { User, UserPublic } from "../models/user";
+import * as userDAO from "../storage/user";
 import { userTransformer } from '../util/transformer';
 
-export function createUserService(user: User): Promise<UserPublic> {
+export function createUser(user: User): Promise<UserPublic> {
     return new Promise((resolve, reject) => {
         //BCrypt User´s Password
         bcrypt.hash(user.password, 10).then(hash => {
             user.password = hash;
             //Save User in DB
-            createUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User already exists")));
+            userDAO.createUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User already exists")));
         });
     });
 };
 
-export function getAllUsersService(limit: number, offset: number): Promise<UserPublic[]> {
+export function getAllUsers(limit: number, offset: number): Promise<UserPublic[]> {
     return new Promise((resolve, reject) => {
         //Get All Users from DB
-        getAllUsers(limit, offset).then(users => resolve(users.map(user => userTransformer(user)))).catch(() => reject(new Error("No users found")));
+        userDAO.getAllUsers(limit, offset).then(users => resolve(users.map(user => userTransformer(user)))).catch(() => reject(new Error("No users found")));
     });
 }
 
-export function getUserByIdService(id: string): Promise<UserPublic> {
+export function getUserById(id: string): Promise<UserPublic> {
     return new Promise((resolve, reject) => {
         //Get User from DB
-        getUserById(id).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User not found")));
+        userDAO.getUserById(id).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User not found")));
     });
 }
 
-export function updateUserService(id: string, newUser: User): Promise<UserPublic> {
+export function updateUser(id: string, newUser: User): Promise<UserPublic> {
     return new Promise((resolve, reject) => {
-        getUserById(id).then(user => {
+        userDAO.getUserById(id).then(user => {
             //Check Values
             user.name = newUser.name || user.name;
             user.description = newUser.description || user.description;
@@ -42,19 +43,19 @@ export function updateUserService(id: string, newUser: User): Promise<UserPublic
             }
 
             //Update User in DB
-            updateUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("Error Updating User")));
+            userDAO.updateUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("Error Updating User")));
         }).catch(() => reject(new Error("User not found")));
     });
 
 }
 
-export function deleteUserService(id: string): Promise<boolean> {
+export function deleteUser(id: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
         //Check if User exists
-        getUserById(id).then(user => {
+        userDAO.getUserById(id).then(user => {
             if (user) {
                 //Delete User from DB
-                deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+                userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
             } else {
                 reject(new Error("User not found"));
             }
