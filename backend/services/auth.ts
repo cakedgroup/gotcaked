@@ -6,11 +6,6 @@ import { getSecret } from '../util/secret';
 import { UserLogin } from '../models/user';
 import { jwtContentTransformer } from '../util/transformer';
 
-export interface JWTContent {
-    id: string | undefined;
-    email: string | undefined;
-}
-
 export function login(userCredentials: UserLogin): Promise<{}> {
     return new Promise((resolve, reject) => {
         //Get User from DB to check Credentials
@@ -29,10 +24,10 @@ export function login(userCredentials: UserLogin): Promise<{}> {
                     });
                 } else {
                     //Failed Password Compare
-                    reject(new Error("Password don´t match"));
+                    reject(new Error("Credentials not found"));
                 }
             }).catch(() => reject(new Error("Server Error")));
-        }).catch(() => reject(new Error("User does not exist")));
+        }).catch(() => reject(new Error("Credentials not found")));
     });
 }
 

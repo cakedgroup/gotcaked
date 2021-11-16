@@ -1,8 +1,14 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
-import {isJWTBlacklisted} from "../storage/blacklist";
-import {getSecret} from "../util/secret";
-import {jwtPayloadContentTransformer} from "../util/transformer";
+import { isJWTBlacklisted } from "../storage/blacklist";
+import { getSecret } from "../util/secret";
+import { jwtPayloadContentTransformer } from "../util/transformer";
+import { StatusResponse } from '../models/response';
+
+const msgUnauthenticated: StatusResponse = {
+    status: "Unauthorized",
+    message: "You are not authorized to access this resource"
+};
 
 export function checkJWT(req: express.Request, _res: express.Response, next: express.NextFunction) {
     let jwtToken: string = req.headers['jwt'] as string;
@@ -23,12 +29,26 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
 }
 
 export function isAuthorizedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.jwtContent?.id === req.params.id) {
+    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin") {
         next();
     } else {
-        res.status(401).send({
-            status: "Unauthorized",
-            message: "You are not authorized to access this resource"
-        });
+        authHandler(req, res, next);
+    }
+}
+
+export function isAuthorizedAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.role === "admin") {
+        next();
+    } else {
+        authHandler(req, res, next);
+    }
+}
+
+
+function authHandler(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.id === undefined) {
+        res.status(401).json(msgUnauthenticated);
+    } else {
+        res.status(403).json(msgUnauthenticated);
     }
 }

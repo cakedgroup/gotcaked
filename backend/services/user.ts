@@ -1,20 +1,29 @@
 import * as bcrypt from "bcrypt";
 import { User, UserPublic } from "../models/user";
 import * as userDAO from "../storage/user";
-import { userTransformer } from "../util/transformer";
+import * as statusDAO from "../storage/status";
+import { userTransformer } from '../util/transformer';
 
 export function createUser(user: User): Promise<UserPublic> {
-  return new Promise((resolve, reject) => {
-    //BCrypt User´s Password
-    bcrypt.hash(user.password, 10).then((hash) => {
-      user.password = hash;
-      //Save User in DB
-      userDAO
-        .createUser(user)
-        .then((user) => resolve(userTransformer(user)))
-        .catch(() => reject(new Error("User already exists")));
+    //Default Role
+    user.role = "user";
+
+    //Create User
+    return new Promise((resolve, reject) => {
+        //BCrypt User´s Password
+        bcrypt.hash(user.password, 10).then(hash => {
+            user.password = hash;
+            //Check for First User to create Admin
+            statusDAO.getCounterTable("user").then(counter => {
+                if (counter === 0) {
+                    user.role = "admin";
+                }
+            }).finally(() => {
+                //Save User in DB
+                userDAO.createUser(user).then(user => resolve(userTransformer(user))).catch(() => reject(new Error("User already exists")));
+            });
+        });
     });
-  });
 }
 
 export function getAllUsers(
@@ -69,21 +78,19 @@ export function updateUser(id: string, newUser: User): Promise<UserPublic> {
 }
 
 export function deleteUser(id: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    //Check if User exists
-    userDAO
-      .getUserById(id)
-      .then((user) => {
-        if (user) {
-          //Delete User from DB
-          userDAO
-            .deleteUser(id)
-            .then(() => resolve(true))
-            .catch(() => reject(new Error("Error Deleting User")));
-        } else {
-          reject(new Error("User not found"));
-        }
-      })
-      .catch(() => reject(new Error("User not found")));
-  });
+    return new Promise((resolve, reject) => {
+        //Check if User exists
+        userDAO.getUserById(id).then(user => {
+            if (user) {
+                if (user.role === "admin") {
+                    reject(new Error("Admin can´t be deleted"));
+                } else {
+                    //Delete User from DB
+                    userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+                }
+            } else {
+                reject(new Error("User not found"));
+            }
+        }).catch(() => reject(new Error("User not found")));
+    });
 }

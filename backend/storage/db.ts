@@ -38,6 +38,7 @@ function createTables(){
         description TEXT,
         picture_uri TEXT,
         email TEXT,
+        role TEXT,
         password TEXT);`, (err) => {
         if (err) {
             console.error(err.message);

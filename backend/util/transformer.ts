@@ -1,6 +1,6 @@
 import { JwtPayload } from "jsonwebtoken";
+import { JWTContent } from "../models/auth";
 import { User, UserPublic } from "../models/user";
-import { JWTContent } from "../services/auth";
 
 export function userTransformer(user: User): UserPublic {
     return {
@@ -15,13 +15,15 @@ export function userTransformer(user: User): UserPublic {
 export function jwtContentTransformer(user: User): JWTContent {
     return {
         id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role
     };
 }
 
 export function jwtPayloadContentTransformer(payload: JwtPayload): JWTContent {
     return {
         id: payload.id,
-        email: payload.email
+        email: payload.email,
+        role: payload.role
     };
 }
