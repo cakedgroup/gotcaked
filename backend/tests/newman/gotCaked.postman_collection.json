@@ -631,15 +631,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 401\", function() {\r",
-									"    pm.response.to.have.status(401);\r",
+									"pm.test(\"Status Code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
 									"pm.test(\"Correct Message\", function () {\r",
 									"    pm.expect(data.status).equal(\"error\");\r",
-									"    pm.expect(data.message).equal(\"Password don´t match\");\r",
+									"    pm.expect(data.message).equal(\"Credentials not found\");\r",
 									"});\r",
 									""
 								],
@@ -687,7 +687,7 @@
 									"\r",
 									"pm.test(\"Correct Message\", function () {    \r",
 									"    pm.expect(data.status).equal(\"error\");\r",
-									"    pm.expect(data.message).equal(\"User does not exist\");\r",
+									"    pm.expect(data.message).equal(\"Credentials not found\");\r",
 									"});\r",
 									""
 								],

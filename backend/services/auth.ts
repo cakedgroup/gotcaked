@@ -24,10 +24,10 @@ export function login(userCredentials: UserLogin): Promise<{}> {
                     });
                 } else {
                     //Failed Password Compare
-                    reject(new Error("Password don´t match"));
+                    reject(new Error("Credentials not found"));
                 }
             }).catch(() => reject(new Error("Server Error")));
-        }).catch(() => reject(new Error("User does not exist")));
+        }).catch(() => reject(new Error("Credentials not found")));
     });
 }
 
