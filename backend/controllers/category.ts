@@ -1,4 +1,5 @@
 import express from 'express';
+import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as categoryService from '../services/category';
 import { errorHandler } from '../util/errorHandler';
 
@@ -18,7 +19,7 @@ router.get('/', (req, res) => {
 // @route   POST api/categories/
 // @desc    Create a category
 // @access  Admin
-router.post('/', (req, res) => {
+router.post('/', isAuthorizedAdmin, (req, res) => {
     categoryService.createCategory(req.body).then(category => {
         res.status(201).json(category);
     }).catch(err => {
@@ -40,7 +41,7 @@ router.get('/:name', (req, res) => {
 // @route   PUT api/categories/:name
 // @desc    Update a category
 // @access  Admin
-router.put('/:name', (req, res) => {
+router.put('/:name', isAuthorizedAdmin, (req, res) => {
     categoryService.updateCategory(req.params.name, req.body).then(category => {
         res.status(200).json(category);
     }).catch(err => {
@@ -51,7 +52,7 @@ router.put('/:name', (req, res) => {
 // @route   DELETE api/categories/:name
 // @desc    Delete a category
 // @access  Admin
-router.delete('/:name', (req, res) => {
+router.delete('/:name', isAuthorizedAdmin, (req, res) => {
     categoryService.deleteCategory(req.params.name).then(() => {
         res.status(204).send();
     }).catch(err => {

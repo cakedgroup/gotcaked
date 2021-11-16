@@ -1,6 +1,8 @@
 import express from 'express';
 import {getTags} from '../storage/tag';
 import * as tagService from '../services/tag';
+import { isAuthorizedUser } from '../middelwares/jwtCheck';
+import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
 
@@ -11,18 +13,18 @@ router.get('/', (req, res) => {
     tagService.getAllTags().then(tags => {
         res.status(200).json(tags);
     }).catch(err => {
-        res.status(500).json(err);
+        errorHandler(err, req, res);
     });
 });
 
 // @route   POST api/tags/
 // @desc    Create a tag
 // @access  Authorized Users
-router.post('/', (req, res) => {
+router.post('/', isAuthorizedUser, (req, res) => {
     tagService.createTag(req.body).then(tag => {
         res.status(200).json(tag);
-    }).then(err => {
-        res.status(500).json(err);
+    }).catch(err => {
+        errorHandler(err, req, res);
     });
 });
 
@@ -33,29 +35,29 @@ router.get('/:name', (req, res) => {
     tagService.getTagByName(req.params.name).then(tag => {
         res.status(200).json(tag);
     }).catch(err => {
-        res.status(500).json(err);
+        errorHandler(err, req, res);
     });
 });
 
 // @route   PUT api/tags/:name
 // @desc    Update a tag
 // @access  Authorized Users
-router.put('/:name', (req, res) => {
+router.put('/:name', isAuthorizedUser, (req, res) => {
     tagService.updateTag(req.params.name, req.body).then(tag => {
         res.status(200).json(tag);
     }).catch(err => {
-        res.status(500).json(err);
+        errorHandler(err, req, res);
     });
 });
 
 // @route   DELETE api/tags/:name
 // @desc    Delete a tag
 // @access  Authorized Users
-router.delete('/:name', (req, res) => {
+router.delete('/:name', isAuthorizedUser, (req, res) => {
     tagService.deleteTag(req.params.name).then(tag => {
-        res.status(200).json(tag);
+        res.status(204).json(tag);
     }).catch(err => {
-        res.status(500).json(err);
+        errorHandler(err, req, res);
     });
 });
 

@@ -13,7 +13,7 @@ function createTables(){
     //Create tables
     //Category
     db.run(`CREATE TABLE IF NOT EXISTS category (
-        name TEXT UNIQUE NOT NULL PRIMARY KEY,
+        name TEXT PRIMARY KEY,
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
@@ -23,7 +23,7 @@ function createTables(){
     });
     //Tag
     db.run(`CREATE TABLE IF NOT EXISTS tag (
-        name TEXT UNIQUE NOT PRIMARY KEY,
+        name TEXT PRIMARY KEY,
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);

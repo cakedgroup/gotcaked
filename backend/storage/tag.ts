@@ -5,7 +5,7 @@ import { Tag } from '../models/tag';
 export function createTag(tag:Tag) : Promise<Tag> {
 
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO tag (name, description) VALUES (?, ?, ?)`, [tag.name, tag.description], (err) => {
+        db.run(`INSERT INTO tag (name, description) VALUES (?, ?)`, [tag.name, tag.description], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -56,9 +56,10 @@ export function getTags() : Promise<Tag[]> {
     });
 }
 
+
 export function updateTag(name: string, tag : Tag) : Promise<Tag> {
     return new Promise<Tag>((resolve, reject) => {
-        db.run(`UPDATE tag SET description = ? WHERE name = ?`, [tag.description, name], (err) => {
+        db.run(`UPDATE tag SET description = ? WHERE name = ? `, [tag.description, name], (err) => {
             if (err) {
                 reject(err);
             } else {
