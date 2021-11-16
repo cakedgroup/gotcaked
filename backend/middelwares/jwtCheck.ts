@@ -1,6 +1,6 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
-import { isJWTBlacklisted } from "../models/blacklist";
+import { isJWTBlacklisted } from "../storage/blacklist";
 import { getSecret } from "../util/secret";
 import { jwtPayloadContentTransformer } from "../util/transformer";
 

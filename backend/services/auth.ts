@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import * as blacklistDAO from '../models/blacklist';
-import * as userDAO from "../models/user";
-import { UserLogin } from "../models/user";
+import * as blacklistDAO from '../storage/blacklist';
+import * as userDAO from "../storage/user";
 import { getSecret } from '../util/secret';
+import { UserLogin } from '../models/user';
 import { jwtContentTransformer } from '../util/transformer';
 
 export interface JWTContent {

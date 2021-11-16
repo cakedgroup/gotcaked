@@ -1,7 +1,5 @@
 import * as sqlite from 'sqlite3';
 
-
-
 export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     if (err) {
         console.error(err.message);
