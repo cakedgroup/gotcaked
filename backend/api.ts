@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import { send } from 'process';
 import { authController } from './controllers/auth';
 import { categoryController } from './controllers/category';
 import { welcomeController } from './controllers/main';
