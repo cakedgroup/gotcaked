@@ -66,8 +66,12 @@ export function deleteUser(id: string): Promise<boolean> {
         //Check if User exists
         userDAO.getUserById(id).then(user => {
             if (user) {
-                //Delete User from DB
-                userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+                if (user.role === "admin") {
+                    reject(new Error("Admin can´t be deleted"));
+                } else {
+                    //Delete User from DB
+                    userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+                }
             } else {
                 reject(new Error("User not found"));
             }
