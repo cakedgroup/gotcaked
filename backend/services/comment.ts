@@ -3,10 +3,9 @@ import { Comment } from '../models/comment';
 import { generateUUID } from "../util/uuid";
 
 
-export function createComment(comment: Comment, userID : string): Promise<Comment> {
+export function createComment(comment: Comment): Promise<Comment> {
     comment.id = generateUUID();
     comment.time = new Date();
-    comment.userId = userID;
     return commentDAO.createComment(comment);
 }
 

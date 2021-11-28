@@ -1,4 +1,5 @@
 import express from 'express';
+import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as commentService from '../services/comment';
 import { errorHandler } from '../util/errorHandler';
 
@@ -40,9 +41,15 @@ router.get('/:id/comments', (req, res) => {
     });
 });
 
-router.post('/:id/comments', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+router.post('/:id/comments', isAuthorizedUser, (req, res) => {
+    let id: string = req.params.id;
+    req.body.recipeId = id;
+
+    commentService.createComment(req.body).then(comment => {
+        res.status(201).json(comment);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 router.get('/random', (req, res) => {
