@@ -16,13 +16,14 @@ export function createComment(comment: Comment): Promise<Comment> {
     });
 }
 
-export function getComment(id: string): Promise<Comment> {
+export function getComments(id: string): Promise<Comment[]> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM comments WHERE id = ?`, [id], (err, row) => {
+        db.get(`SELECT * FROM comments WHERE id = ?`, [id], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
-                if (row) {
+                let comments: Comment[] = [];
+                for (let row of rows) {
                     let comment : Comment = {
                         id: row.id,
                         text: row.text,
@@ -30,11 +31,9 @@ export function getComment(id: string): Promise<Comment> {
                         recipeId: row.recipeId,
                         time: row.time
                     };
-                    resolve(comment);
-                } else {
-                    reject(new Error("Comment not found"));
+                    comments.push(comment);
+                    resolve(comments);
                 }
-                
             }
         });
     });

@@ -1,4 +1,6 @@
 import express from 'express';
+import * as commentService from '../services/comment';
+import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
 
@@ -29,8 +31,13 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id/comments', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    let id: string = req.params.id;
+    
+    commentService.getComments(id).then(comments => {
+        res.status(200).json(comments);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 router.post('/:id/comments', (req, res) => {
