@@ -15,7 +15,7 @@ export function createCategory(category: Category): Promise<Category> {
 
 export function deleteCategory(name: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        categoryDAO.getCategory(name).then( () => {
+        categoryDAO.getCategory(name).then(() => {
             categoryDAO.deleteCategory(name).then(() => {
                 resolve();
             }).catch((err) => {

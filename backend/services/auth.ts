@@ -33,7 +33,7 @@ export function login(userCredentials: UserLogin): Promise<{}> {
 
 export function logout(jwtKey: string): Promise<{}> {
     return new Promise((resolve, reject) => {
-        if (!jwtKey) {reject(new Error("No JWT Key"))};
+        if (!jwtKey) { reject(new Error("No JWT Key")) };
         blacklistDAO.addJWTToBlacklist(jwtKey).then(() => resolve({ status: 'success' })).catch(() => reject(new Error("Server Error")));
     });
 }
