@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0072880a-902f-46ff-acd8-3a89816655f6",
+		"_postman_id": "2897577f-37f3-4989-9511-7cf668f45f9b",
 		"name": "gotCaked",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1398,10 +1398,6 @@
 			]
 		},
 		{
-			"name": "recipe",
-			"item": []
-		},
-		{
 			"name": "category",
 			"item": [
 				{
@@ -2047,7 +2043,7 @@
 									"",
 									"var data = JSON.parse(responseBody);",
 									"",
-									"pm.test(\"Recieving User(s)\", function () {",
+									"pm.test(\"Recieving Tag(s)\", function () {",
 									"    pm.expect(data[0]).to.exist;",
 									"}); "
 								],
@@ -2222,6 +2218,190 @@
 							"path": [
 								"tags",
 								"Vegan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "recipe",
+			"item": [
+				{
+					"name": "Create recipe as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Getting Recipe-ID\", function () {",
+									"    pm.globals.set(\"recipeId\", data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenkuchen\",\n    \"description\": \"This is a Bananenkuchen\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra hard\",\n    \"time\" : 55,\n    \"category_id\" : \"Cake\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Getting Recipe-ID\", function () {",
+									"    pm.globals.set(\"recipeId-2\", data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all recipes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Recipe(s)\", function () {",
+									"    pm.expect(data[0]).to.exist;",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Recipe\", function () {",
+									"    pm.expect(data.name).equal(\"Bananenmuffin\");",
+									"    pm.expect(data.description).equal(\"This is a Muffin\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
 							]
 						}
 					},
