@@ -1,5 +1,4 @@
 import {db} from './db';
-import { generateUUID } from "../util/uuid";
 import { Tag } from '../models/tag';
 
 export function createTag(tag:Tag) : Promise<Tag> {
@@ -30,7 +29,7 @@ export function getTag(name: string) : Promise<Tag> {
                 };
                 resolve(tag);
             }else{
-                reject(new Error(`Tag ${name} not found`));
+                reject(new Error(`Tag not found`));
             }
         });
     });

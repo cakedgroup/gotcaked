@@ -13,17 +13,16 @@ export function createTag(tag: Tag): Promise<Tag> {
     return tagDAO.createTag(tag);
 }
 
-export function updateTag(name: string,tag: Tag): Promise<Tag> {
-    return tagDAO.updateTag(name,tag);
-}
-
-export function deleteTag(name: string): Promise<void> {
+export function deleteTag(name: string): Promise<boolean> {
     //Delete all references to this tag
-    return new Promise<void>((resolve, reject) => {
-        tagDAO.deleteRecipeTagByTagName(name).then(() => {
-            //Delete the tag
-            tagDAO.deleteTag(name).then(() => {
-                resolve();
+    return new Promise<boolean>((resolve, reject) => {
+        tagDAO.getTag(name).then((tag) => {
+            tagDAO.deleteRecipeTagByTagName(name).then(() => {
+                tagDAO.deleteTag(name).then(() => {
+                    resolve(true);
+                }).catch((err) => {
+                    reject(err);
+                });
             }).catch((err) => {
                 reject(err);
             });
