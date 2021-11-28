@@ -6,11 +6,11 @@ import { Ingredient, Recipe } from '../models/recipe';
 
 
 export function createRecipe(recipe: Recipe): Promise<Recipe> {
-    const newId = generateUUID();
+    recipe.id = generateUUID();
     const createdAt: Date = new Date();
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO recipe (id, name, description, preparation, createdAt, difficulty, time, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)`,
-            [newId, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
+            [recipe.id, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
             (err) => {
                 if (err) {
                     reject(err);
@@ -28,7 +28,20 @@ export function getRecipe(id: string): Promise<Recipe> {
                 reject(err);
             } else {
                 if (row) {
-                    resolve(row);
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    resolve(recipe);
                 }else {
                     reject(new Error("Recipe not found"));
                 }
@@ -45,7 +58,20 @@ export function getRecipes(): Promise<Recipe[]> {
             } else {
                 let recipes: Recipe[] = [];
                 rows.forEach((row) => {
-                    recipes.push(row);
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    recipes.push(recipe);
                 });
                 resolve(recipes);
             }
@@ -129,9 +155,16 @@ export function getIngredients(recipeId: string): Promise<Ingredient[]> {
             } else {
                 let ingredients: Ingredient[] = [];
                 rows.forEach((row) => {
-                    ingredients.push(row);
+                    let ingredient: Ingredient = {
+                        id: row.id,
+                        name: row.name,
+                        amount: row.amount,
+                        unit: row.unit,
+                        recipe_id: row.recipe_id
+                    };
+                    ingredients.push(ingredient);
                 });
-                resolve(rows);
+                resolve(ingredients);
             }
         });
     });

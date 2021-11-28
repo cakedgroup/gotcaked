@@ -1,5 +1,7 @@
 import express from 'express';
+import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
+import { errorHandler } from '../util/errorHandler';
 
 
 const router = express.Router();
@@ -13,11 +15,11 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/',isAuthorizedUser, (req, res) => {
     recipeService.createRecipe(req.body).then(recipe => {
-        res.status(200).json(recipe);
+        res.status(201).json(recipe);
     }).catch(err => {
-        res.status(500).send(err);
+        errorHandler(err, req, res);
     });
 });
 
@@ -25,7 +27,7 @@ router.get('/:id', (req, res) => {
     recipeService.getRecipe(req.params.id).then(recipe => {
         res.status(200).json(recipe);
     }).catch(err => {
-        res.status(500).send(err);
+        errorHandler(err, req, res);
     });
 });
 

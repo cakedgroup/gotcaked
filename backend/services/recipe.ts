@@ -1,4 +1,4 @@
-import { Recipe } from '../models/recipe';
+import { Recipe, RecipeSmall } from '../models/recipe';
 import * as recipeDAO from '../storage/recipe';
 import * as tagDAO from '../storage/tag';
 import { generateUUID } from '../util/uuid';
@@ -7,10 +7,13 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
     recipe.id = generateUUID();
     recipe.createdAt = new Date();
 
+    //TODO Check if category exists
+
     return new Promise<Recipe>((resolve, reject) => {
         recipeDAO.createRecipe(recipe).then(recipe => {
             //Create all ingredients
             recipe.ingredients.forEach(ingredient => {
+                ingredient.id = generateUUID();
                 ingredient.recipe_id = recipe.id;
                 //Create ingredient
                 recipeDAO.createIngredient(ingredient).catch(err => {
@@ -21,13 +24,13 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
             //Create all tags and add them to recipe
             recipe.tags.forEach(tag => {
                 //Create tag if not exists
-                tagDAO.createTag(tag).catch(err => {
+                tagDAO.createTag(tag).then().catch(err => {
                     //Dont catch error (tag already exists)
-                });
-
-                //Add tag to recipe
-                tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
-                    reject(err);
+                }).finally(() => {
+                    //Add tag to recipe
+                    tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
+                        reject(err);
+                    });
                 });
             });
 
@@ -41,17 +44,47 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
 export function getRecipe(recipeID: string): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         recipeDAO.getRecipe(recipeID).then(recipe => {
-            resolve(recipe);
+            //Get all ingredients
+            recipeDAO.getIngredients(recipe.id).then(ingredients => {
+                ingredients.forEach(ingredient => {
+                    recipe.ingredients.push(ingredient);
+                });
+                //Get all tags
+                tagDAO.getRecipeTags(recipe.id).then(tags => {
+                    tags.forEach(tag => {
+                        recipe.tags.push(tag);
+                    });
+                    resolve(recipe);
+                }).catch(err => {
+                    reject(err);
+                });
+            }).catch(err => {
+                reject(err);
+            });
         }).catch(error => {
             reject(error);
         });
     });
 }
 
-export function getAllRecipes(): Promise<Recipe[]> {
-    return new Promise<Recipe[]>((resolve, reject) => {
+export function getAllRecipes(): Promise<RecipeSmall[]> {
+    return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipes().then(recipes => {
-            resolve(recipes);
+            let allRecipes: RecipeSmall[] = [];
+            recipes.forEach(recipe => {
+                let recipeSmall: RecipeSmall = {
+                    id: recipe.id,
+                    name: recipe.name,
+                    description: recipe.description,
+                    createdAt: recipe.createdAt,
+                    difficulty: recipe.difficulty,
+                    time: recipe.time,
+                    category_id: recipe.category_id,
+                    user_id: recipe.user_id
+                };
+                allRecipes.push(recipeSmall);
+            });
+            resolve(allRecipes);
         }).catch(error => {
             reject(error);
         });

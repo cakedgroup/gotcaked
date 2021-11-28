@@ -95,6 +95,7 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
                 };
                 tags.push(tag);
             }
+            console.log(tags);
             resolve(tags);
         });
     });
@@ -102,10 +103,12 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
 
 export function addRecipeTag(recipeId: string, tagName: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        db.run(`INSERT INTO recipe_tag (recipe_id, tag_id) VALUES (?, ?)`, [recipeId, tagName], (err) => {
+        db.run(`INSERT INTO recipe_tag (recipe_id, tag_name) VALUES (?, ?)`, [recipeId, tagName], (err) => {
             if (err) {
+                console.log(err);
                 reject(err);
             } else {
+                
                 resolve();
             }
         });

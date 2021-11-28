@@ -14,6 +14,17 @@ export interface Recipe {
     user_id: string;
 }
 
+export interface RecipeSmall {
+    id: string;
+    name: string;
+    description: string;
+    createdAt: Date;
+    difficulty: string;
+    time: Number;
+    category_id: string;
+    user_id: string;
+}
+
 export interface Ingredient {
     id: string;
     name: string;
