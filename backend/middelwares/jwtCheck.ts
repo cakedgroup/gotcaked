@@ -15,7 +15,7 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
     if (!jwtToken) {
         next();
     } else {
-        jwt.verify(jwtToken, getSecret(), { algorithms: ['HS256'] }, (err, payload) => {
+        jwt.verify(jwtToken, getSecret(), {algorithms: ['HS256']}, (err, payload) => {
             if (err) {
                 next();
             } else {
