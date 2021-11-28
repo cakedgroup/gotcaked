@@ -29,7 +29,7 @@ export function getCategory(name: string): Promise<Category> {
                 };
                 resolve(category);
             } else {
-                reject(new Error(`Category ${name} not found`));
+                reject(new Error(`Category not found`));
             }
         });
     });
@@ -71,7 +71,6 @@ export function deleteCategory(name: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         db.run(`DELETE FROM Category WHERE name = ?`, [name], (err) => {
             if (err) {
-                console.error(err);
                 reject(err);
             }
             resolve();
