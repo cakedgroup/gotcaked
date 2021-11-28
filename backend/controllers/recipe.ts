@@ -1,21 +1,32 @@
 import express from 'express';
+import * as recipeService from "../services/recipe";
+
 
 const router = express.Router();
 
 //Get all recipes
 router.get('/', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    recipeService.getAllRecipes().then(recipes => {
+        res.status(200).json(recipes);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
 });
 
 router.post('/', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    recipeService.createRecipe(req.body).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
 });
 
 router.get('/:id', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    recipeService.getRecipe(req.params.id).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
 });
 
 router.patch('/:id', (req, res) => {
@@ -24,8 +35,11 @@ router.patch('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    recipeService.deleteRecipe(req.params.id).then(() => {
+        res.status(204).send();
+    }).catch(err => {
+        res.status(500).send(err);
+    });
 });
 
 router.get('/:id/comments', (req, res) => {

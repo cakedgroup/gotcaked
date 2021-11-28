@@ -1,8 +1,11 @@
+import { Tag } from "./tag";
+
 export interface Recipe {
     id: string;
     name: string;
     description: string;
     ingredients: Ingredient[];
+    tags: Tag[];
     preparation: string;
     createdAt: Date;
     difficulty: string;
