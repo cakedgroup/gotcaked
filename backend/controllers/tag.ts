@@ -1,7 +1,6 @@
 import express from 'express';
-import {getTags} from '../storage/tag';
+import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as tagService from '../services/tag';
-import { isAuthorizedAdmin, isAuthorizedUser } from '../middelwares/jwtCheck';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -55,4 +54,4 @@ router.get('/random', (req, res) => {
     res.send('To be implemented.');
 });
 
-export {router as tagController};
+export { router as tagController };
