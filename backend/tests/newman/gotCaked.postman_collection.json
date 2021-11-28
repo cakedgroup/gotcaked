@@ -1411,8 +1411,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 401\", function() {",
-									"    pm.response.to.have.status(401);",
+									"pm.test(\"Status Code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
 									"});",
 									"",
 									"var data = JSON.parse(responseBody);",
@@ -1432,7 +1432,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-3}}",
 								"type": "text"
 							}
 						],
@@ -1785,6 +1785,60 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete a category - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Category not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/categories/Cake",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								"Cake"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1793,6 +1847,69 @@
 			"item": [
 				{
 					"name": "Create tag as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"Unauthorized\");",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Vegan\",\n    \"description\": \"No meat, no bullshit.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/tags/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create tag as Admin",
 					"event": [
 						{
 							"listen": "test",
@@ -1828,7 +1945,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],
@@ -1891,7 +2008,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],
@@ -1912,69 +2029,6 @@
 							"path": [
 								"tags",
 								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update second tag",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status Code is 200\", function() {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var data = JSON.parse(responseBody);",
-									"",
-									"pm.test(\"Correct Message\", function () {",
-									"    pm.expect(data.name).equal(\"DiNkElMeHl\");",
-									"    pm.expect(data.description).to.equal(\"Mehl aus Dinkel.\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "jwt",
-								"value": "{{jwtToken-admin}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\":\"Dinkelmehl\",\n    \"description\": \"Mehl aus Dinkel.\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{apiURL}}/tags/DiNkElMeHl",
-							"host": [
-								"{{apiURL}}"
-							],
-							"path": [
-								"tags",
-								"DiNkElMeHl"
 							]
 						}
 					},
@@ -2083,6 +2137,60 @@
 									"pm.test(\"Status Code is 204\", function() {",
 									"    pm.response.to.have.status(204);",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/tags/Vegan",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								"Vegan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a tag - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Tag not found\");",
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
