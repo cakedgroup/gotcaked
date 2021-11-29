@@ -1656,7 +1656,7 @@
 									"",
 									"var data = JSON.parse(responseBody);",
 									"",
-									"pm.test(\"Recieving User(s)\", function () {",
+									"pm.test(\"Recieving Category(s)\", function () {",
 									"    pm.expect(data[0]).to.exist;",
 									"}); "
 								],
@@ -1831,6 +1831,69 @@
 							"path": [
 								"categories",
 								"Cake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create cake category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Cake\");",
+									"    pm.expect(data.description).to.equal(\"The cake is a lie.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Cake\",\n    \"description\": \"The cake is a lie.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
 							]
 						}
 					},
@@ -2333,6 +2396,60 @@
 					"response": []
 				},
 				{
+					"name": "Create recipe with invalid category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 422\", function() {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Category does not exist\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Kuccccccccccccchhhhennn\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get all recipes",
 					"event": [
 						{
@@ -2386,6 +2503,128 @@
 									"    pm.expect(data.name).equal(\"Bananenmuffin\");",
 									"    pm.expect(data.description).equal(\"This is a Muffin\");",
 									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit second recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 0\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Recipe\", function () {",
+									"    pm.expect(data.name).equal(\"Bananenmuffin YEAH\");",
+									"    pm.expect(data.description).equal(\"This is a YEAH\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin YEAH\",\n    \"description\": \"This is a YEAH\",\n    \"preparation\" : \"Do that do this.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Apfel\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single deleted recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
 								],
 								"type": "text/javascript"
 							}
