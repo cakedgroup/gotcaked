@@ -29,7 +29,15 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
 }
 
 export function isAuthorizedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin" || req.jwtContent?.id === req.body.user_id) {
+    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin") {
+        next();
+    } else {
+        authHandler(req, res, next);
+    }
+}
+
+export function isAuthorized(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.id || req.jwtContent?.role === "admin") {
         next();
     } else {
         authHandler(req, res, next);

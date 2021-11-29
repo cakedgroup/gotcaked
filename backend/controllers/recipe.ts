@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAuthorizedUser } from '../middelwares/jwtCheck';
+import { isAuthorized, isAuthorizedAdmin, isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
 
@@ -15,7 +15,12 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/',isAuthorizedUser, (req, res) => {
+router.post('/',isAuthorized, (req, res) => {
+    //Set user id
+    if(req.jwtContent?.id){
+        req.body.userId = req.jwtContent.id;
+    }
+    //Create recipe
     recipeService.createRecipe(req.body).then(recipe => {
         res.status(201).json(recipe);
     }).catch(err => {
@@ -36,11 +41,18 @@ router.patch('/:id', (req, res) => {
     res.send('To be implemented.');
 });
 
-router.delete('/:id', (req, res) => {
-    recipeService.deleteRecipe(req.params.id).then(() => {
+router.delete('/:id',isAuthorized, (req, res) => {
+    //Get user id
+    let userId : string = "";
+    if(req.jwtContent?.id){
+        userId = req.jwtContent.id;
+    }
+
+    //Delete recipe
+    recipeService.deleteRecipe(req.params.id, userId).then(() => {
         res.status(204).send();
     }).catch(err => {
-        res.status(500).send(err);
+        errorHandler(err, req, res);
     });
 });
 
