@@ -91,7 +91,6 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
                 };
                 tags.push(tag);
             }
-            console.log(tags);
             resolve(tags);
         });
     });

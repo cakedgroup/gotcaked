@@ -1,7 +1,8 @@
 import express from 'express';
-import { isAuthorized, isAuthorizedAdmin, isAuthorizedUser } from '../middelwares/jwtCheck';
+import { isAuthorized, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
+import { validateRecipe } from '../middelwares/inputValidation';
 
 
 const router = express.Router();
@@ -15,10 +16,10 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/',isAuthorized, (req, res) => {
+router.post('/', isAuthorized, validateRecipe, (req, res) => {
     //Set user id
-    if(req.jwtContent?.id){
-        req.body.userId = req.jwtContent.id;
+    if (req.jwtContent?.id) {
+        req.body.user_id = req.jwtContent.id;
     }
     //Create recipe
     recipeService.createRecipe(req.body).then(recipe => {
@@ -36,30 +37,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.patch('/:id', (req, res) => {
-    //Get user id
-    let userId : string = "";
-    if(req.jwtContent?.id){
-        userId = req.jwtContent.id;
-    }
-    
-    recipeService.updateRecipe(req.params.id, req.body, userId).then(recipe => {
+router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
+    recipeService.updateRecipe(req.params.id, req.body).then(recipe => {
         res.status(200).json(recipe);
     }).catch(err => {
         errorHandler(err, req, res);
     });
-
 });
 
-router.delete('/:id',isAuthorized, (req, res) => {
-    //Get user id
-    let userId : string = "";
-    if(req.jwtContent?.id){
-        userId = req.jwtContent.id;
-    }
-
+router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     //Delete recipe
-    recipeService.deleteRecipe(req.params.id, userId).then(() => {
+    recipeService.deleteRecipe(req.params.id).then(() => {
         res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
@@ -81,4 +69,4 @@ router.get('/random', (req, res) => {
     res.send('To be implemented.');
 });
 
-export {router as recipeController};
+export { router as recipeController };

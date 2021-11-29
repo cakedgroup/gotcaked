@@ -1,4 +1,5 @@
 import express from 'express';
+import { validateTag } from '../middelwares/inputValidation';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as tagService from '../services/tag';
 import { errorHandler } from '../util/errorHandler';
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
 // @route   POST api/tags/
 // @desc    Create a tag
 // @access  Admin
-router.post('/', isAuthorizedAdmin, (req, res) => {
+router.post('/', isAuthorizedAdmin, validateTag, (req, res) => {
     tagService.createTag(req.body).then(tag => {
         res.status(200).json(tag);
     }).catch(err => {
