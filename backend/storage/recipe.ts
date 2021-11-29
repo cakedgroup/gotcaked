@@ -118,6 +118,19 @@ export function getRecipesByTag(tagId: string, limit?:number, offset?: number): 
     });
 }
 
+export function updateRecipe(recipe: Recipe): Promise<Recipe> {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE recipe SET name = ?, description = ?, preparation = ?, difficulty = ?, time = ?, category_id = ?, user_id = ? WHERE id = ?`,
+            [recipe.name, recipe.description, recipe.preparation, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id, recipe.id],
+            (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(recipe);
+                }
+            });
+    });
+}
 
 export function deleteRecipe(id: string): Promise<void> {
     return new Promise((resolve, reject) => {

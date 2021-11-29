@@ -37,8 +37,18 @@ router.get('/:id', (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    //Get user id
+    let userId : string = "";
+    if(req.jwtContent?.id){
+        userId = req.jwtContent.id;
+    }
+    
+    recipeService.updateRecipe(req.params.id, req.body, userId).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+
 });
 
 router.delete('/:id',isAuthorized, (req, res) => {
