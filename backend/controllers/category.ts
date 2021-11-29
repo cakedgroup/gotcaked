@@ -2,6 +2,7 @@ import express from 'express';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as categoryService from '../services/category';
 import { errorHandler } from '../util/errorHandler';
+import { validateCategory } from '../middelwares/inputValidation';
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
 // @route   POST api/categories/
 // @desc    Create a category
 // @access  Admin
-router.post('/', isAuthorizedAdmin, (req, res) => {
+router.post('/', isAuthorizedAdmin, validateCategory,(req, res) => {
     categoryService.createCategory(req.body).then(category => {
         res.status(201).json(category);
     }).catch(err => {

@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { User, UserPublic } from "../models/user";
-import * as userDAO from "../storage/user";
 import * as statusDAO from "../storage/status";
+import * as userDAO from "../storage/user";
 import { userTransformer } from '../util/transformer';
 
 export function createUser(user: User): Promise<UserPublic> {

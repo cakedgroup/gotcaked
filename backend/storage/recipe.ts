@@ -6,11 +6,11 @@ import { Ingredient, Recipe } from '../models/recipe';
 
 
 export function createRecipe(recipe: Recipe): Promise<Recipe> {
-    const newId = generateUUID();
+    recipe.id = generateUUID();
     const createdAt: Date = new Date();
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO recipe (id, name, description, preparation, createdAt, difficulty, time, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)`,
-            [newId, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
+            [recipe.id, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
             (err) => {
                 if (err) {
                     reject(err);
@@ -28,7 +28,20 @@ export function getRecipe(id: string): Promise<Recipe> {
                 reject(err);
             } else {
                 if (row) {
-                    resolve(row);
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    resolve(recipe);
                 }else {
                     reject(new Error("Recipe not found"));
                 }
@@ -37,15 +50,31 @@ export function getRecipe(id: string): Promise<Recipe> {
     });
 }
 
-export function getRecipes(): Promise<Recipe[]> {
+export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
+    let query : string = "SELECT * FROM recipe";
+    query = sqlPager(query, limit, offset);
+
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM recipe`, (err, rows) => {
+        db.all(query, (err, rows) => {
             if (err) {
                 reject(err);
             } else {
                 let recipes: Recipe[] = [];
                 rows.forEach((row) => {
-                    recipes.push(row);
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    recipes.push(recipe);
                 });
                 resolve(recipes);
             }
@@ -92,6 +121,19 @@ export function getRecipesByTag(tagId: string, limit?:number, offset?: number): 
     });
 }
 
+export function updateRecipe(recipe: Recipe): Promise<Recipe> {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE recipe SET name = ?, description = ?, preparation = ?, difficulty = ?, time = ?, category_id = ?, user_id = ? WHERE id = ?`,
+            [recipe.name, recipe.description, recipe.preparation, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id, recipe.id],
+            (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(recipe);
+                }
+            });
+    });
+}
 
 export function deleteRecipe(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -129,9 +171,16 @@ export function getIngredients(recipeId: string): Promise<Ingredient[]> {
             } else {
                 let ingredients: Ingredient[] = [];
                 rows.forEach((row) => {
-                    ingredients.push(row);
+                    let ingredient: Ingredient = {
+                        id: row.id,
+                        name: row.name,
+                        amount: row.amount,
+                        unit: row.unit,
+                        recipe_id: row.recipe_id
+                    };
+                    ingredients.push(ingredient);
                 });
-                resolve(rows);
+                resolve(ingredients);
             }
         });
     });

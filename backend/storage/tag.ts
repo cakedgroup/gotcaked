@@ -18,7 +18,6 @@ export function getTag(name: string) : Promise<Tag> {
     return new Promise<Tag>((resolve, reject) => {
         db.get(`SELECT * FROM tag WHERE name = ?`, [name], (err, row) => {
             if (err) {
-                console.error(err);
                 reject(err);
             }
             //Check if tag exists
@@ -39,7 +38,6 @@ export function getTags() : Promise<Tag[]> {
     return new Promise<Tag[]>((resolve, reject) => {
         db.all(`SELECT * FROM tag`, (err, rows) => {
             if (err) {
-                console.error(err);
                 reject(err);
             }
             let tags : Tag[] = [];
@@ -72,7 +70,6 @@ export function deleteTag(name: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
         db.run(`DELETE FROM tag WHERE name = ?`, [name], (err) => {
             if (err) {
-                console.error(err);
                 reject(err);
             }
             resolve();
@@ -84,7 +81,6 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
     return new Promise<Tag[]>((resolve, reject) => {
         db.all(`SELECT * FROM tag WHERE name IN (SELECT tag_name FROM recipe_tag WHERE recipe_id = ?)`, [recipeId], (err, rows) => {
             if (err) {
-                console.error(err);
                 reject(err);
             }
             let tags : Tag[] = [];
@@ -102,10 +98,11 @@ export function getRecipeTags(recipeId: string) : Promise<Tag[]> {
 
 export function addRecipeTag(recipeId: string, tagName: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        db.run(`INSERT INTO recipe_tag (recipe_id, tag_id) VALUES (?, ?)`, [recipeId, tagName], (err) => {
+        db.run(`INSERT INTO recipe_tag (recipe_id, tag_name) VALUES (?, ?)`, [recipeId, tagName], (err) => {
             if (err) {
                 reject(err);
             } else {
+                
                 resolve();
             }
         });
