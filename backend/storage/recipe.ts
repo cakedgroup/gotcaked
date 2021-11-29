@@ -50,9 +50,12 @@ export function getRecipe(id: string): Promise<Recipe> {
     });
 }
 
-export function getRecipes(): Promise<Recipe[]> {
+export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
+    let query : string = "SELECT * FROM recipe";
+    query = sqlPager(query, limit, offset);
+
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM recipe`, (err, rows) => {
+        db.all(query, (err, rows) => {
             if (err) {
                 reject(err);
             } else {

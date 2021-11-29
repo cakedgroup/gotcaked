@@ -9,7 +9,10 @@ const router = express.Router();
 
 //Get all recipes
 router.get('/', (req, res) => {
-    recipeService.getAllRecipes().then(recipes => {
+    let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
+    let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
+
+    recipeService.getAllRecipes(limit, offset).then(recipes => {
         res.status(200).json(recipes);
     }).catch(err => {
         res.status(500).send(err);

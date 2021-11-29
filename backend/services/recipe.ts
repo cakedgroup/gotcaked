@@ -72,9 +72,9 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
-export function getAllRecipes(): Promise<RecipeSmall[]> {
+export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
-        recipeDAO.getRecipes().then(recipes => {
+        recipeDAO.getRecipes(limit, offset).then(recipes => {
             let allRecipes: RecipeSmall[] = [];
             recipes.forEach(recipe => {
                 let recipeSmall: RecipeSmall = {
