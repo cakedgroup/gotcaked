@@ -194,27 +194,32 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
 export function rateRecipe(rating : Rating) : Promise<void>{
     rating.vote > 0 ? rating.vote = 1 : rating.vote = -1;
 
-    
     return new Promise<void>((resolve, reject) => {
-        recipeDAO.getUserRecipeRating(rating.user_id, rating.recipe_id).then(() => {
-            recipeDAO.updateRating(rating).then(() => {
-                resolve();
-            }).catch((err) => {
-                reject(err);
-            });
-        }).catch(
-            (err) => {
-                if (err.message === "Rating not found") {
-                    recipeDAO.createRating(rating).then(() => {
+        recipeDAO.getRecipe(rating.recipe_id).then(recipe => {
+            if (recipe) {
+                recipeDAO.getUserRecipeRating(rating.user_id, rating.recipe_id).then(() => {
+                    recipeDAO.updateRating(rating).then(() => {
                         resolve();
                     }).catch((err) => {
                         reject(err);
                     });
-                } else {
-                    reject(err);
-                }
+                }).catch(
+                    (err) => {
+                        if (err.message === "Rating not found") {
+                            recipeDAO.createRating(rating).then(() => {
+                                resolve();
+                            }).catch((err) => {
+                                reject(err);
+                            });
+                        } else {
+                            reject(err);
+                        }
+                    }
+                );
+            } else {
+                reject(new Error('Recipe not found'));
             }
-        );
+        }).catch(() => reject(new Error('Recipe not found')));
     });
 }
 
@@ -230,8 +235,16 @@ export function getRatingFromUser(user_id : string, recipe_id : string) : Promis
 
 export function getRecipeRating(recipe_id : string) : Promise<number>{
     return new Promise<number>((resolve, reject) => {
-        recipeDAO.getRecipeRating(recipe_id).then((rating) => {
-            resolve(rating);
+        recipeDAO.getRecipe(recipe_id).then((recipe) => {
+            if (recipe) {
+                recipeDAO.getRecipeRating(recipe_id).then((rating) => {
+                    resolve(rating);
+                }).catch((err) => {
+                    reject(err);
+                });
+            } else {
+                reject(new Error('Recipe not found'));
+            }
         }).catch((err) => {
             reject(err);
         });
