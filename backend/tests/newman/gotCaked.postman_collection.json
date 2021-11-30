@@ -2878,6 +2878,136 @@
 			]
 		},
 		{
+			"name": "rating",
+			"item": [
+				{
+					"name": "Upvote Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vote\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId}}/rating",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId}}",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upvote Recipe - Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 401\", function() {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"Unauthorized\");",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId}}/rating",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId}}",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Rating\", function () {",
+									"    pm.expect(data.rating).equal(1);",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId}}/rating",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId}}",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "auth - logout",
 			"item": [
 				{
