@@ -1,5 +1,6 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
+import * as recipeService from "../services/recipe";
 import { isJWTBlacklisted } from "../storage/blacklist";
 import { getSecret } from "../util/secret";
 import { jwtPayloadContentTransformer } from "../util/transformer";
@@ -33,6 +34,30 @@ export function isAuthorizedUser(req: express.Request, res: express.Response, ne
         next();
     } else {
         authHandler(req, res, next);
+    }
+}
+
+export function isAuthorized(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.id || req.jwtContent?.role === "admin") {
+        next();
+    } else {
+        authHandler(req, res, next);
+    }
+}
+
+export function isAuthorizedForRecipes(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.role === "admin") {
+        next();
+    } else {
+        recipeService.getRecipe(req.params.id).then(recipe => {
+            if (recipe.user_id === req.jwtContent?.id) {
+                next();
+            } else {
+                authHandler(req, res, next);
+            }
+        }).catch(err => {
+            authHandler(req, res, next);
+        });
     }
 }
 

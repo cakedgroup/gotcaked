@@ -13,8 +13,7 @@ function createTables(){
     //Create tables
     //Category
     db.run(`CREATE TABLE IF NOT EXISTS category (
-        id VARCHAR(36) PRIMARY KEY,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT PRIMARY KEY,
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
@@ -24,8 +23,7 @@ function createTables(){
     });
     //Tag
     db.run(`CREATE TABLE IF NOT EXISTS tag (
-        id VARCHAR(36) PRIMARY KEY,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT PRIMARY KEY,
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
@@ -70,9 +68,9 @@ function createTables(){
     //RecipeTag
     db.run(`CREATE TABLE IF NOT EXISTS recipe_tag (
         recipe_id VARCHAR(36) NOT NULL,
-        tag_id VARCHAR(36) NOT NULL,
+        tag_name TEXT NOT NULL,
         FOREIGN KEY (recipe_id) REFERENCES recipe(id),
-        FOREIGN KEY (tag_id) REFERENCES tag(id));`, (err) => {
+        FOREIGN KEY (tag_name) REFERENCES tag(name));`, (err) => {
         if (err) {
             console.error(err.message);
         }else {

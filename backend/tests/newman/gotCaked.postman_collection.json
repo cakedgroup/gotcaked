@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "30c59569-2702-44fd-b03f-546d0d28bdaf",
+		"_postman_id": "0b66b021-e2eb-4d5c-bbc8-06c45d6c8cb9",
 		"name": "gotCaked",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1398,16 +1398,1303 @@
 			]
 		},
 		{
-			"name": "recipe",
-			"item": []
-		},
-		{
 			"name": "category",
-			"item": []
+			"item": [
+				{
+					"name": "Create category as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"Unauthorized\");",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Cake\",\n    \"description\": \"The cake is a lie.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create category as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Cake\");",
+									"    pm.expect(data.description).to.equal(\"The cake is a lie.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Cake\",\n    \"description\": \"The cake is a lie.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Mufffin\");",
+									"    pm.expect(data.description).to.equal(\"Muff muff.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Mufffin\",\n    \"description\": \"Muff muff.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update second category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Muffin\");",
+									"    pm.expect(data.description).to.equal(\"Muff muff.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Muffin\",\n    \"description\": \"Muff muff.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/Mufffin",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								"Mufffin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Category(s)\", function () {",
+									"    pm.expect(data[0]).to.exist;",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Category\", function () {",
+									"    pm.expect(data.name).equal(\"Cake\");",
+									"    pm.expect(data.description).equal(\"The cake is a lie.\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/categories/Cake",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								"Cake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/categories/Cake",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								"Cake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a category - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Category not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/categories/Cake",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								"Cake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create cake category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Cake\");",
+									"    pm.expect(data.description).to.equal(\"The cake is a lie.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Cake\",\n    \"description\": \"The cake is a lie.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/categories/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "tag",
-			"item": []
+			"item": [
+				{
+					"name": "Create tag as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"Unauthorized\");",
+									"    pm.expect(data.message).to.equal(\"You are not authorized to access this resource\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Vegan\",\n    \"description\": \"No meat, no bullshit.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/tags/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create tag as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"Vegan\");",
+									"    pm.expect(data.description).to.equal(\"No meat, no bullshit.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Vegan\",\n    \"description\": \"No meat, no bullshit.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/tags/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.name).equal(\"DiNkElMeHl\");",
+									"    pm.expect(data.description).to.equal(\"Dinklebeeerrrrrgggg\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"DiNkElMeHl\",\n    \"description\": \"Dinklebeeerrrrrgggg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/tags/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Tag(s)\", function () {",
+									"    pm.expect(data[0]).to.exist;",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/tags/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Category\", function () {",
+									"    pm.expect(data.name).equal(\"Vegan\");",
+									"    pm.expect(data.description).equal(\"No meat, no bullshit.\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/tags/Vegan",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								"Vegan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/tags/Vegan",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								"Vegan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a tag - Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Tag not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/tags/Vegan",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"tags",
+								"Vegan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "recipe",
+			"item": [
+				{
+					"name": "Create recipe as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Getting Recipe-ID\", function () {",
+									"    pm.globals.set(\"recipeId\", data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenkuchen\",\n    \"description\": \"This is a Bananenkuchen\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra hard\",\n    \"time\" : 55,\n    \"category_id\" : \"Cake\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Getting Recipe-ID\", function () {",
+									"    pm.globals.set(\"recipeId-2\", data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create recipe with invalid category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 422\", function() {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Correct Message\", function () {",
+									"    pm.expect(data.status).equal(\"error\");",
+									"    pm.expect(data.message).to.equal(\"Category does not exist\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Kuccccccccccccchhhhennn\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all recipes - Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Recipe(s)\", function () {",
+									"    pm.expect(data[0]).to.exist;",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/?limit=1",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all recipes - No Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Recipe(s)\", function () {",
+									"    pm.expect(data[0]).to.exist;",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Recipe\", function () {",
+									"    pm.expect(data.name).equal(\"Bananenmuffin\");",
+									"    pm.expect(data.description).equal(\"This is a Muffin\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit second recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 0\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Recipe\", function () {",
+									"    pm.expect(data.name).equal(\"Bananenmuffin YEAH\");",
+									"    pm.expect(data.description).equal(\"This is a YEAH\");",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Bananenmuffin YEAH\",\n    \"description\": \"This is a YEAH\",\n    \"preparation\" : \"Do that do this.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Apfel\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single deleted recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "auth - logout",
