@@ -1,6 +1,7 @@
 import express from "express";
 import * as jwt from 'jsonwebtoken';
 import * as recipeService from "../services/recipe";
+import * as commentService from "../services/comment";
 import { isJWTBlacklisted } from "../storage/blacklist";
 import { getSecret } from "../util/secret";
 import { jwtPayloadContentTransformer } from "../util/transformer";
@@ -30,7 +31,8 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
 }
 
 export function isAuthorizedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin") {
+    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin" || 
+    ( req.body.userId && (req.jwtContent?.id === req.body?.userId))) {
         next();
     } else {
         authHandler(req, res, next);
@@ -51,6 +53,22 @@ export function isAuthorizedForRecipes(req: express.Request, res: express.Respon
     } else {
         recipeService.getRecipe(req.params.id).then(recipe => {
             if (recipe.user_id === req.jwtContent?.id) {
+                next();
+            } else {
+                authHandler(req, res, next);
+            }
+        }).catch(err => {
+            authHandler(req, res, next);
+        });
+    }
+}
+
+export function isAuthorizedForComments(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.jwtContent?.role === "admin") {
+        next();
+    } else {
+        commentService.getComment(req.params.id).then(comment => {
+            if (comment.user_id === req.jwtContent?.id) {
                 next();
             } else {
                 authHandler(req, res, next);

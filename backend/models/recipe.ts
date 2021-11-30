@@ -32,3 +32,9 @@ export interface Ingredient {
     unit: string;
     recipe_id: string;
 }
+
+export interface Rating {
+    user_id: string;
+    recipe_id: string;
+    vote: number;
+}

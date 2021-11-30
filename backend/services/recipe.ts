@@ -1,7 +1,9 @@
+import { Rating } from "../models/recipe";
 import { Recipe, RecipeSmall } from '../models/recipe';
 import * as categoryDAO from '../storage/category';
 import * as recipeDAO from '../storage/recipe';
 import * as tagDAO from '../storage/tag';
+import * as commentDAO from '../storage/comment';
 import { generateUUID } from '../util/uuid';
 
 
@@ -108,7 +110,10 @@ export function deleteRecipe(recipeID: string): Promise<void> {
                             reject(err);
                         });
                         //TODO Delete all ratings
-                        //TODO Delete all comments
+                        //Delete all comments from recipe
+                        commentDAO.deleteAllComments(recipeID).catch(err => {
+                            reject(err);
+                        });
                         //Delete Recipe
                         recipeDAO.deleteRecipe(recipeID).then(() => {
                             resolve();
@@ -183,5 +188,65 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                 reject(new Error('Category does not exist'));
             }
         }).catch(() => reject(new Error('Category does not exist')));
+    });
+}
+
+export function rateRecipe(rating : Rating) : Promise<void>{
+    rating.vote > 0 ? rating.vote = 1 : rating.vote = -1;
+
+    return new Promise<void>((resolve, reject) => {
+        recipeDAO.getRecipe(rating.recipe_id).then(recipe => {
+            if (recipe) {
+                recipeDAO.getUserRecipeRating(rating.user_id, rating.recipe_id).then(() => {
+                    recipeDAO.updateRating(rating).then(() => {
+                        resolve();
+                    }).catch((err) => {
+                        reject(err);
+                    });
+                }).catch(
+                    (err) => {
+                        if (err.message === "Rating not found") {
+                            recipeDAO.createRating(rating).then(() => {
+                                resolve();
+                            }).catch((err) => {
+                                reject(err);
+                            });
+                        } else {
+                            reject(err);
+                        }
+                    }
+                );
+            } else {
+                reject(new Error('Recipe not found'));
+            }
+        }).catch(() => reject(new Error('Recipe not found')));
+    });
+}
+
+export function getRatingFromUser(user_id : string, recipe_id : string) : Promise<Rating>{
+    return new Promise<Rating>((resolve, reject) => {
+        recipeDAO.getUserRecipeRating(user_id, recipe_id).then((rating) => {
+            resolve(rating);
+        }).catch((err) => {
+            reject(err);
+        });
+    });
+}
+
+export function getRecipeRating(recipe_id : string) : Promise<number>{
+    return new Promise<number>((resolve, reject) => {
+        recipeDAO.getRecipe(recipe_id).then((recipe) => {
+            if (recipe) {
+                recipeDAO.getRecipeRating(recipe_id).then((rating) => {
+                    resolve(rating);
+                }).catch((err) => {
+                    reject(err);
+                });
+            } else {
+                reject(new Error('Recipe not found'));
+            }
+        }).catch((err) => {
+            reject(err);
+        });
     });
 }

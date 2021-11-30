@@ -1,7 +1,7 @@
 import {db} from './db';
 import { generateUUID } from "../util/uuid";
 import { sqlPager } from '../util/sql';
-import { Ingredient, Recipe } from '../models/recipe';
+import { Ingredient, Rating, Recipe } from '../models/recipe';
 
 
 
@@ -209,5 +209,77 @@ export function updateIngredient(ingredient: Ingredient): Promise<Ingredient> {
                     resolve(ingredient);
                 }
             });
+    });
+}
+
+export function createRating(rating : Rating): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`INSERT INTO rating (user_id, recipe_id, vote) VALUES (?, ?, ?)`,
+            [rating.user_id, rating.recipe_id, rating.vote],
+            (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+    });
+}
+
+export function updateRating(rating : Rating): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE rating SET vote = ? WHERE user_id = ? AND recipe_id = ?`,
+            [rating.vote, rating.user_id, rating.recipe_id],
+            (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+    });
+}
+
+export function deleteRating(userId: string, recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM rating WHERE user_id = ? AND recipe_id = ?`, [userId, recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+export function getUserRecipeRating(userId: string, recipeId: string): Promise<Rating> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM rating WHERE user_id = ? AND recipe_id = ?`, [userId, recipeId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(row);
+                }else {
+                    reject(new Error("Rating not found"));
+                }
+            }
+        });
+    });
+}
+
+export function getRecipeRating(recipeId: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT SUM(vote) AS rating FROM rating WHERE recipe_id = ?`, [recipeId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(row);
+                }else {
+                    reject(new Error("Recipe not found"));
+                }
+            }
+        });
     });
 }

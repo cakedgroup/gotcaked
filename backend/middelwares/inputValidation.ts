@@ -1,5 +1,5 @@
 import express from "express";
-import { recipeTransformer, tagTransformer, categoryTransformer } from '../util/transformer';
+import { recipeTransformer, tagTransformer, categoryTransformer, commentTransformer, ratingTransformer } from '../util/transformer';
 
 
 export function validateRecipe(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -26,5 +26,24 @@ export function validateCategory(req: express.Request, res: express.Response, ne
         next();
     } else {
         res.status(400).json({ message: "Category is not valid" });
+    }
+}
+
+export function validateComment(req: express.Request, res: express.Response, next: express.NextFunction){
+    if (req.body) {
+        req.body = commentTransformer(req.body);
+        next();
+    } else {
+        res.status(400).json({ message: "Comment is not valid" });
+
+    }
+}
+
+export function validateRating(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.body) {
+        req.body = ratingTransformer(req.body);
+        next();
+    } else {
+        res.status(400).json({ message: "Rating is not valid" });
     }
 }

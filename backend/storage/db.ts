@@ -96,7 +96,7 @@ function createTables(){
         id VARCHAR(36) PRIMARY KEY,
         user_id VARCHAR(36) NOT NULL,
         recipe_id VARCHAR(36) NOT NULL,
-        comment TEXT,
+        text TEXT,
         time DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES user(id),
         FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
@@ -105,6 +105,20 @@ function createTables(){
         }else {
             console.log('Comment table created.');
         }        
+    });
+    //Rating
+    db.run(`CREATE TABLE IF NOT EXISTS rating (
+        user_id VARCHAR(36) NOT NULL,
+        recipe_id VARCHAR(36) NOT NULL,
+        vote NUMBER NOT NULL,
+        PRIMARY KEY (user_id, recipe_id),
+        FOREIGN KEY (user_id) REFERENCES user(id),
+        FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
+        if (err) {
+            console.error(err.message);
+        }else {
+            console.log('Rating table created.');
+        }
     });
     //JWT-Blacklist
     db.run(`CREATE TABLE IF NOT EXISTS jwt_blacklist (
