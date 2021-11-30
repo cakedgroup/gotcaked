@@ -30,7 +30,8 @@ export function checkJWT(req: express.Request, _res: express.Response, next: exp
 }
 
 export function isAuthorizedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin" || req.jwtContent?.id === req.body?.userId) {
+    if (req.jwtContent?.id === req.params.id || req.jwtContent?.role === "admin" || 
+    ( req.body.userId && (req.jwtContent?.id === req.body?.userId))) {
         next();
     } else {
         authHandler(req, res, next);
