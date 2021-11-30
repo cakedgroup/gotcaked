@@ -5,7 +5,7 @@ export function errorHandler(err: Error, req: express.Request, _res: express.Res
         if (err.message === "User does not exist" || err.message === "User not found" ||
             err.message === "No users found" || err.message === "Credentials not found" ||
             err.message === "Category not found" || err.message === "Tag not found" ||
-            err.message === "Recipe not found") {
+            err.message === "Recipe not found" || err.message === "Comment not found") {
             _res.status(404).json({ status: "error", message: err.message });
         } else if (err.message === "User already exists") {
             _res.status(409).json({ status: "error", message: err.message });

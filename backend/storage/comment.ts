@@ -17,7 +17,7 @@ export function createComment(comment: Comment): Promise<Comment> {
     });
 }
 
-export function getComments(recipeId: string, limit?:number, offset?:number): Promise<Comment[]> {
+export function getAllComments(recipeId: string, limit?:number, offset?:number): Promise<Comment[]> {
     let query : string = "SELECT * FROM comment WHERE recipe_id = ?";
     query = sqlPager(query, limit, offset);
 

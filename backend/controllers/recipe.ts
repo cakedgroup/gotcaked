@@ -89,7 +89,7 @@ router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
 });
 
 router.get('/:id/comments/:commentId', (req, res) => {
-    commentService.getComment(req.params.commentId).then(comment => {
+    commentService.getComment(req.params.commentId, req.params.id).then(comment => {
         res.status(200).json(comment);
     }).catch(err => {
         errorHandler(err, req, res);
