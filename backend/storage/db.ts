@@ -3,13 +3,13 @@ import * as sqlite from 'sqlite3';
 export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     if (err) {
         console.error(err.message);
-    }else {
+    } else {
         console.log('Connected to SQlite database.');
         createTables();
     }
 });
 
-function createTables(){
+function createTables() {
     //Create tables
     //Category
     db.run(`CREATE TABLE IF NOT EXISTS category (
@@ -17,7 +17,7 @@ function createTables(){
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Category table created.');
         }
     });
@@ -27,7 +27,7 @@ function createTables(){
         description TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Tag table created.');
         }
     });
@@ -42,9 +42,9 @@ function createTables(){
         password TEXT);`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('User table created.');
-        }        
+        }
     });
     //Recipe
     db.run(`CREATE TABLE IF NOT EXISTS recipe (
@@ -61,9 +61,20 @@ function createTables(){
         FOREIGN KEY (user_id) REFERENCES user(id));`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Recipe table created.');
-        }        
+        }
+    });
+    //RecipePicture
+    db.run(`CREATE TABLE IF NOT EXISTS recipe_picture (
+        picture_id VARCHAR(36) PRIMARY KEY,
+        recipe_id VARCHAR(36) NOT NULL,
+        FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            console.log('RecipePicture table created.');
+        }
     });
     //RecipeTag
     db.run(`CREATE TABLE IF NOT EXISTS recipe_tag (
@@ -73,9 +84,9 @@ function createTables(){
         FOREIGN KEY (tag_name) REFERENCES tag(name));`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('RecipeTag table created.');
-        }        
+        }
     });
     //Ingredient
     db.run(`CREATE TABLE IF NOT EXISTS ingredient (
@@ -87,7 +98,7 @@ function createTables(){
         FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Ingredient table created.');
         }
     });
@@ -102,9 +113,9 @@ function createTables(){
         FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Comment table created.');
-        }        
+        }
     });
     //Rating
     db.run(`CREATE TABLE IF NOT EXISTS rating (
@@ -116,7 +127,7 @@ function createTables(){
         FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('Rating table created.');
         }
     });
@@ -126,8 +137,8 @@ function createTables(){
         jwt TEXT NOT NULL);`, (err) => {
         if (err) {
             console.error(err.message);
-        }else {
+        } else {
             console.log('JWT-Blacklist table created.');
-        }        
+        }
     });
 }

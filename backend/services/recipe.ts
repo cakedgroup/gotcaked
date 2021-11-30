@@ -37,6 +37,9 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
                             });
                         });
                     });
+                    // TODO Add Picture Reference
+                    
+
                     resolve(recipe);
                 }).catch(error => {
                     reject(error);

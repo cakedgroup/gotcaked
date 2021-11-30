@@ -1,7 +1,7 @@
-import {db} from './db';
+import { db } from './db';
 import { generateUUID } from "../util/uuid";
 import { sqlPager } from '../util/sql';
-import { Ingredient, Rating, Recipe } from '../models/recipe';
+import { Ingredient, Rating, Recipe, RecipePicture } from '../models/recipe';
 
 
 
@@ -39,10 +39,11 @@ export function getRecipe(id: string): Promise<Recipe> {
                         category_id: row.category_id,
                         user_id: row.user_id,
                         tags: [],
-                        ingredients: []
+                        ingredients: [],
+                        picture_uri: []
                     };
                     resolve(recipe);
-                }else {
+                } else {
                     reject(new Error("Recipe not found"));
                 }
             }
@@ -79,10 +80,11 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
                         category_id: row.category_id,
                         user_id: row.user_id,
                         tags: [],
-                        ingredients: []
+                        ingredients: [],
+                        picture_uri: []
                     };
                     resolve(recipe);
-                }else {
+                } else {
                     reject(new Error("Recipe not found"));
                 }
             }
@@ -90,8 +92,8 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
     });
 }
 
-export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
-    let query : string = "SELECT * FROM recipe";
+export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
+    let query: string = "SELECT * FROM recipe";
     query = sqlPager(query, limit, offset);
 
     return new Promise((resolve, reject) => {
@@ -112,7 +114,8 @@ export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
                         category_id: row.category_id,
                         user_id: row.user_id,
                         tags: [],
-                        ingredients: []
+                        ingredients: [],
+                        picture_uri: []
                     };
                     recipes.push(recipe);
                 });
@@ -122,11 +125,11 @@ export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
     });
 }
 
-export function getRecipesByCategory(categoryId: string, limit?:number, offset?: number): Promise<Recipe[]> {
+export function getRecipesByCategory(categoryId: string, limit?: number, offset?: number): Promise<Recipe[]> {
 
-    let query : string = "SELECT * FROM recipe WHERE category_id = ?";
+    let query: string = "SELECT * FROM recipe WHERE category_id = ?";
     query = sqlPager(query, limit, offset);
-    
+
     return new Promise((resolve, reject) => {
         db.all(query, [categoryId], (err, rows) => {
             if (err) {
@@ -142,8 +145,8 @@ export function getRecipesByCategory(categoryId: string, limit?:number, offset?:
     });
 }
 
-export function getRecipesByTag(tagId: string, limit?:number, offset?: number): Promise<Recipe[]> {
-    let query : string = "SELECT * FROM recipe r JOIN recipe_tag rt ON r.id = rt.recipe_id WHERE rt.tag_id = ?";
+export function getRecipesByTag(tagId: string, limit?: number, offset?: number): Promise<Recipe[]> {
+    let query: string = "SELECT * FROM recipe r JOIN recipe_tag rt ON r.id = rt.recipe_id WHERE rt.tag_id = ?";
     query = sqlPager(query, limit, offset);
 
     return new Promise((resolve, reject) => {
@@ -252,7 +255,7 @@ export function updateIngredient(ingredient: Ingredient): Promise<Ingredient> {
     });
 }
 
-export function createRating(rating : Rating): Promise<void> {
+export function createRating(rating: Rating): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO rating (user_id, recipe_id, vote) VALUES (?, ?, ?)`,
             [rating.user_id, rating.recipe_id, rating.vote],
@@ -266,7 +269,7 @@ export function createRating(rating : Rating): Promise<void> {
     });
 }
 
-export function updateRating(rating : Rating): Promise<void> {
+export function updateRating(rating: Rating): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(`UPDATE rating SET vote = ? WHERE user_id = ? AND recipe_id = ?`,
             [rating.vote, rating.user_id, rating.recipe_id],
@@ -300,7 +303,7 @@ export function getUserRecipeRating(userId: string, recipeId: string): Promise<R
             } else {
                 if (row) {
                     resolve(row);
-                }else {
+                } else {
                     reject(new Error("Rating not found"));
                 }
             }
@@ -316,9 +319,63 @@ export function getRecipeRating(recipeId: string): Promise<number> {
             } else {
                 if (row) {
                     resolve(row);
-                }else {
+                } else {
                     reject(new Error("Recipe not found"));
                 }
+            }
+        });
+    });
+}
+
+export function createPicture(pictureId: string, recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`INSERT INTO recipe_picture (recipe_id, picture_id) VALUES (?, ?, ?)`,
+            [pictureId, recipeId],
+            (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+    });
+}
+
+export function getPicturesFromRecipe(recipeId: string): Promise<RecipePicture[]> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM recipe_picture WHERE recipe_id = ?`, [recipeId], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                let picture: RecipePicture[] = [];
+                rows.forEach((row: RecipePicture) => {
+                    picture.push(row);
+                });
+                resolve(picture);
+            }
+        });
+    });
+}
+
+export function deletePictureFromRecipe(pictureId: string, recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM recipe_picture WHERE picture_id = ? AND recipe_id = ?`, [pictureId, recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+export function deleteAllPicturesFromRecipe(recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM recipe_picture WHERE recipe_id = ?`, [recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
             }
         });
     });
