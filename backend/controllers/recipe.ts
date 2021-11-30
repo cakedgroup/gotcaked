@@ -60,9 +60,12 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
 });
 
 router.get('/:id/comments', (req, res) => {
+    let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
+    let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
+
     let id: string = req.params.id;
     
-    commentService.getComments(id).then(comments => {
+    commentService.getAllComments(id, limit, offset).then(comments => {
         res.status(200).json(comments);
     }).catch(err => {
         errorHandler(err, req, res);

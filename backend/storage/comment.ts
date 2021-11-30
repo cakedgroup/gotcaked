@@ -1,4 +1,5 @@
 import { Comment } from '../models/comment';
+import { sqlPager } from '../util/sql';
 import { db } from './db';
 
 export function createComment(comment: Comment): Promise<Comment> {
@@ -16,9 +17,12 @@ export function createComment(comment: Comment): Promise<Comment> {
     });
 }
 
-export function getComments(recipeId: string): Promise<Comment[]> {
+export function getComments(recipeId: string, limit?:number, offset?:number): Promise<Comment[]> {
+    let query : string = "SELECT * FROM comment WHERE recipe_id = ?";
+    query = sqlPager(query, limit, offset);
+
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM comment WHERE recipe_id = ?`, [recipeId], (err, rows) => {
+        db.all(query, [recipeId], (err, rows) => {
             if (err) {
                 reject(err);
             } else {

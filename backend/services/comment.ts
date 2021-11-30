@@ -9,6 +9,6 @@ export function createComment(comment: Comment): Promise<Comment> {
     return commentDAO.createComment(comment);
 }
 
-export function getComments(recipeId: string): Promise<Comment[]> {
-    return commentDAO.getComments(recipeId);
+export function getAllComments(recipeId: string, limit: number, offset:number): Promise<Comment[]> {
+    return commentDAO.getComments(recipeId, limit, offset);
 }
