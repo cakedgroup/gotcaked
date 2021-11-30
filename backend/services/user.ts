@@ -40,6 +40,13 @@ export function getUserById(id: string): Promise<UserPublic> {
   });
 }
 
+export function getRandomUser(): Promise<UserPublic> {
+  return new Promise((resolve, reject) => {
+    //Get Random User from DB
+    userDAO.getRandomUser().then((user) => resolve(userTransformer(user))).catch(() => reject(new Error("User not found")));
+  });
+}
+
 export function updateUser(id: string, newUser: User): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     userDAO.getUserById(id).then((user) => {

@@ -31,6 +31,18 @@ export function getUser(name: string): Promise<User> {
     });
 }
 
+export function getRandomUser(): Promise<User> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM user WHERE id IN (SELECT id FROM user ORDER BY RANDOM() LIMIT 1)`, function (err, row) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+}
+
 export function getUserById(id: string): Promise<User> {
     return new Promise((resolve, reject) => {
         db.get(`SELECT * FROM user WHERE id = ?`, [id], function (err, row) {
