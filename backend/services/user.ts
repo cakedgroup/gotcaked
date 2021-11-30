@@ -1,10 +1,9 @@
 import * as bcrypt from "bcrypt";
-import * as fs from 'fs';
-import path from "path";
 import { User, UserPublic } from "../models/user";
 import * as statusDAO from "../storage/status";
 import * as userDAO from "../storage/user";
 import { userTransformer } from '../util/transformer';
+import { deleteUserPicture } from '../util/fileHandler';
 
 export function createUser(user: User): Promise<UserPublic> {
   //Default Role
@@ -63,6 +62,10 @@ export function updateUser(id: string, newUser: User): Promise<UserPublic> {
         //@ts-ignore
         user.picture_uri = null;
       } else if (user.picture_uri === null || !user.picture_uri.includes(newUser.picture_uri)) {
+        //Delete Old Picture to prevent storing old pictures
+        if (user.picture_uri !== null) {
+          deleteUserPicture(user.picture_uri);
+        }
         user.picture_uri = "/files/img/user/" + newUser.picture_uri;
       }
 
@@ -87,15 +90,9 @@ export function deleteUser(id: string): Promise<boolean> {
         } else {
           //Delete User Picture from filesystem 
           if (user.picture_uri !== null) {
-            //Get ID with FileExtension
-            const pictureID = user.picture_uri.split("/").pop();
-            //Delete File
-            fs.unlink('./static/img/users/' + pictureID, (err) => {
-              if (err) {
-                console.log(err);
-              }
-            });
+            deleteUserPicture(user.picture_uri);
           }
+
           //Delete User from DB
           userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
         }
