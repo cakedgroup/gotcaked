@@ -51,7 +51,6 @@ export function getRecipe(id: string): Promise<Recipe> {
 }
 
 export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
-    console.log("getRandomRecipe");
     let sql = "SELECT * FROM recipe WHERE id IN (SELECT id FROM recipe ";
     if (categoryId && tagId) {
         sql += "WHERE category_id = '" + categoryId + "' AND tag_id = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
@@ -63,7 +62,6 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
         sql += "ORDER BY RANDOM() LIMIT 1)";
     }
 
-    console.log(sql);
     return new Promise((resolve, reject) => {
         db.get(sql, (err, row) => {
             if (err) {
