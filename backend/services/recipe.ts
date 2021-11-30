@@ -68,6 +68,8 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
                 }).catch(err => {
                     reject(err);
                 });
+
+                //TODO Serve Pictures
             }).catch(err => {
                 reject(err);
             });
@@ -94,6 +96,8 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
                 }).catch(err => {
                     reject(err);
                 });
+
+                //TODO Serve Pictures
             }).catch(err => {
                 reject(err);
             });
@@ -108,6 +112,7 @@ export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmal
         recipeDAO.getRecipes(limit, offset).then(recipes => {
             let allRecipes: RecipeSmall[] = [];
             recipes.forEach(recipe => {
+                //Todo First Picture
                 let recipeSmall: RecipeSmall = {
                     id: recipe.id,
                     name: recipe.name,
@@ -149,6 +154,8 @@ export function deleteRecipe(recipeID: string): Promise<void> {
                         }).catch(err => {
                             reject(err);
                         });
+
+                        //TODO Delete all pictures
                     });
                 }).catch(() => reject(new Error('Recipe does not exist')));
             } else {
@@ -205,6 +212,8 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                                     });
                                 });
                             });
+
+                            //TODO Update Pictures
                             resolve(recipe);
                         }).catch(err => {
                             reject(err);

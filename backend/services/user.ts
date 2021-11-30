@@ -1,4 +1,6 @@
 import * as bcrypt from "bcrypt";
+import * as fs from 'fs';
+import path from "path";
 import { User, UserPublic } from "../models/user";
 import * as statusDAO from "../storage/status";
 import * as userDAO from "../storage/user";
@@ -53,8 +55,16 @@ export function updateUser(id: string, newUser: User): Promise<UserPublic> {
       //Check Values
       user.name = newUser.name || user.name;
       user.description = newUser.description || user.description;
-      user.picture_uri = newUser.picture_uri || user.picture_uri;
       user.email = newUser.email || user.email;
+
+      //Add Picture-URI
+      ///Check if PictureID is already in the PictureURI, bc we convert the PictureID to the PictureURI
+      if (newUser.picture_uri === undefined || newUser.picture_uri === null) {
+        //@ts-ignore
+        user.picture_uri = null;
+      } else if (user.picture_uri === null || !user.picture_uri.includes(newUser.picture_uri)) {
+        user.picture_uri = "/files/img/user/" + newUser.picture_uri;
+      }
 
       //Check Password
       if (newUser.password) {
@@ -75,6 +85,17 @@ export function deleteUser(id: string): Promise<boolean> {
         if (user.role === "admin") {
           reject(new Error("Admin can´t be deleted"));
         } else {
+          //Delete User Picture from filesystem 
+          if (user.picture_uri !== null) {
+            //Get ID with FileExtension
+            const pictureID = user.picture_uri.split("/").pop();
+            //Delete File
+            fs.unlink('./static/img/users/' + pictureID, (err) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          }
           //Delete User from DB
           userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
         }
