@@ -42,3 +42,15 @@ export function getComments(recipeId: string, limit?:number, offset?:number): Pr
         });
     });
 }
+
+export function deleteAllComments(recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM comment WHERE recipe_id = ?`, [recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}

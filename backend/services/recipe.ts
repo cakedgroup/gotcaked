@@ -3,6 +3,7 @@ import { Recipe, RecipeSmall } from '../models/recipe';
 import * as categoryDAO from '../storage/category';
 import * as recipeDAO from '../storage/recipe';
 import * as tagDAO from '../storage/tag';
+import * as commentDAO from '../storage/comment';
 import { generateUUID } from '../util/uuid';
 
 
@@ -109,7 +110,10 @@ export function deleteRecipe(recipeID: string): Promise<void> {
                             reject(err);
                         });
                         //TODO Delete all ratings
-                        //TODO Delete all comments
+                        //Delete all comments from recipe
+                        commentDAO.deleteAllComments(recipeID).catch(err => {
+                            reject(err);
+                        });
                         //Delete Recipe
                         recipeDAO.deleteRecipe(recipeID).then(() => {
                             resolve();
