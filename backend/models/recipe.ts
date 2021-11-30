@@ -36,5 +36,5 @@ export interface Ingredient {
 export interface Rating {
     user_id: string;
     recipe_id: string;
-    vote: boolean;
+    vote: number;
 }

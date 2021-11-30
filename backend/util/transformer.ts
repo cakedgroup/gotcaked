@@ -2,7 +2,7 @@ import e from "cors";
 import { JwtPayload } from "jsonwebtoken";
 import { JWTContent } from "../models/auth";
 import { User, UserPublic } from "../models/user";
-import { Recipe } from '../models/recipe';
+import { Rating, Recipe } from '../models/recipe';
 import { Tag } from '../models/tag';
 import { Category } from '../models/category';
 import { Comment } from '../models/comment';
@@ -55,6 +55,14 @@ export function commentTransformer(comment: Comment): Comment {
         user_id: comment.user_id,
         recipe_id: comment.recipe_id,
         time: comment.time
+    }
+}
+
+export function ratingTransformer(rating: Rating): Rating {
+    return{
+        user_id: rating.user_id,
+        recipe_id: rating.recipe_id,
+        vote: rating.vote
     }
 }
 

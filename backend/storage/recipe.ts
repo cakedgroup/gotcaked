@@ -240,6 +240,18 @@ export function updateRating(rating : Rating): Promise<void> {
     });
 }
 
+export function deleteRating(userId: string, recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM rating WHERE user_id = ? AND recipe_id = ?`, [userId, recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 export function getUserRecipeRating(userId: string, recipeId: string): Promise<Rating> {
     return new Promise((resolve, reject) => {
         db.get(`SELECT * FROM rating WHERE user_id = ? AND recipe_id = ?`, [userId, recipeId], (err, row) => {
@@ -258,7 +270,7 @@ export function getUserRecipeRating(userId: string, recipeId: string): Promise<R
 
 export function getRecipeRating(recipeId: string): Promise<number> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT AVG(vote) AS rating FROM rating WHERE recipe_id = ?`, [recipeId], (err, row) => {
+        db.get(`SELECT SUM(vote) AS rating FROM rating WHERE recipe_id = ?`, [recipeId], (err, row) => {
             if (err) {
                 reject(err);
             } else {

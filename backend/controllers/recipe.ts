@@ -3,7 +3,7 @@ import * as commentService from '../services/comment';
 import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
-import { validateComment, validateRecipe } from '../middelwares/inputValidation';
+import { validateComment, validateRating, validateRecipe } from '../middelwares/inputValidation';
 
 
 const router = express.Router();
@@ -99,6 +99,31 @@ router.get('/:id/comments/:commentId', (req, res) => {
 router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req, res) => {
     commentService.deleteComment(req.params.commentId).then(() => {
         res.status(204).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
+    //Set user id
+    if (req.jwtContent?.id) {
+        req.body.user_id = req.jwtContent.id;
+    }
+        
+    //Set recipeId
+    let id: string = req.params.id;
+    req.body.recipe_id = id;
+
+    recipeService.rateRecipe(req.body).then(() => {
+        res.status(200).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+router.get('/:id/rating', (req, res) => {
+    recipeService.getRecipeRating(req.params.id).then(rating => {
+        res.status(200).json(rating);
     }).catch(err => {
         errorHandler(err, req, res);
     });

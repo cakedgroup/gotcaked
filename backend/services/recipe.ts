@@ -192,8 +192,11 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
 }
 
 export function rateRecipe(rating : Rating) : Promise<void>{
+    rating.vote > 0 ? rating.vote = 1 : rating.vote = -1;
+
+    
     return new Promise<void>((resolve, reject) => {
-        recipeDAO.getUserRecipeRating(rating.user_id, rating.recipe_id).then((rating) => {
+        recipeDAO.getUserRecipeRating(rating.user_id, rating.recipe_id).then(() => {
             recipeDAO.updateRating(rating).then(() => {
                 resolve();
             }).catch((err) => {
