@@ -50,6 +50,35 @@ export function getRecipe(id: string): Promise<Recipe> {
     });
 }
 
+export function getRandomRecipe(): Promise<Recipe> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM recipe WHERE id IN (SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1)`, (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    resolve(recipe);
+                }else {
+                    reject(new Error("Recipe not found"));
+                }
+            }
+        });
+    });
+}
+
 export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
     let query : string = "SELECT * FROM recipe";
     query = sqlPager(query, limit, offset);

@@ -68,8 +68,11 @@ router.post('/:id/comments', (req, res) => {
 });
 
 router.get('/random', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    recipeService.getRandomRecipe().then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 export { router as recipeController };
