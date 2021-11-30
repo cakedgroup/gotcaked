@@ -35,6 +35,16 @@ router.post('/', isAuthorized, validateRecipe, (req, res) => {
     });
 });
 
+router.get('/random', (req, res) => {
+    let categoryId = req.query.category as string;
+    let tagId = req.query.tag as string;
+    recipeService.getRandomRecipe(categoryId, tagId).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 router.get('/:id', (req, res) => {
     recipeService.getRecipe(req.params.id).then(recipe => {
         res.status(200).json(recipe);
@@ -143,9 +153,6 @@ router.get('/:id/ratingStatus', isAuthorized, (req, res) => {
     });
 });
 
-router.get('/random', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
-});
+
 
 export { router as recipeController };

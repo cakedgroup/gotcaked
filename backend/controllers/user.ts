@@ -61,6 +61,15 @@ router.delete('/:id', isAuthorizedUser, (req, res) => {
     });
 });
 
+router.get('/random', (req, res) => {
+    //Get Random User from Service
+    userService.getRandomUser().then(user => {
+        res.status(200).json(user);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 router.get('/:id/recipes', (req, res) => {
     res.status(501);
     res.send('To be implemented.');

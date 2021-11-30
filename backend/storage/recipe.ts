@@ -50,6 +50,46 @@ export function getRecipe(id: string): Promise<Recipe> {
     });
 }
 
+export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
+    let sql = "SELECT * FROM recipe WHERE id IN (SELECT id FROM recipe ";
+    if (categoryId && tagId) {
+        sql += "WHERE category_id = '" + categoryId + "' AND tag_id = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
+    } else if (tagId) {
+        sql += "WHERE tag_id = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
+    } else if (categoryId) {
+        sql += "WHERE category_id = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
+    } else {
+        sql += "ORDER BY RANDOM() LIMIT 1)";
+    }
+
+    return new Promise((resolve, reject) => {
+        db.get(sql, (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    let recipe: Recipe = {
+                        id: row.id,
+                        name: row.name,
+                        description: row.description,
+                        preparation: row.preparation,
+                        createdAt: row.createdAt,
+                        difficulty: row.difficulty,
+                        time: row.time,
+                        category_id: row.category_id,
+                        user_id: row.user_id,
+                        tags: [],
+                        ingredients: []
+                    };
+                    resolve(recipe);
+                }else {
+                    reject(new Error("Recipe not found"));
+                }
+            }
+        });
+    });
+}
+
 export function getRecipes(limit?:number, offset?: number): Promise<Recipe[]> {
     let query : string = "SELECT * FROM recipe";
     query = sqlPager(query, limit, offset);

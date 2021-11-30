@@ -74,6 +74,32 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
+export function getRandomRecipe(categoryId: string, tagId: string): Promise<Recipe> {
+    return new Promise<Recipe>((resolve, reject) => {
+        recipeDAO.getRandomRecipe(categoryId,tagId).then(recipe => {
+            //Get all ingredients
+            recipeDAO.getIngredients(recipe.id).then(ingredients => {
+                ingredients.forEach(ingredient => {
+                    recipe.ingredients.push(ingredient);
+                });
+                //Get all tags
+                tagDAO.getRecipeTags(recipe.id).then(tags => {
+                    tags.forEach(tag => {
+                        recipe.tags.push(tag);
+                    });
+                    resolve(recipe);
+                }).catch(err => {
+                    reject(err);
+                });
+            }).catch(err => {
+                reject(err);
+            });
+        }).catch(error => {
+            reject(error);
+        });
+    });
+}           
+
 export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipes(limit, offset).then(recipes => {
