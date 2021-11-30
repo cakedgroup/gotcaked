@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "43acfe83-4f73-42ac-bbc3-129b0a59a7c2",
+		"_postman_id": "af95ae79-4013-4a56-9d1e-3fcaf916468a",
 		"name": "gotCaked",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2887,8 +2887,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 200\", function() {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status Code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -3000,6 +3000,50 @@
 								"recipes",
 								"{{recipeId}}",
 								"rating"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rating User Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"pm.test(\"Recieving Correct Rating\", function () {",
+									"    pm.expect(data.rating).equal(1);",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId}}/ratingStatus",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId}}",
+								"ratingStatus"
 							]
 						}
 					},

@@ -4,6 +4,8 @@ import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '.
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
 import { validateComment, validateRating, validateRecipe } from '../middelwares/inputValidation';
+import { getRatingFromUser } from '../services/recipe';
+import { JWTContent } from '../models/auth';
 
 
 const router = express.Router();
@@ -115,7 +117,7 @@ router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
     req.body.recipe_id = id;
 
     recipeService.rateRecipe(req.body).then(() => {
-        res.status(200).send();
+        res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
     });
@@ -123,6 +125,18 @@ router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
 
 router.get('/:id/rating', (req, res) => {
     recipeService.getRecipeRating(req.params.id).then(rating => {
+        res.status(200).json(rating);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+router.get('/:id/ratingStatus', isAuthorized, (req, res) => {
+    if (req.jwtContent?.id) {
+        req.body.user_id = req.jwtContent.id;
+    }
+    
+    recipeService.getRatingFromUser(req.body.user_id, req.params.id).then(rating => {
         res.status(200).json(rating);
     }).catch(err => {
         errorHandler(err, req, res);
