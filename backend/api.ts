@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
+import path from 'path';
 import { authController } from './controllers/auth';
 import { categoryController } from './controllers/category';
 import { welcomeController } from './controllers/main';
