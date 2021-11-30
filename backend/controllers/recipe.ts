@@ -1,5 +1,4 @@
 import express from 'express';
-import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as commentService from '../services/comment';
 import { isAuthorized, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
