@@ -4,7 +4,7 @@ import * as commentService from '../services/comment';
 import { isAuthorized, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
-import { validateRecipe } from '../middelwares/inputValidation';
+import { validateComment, validateRecipe } from '../middelwares/inputValidation';
 
 
 const router = express.Router();
@@ -69,9 +69,15 @@ router.get('/:id/comments', (req, res) => {
     });
 });
 
-router.post('/:id/comments', isAuthorizedUser, (req, res) => {
+router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
+    //Set user id
+    if (req.jwtContent?.id) {
+        req.body.user_id = req.jwtContent.id;
+    }
+    
+    //Set recipeId
     let id: string = req.params.id;
-    req.body.recipeId = id;
+    req.body.recipe_id = id;
 
     commentService.createComment(req.body).then(comment => {
         res.status(201).json(comment);

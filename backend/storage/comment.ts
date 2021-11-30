@@ -3,8 +3,8 @@ import { db } from './db';
 
 export function createComment(comment: Comment): Promise<Comment> {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO comments (id, text, userId, recipeId, time) VALUES (?, ?, ?, ?, ?)`,
-            [comment.id, comment.text, comment.userId, comment.recipeId, comment.time],
+        db.run(`INSERT INTO comment (id, text, user_id, recipe_id, time) VALUES (?, ?, ?, ?, ?)`,
+            [comment.id, comment.text, comment.user_id, comment.recipe_id, comment.time],
             (err) => {
                 if (err) {
                     reject(err);
@@ -16,24 +16,24 @@ export function createComment(comment: Comment): Promise<Comment> {
     });
 }
 
-export function getComments(id: string): Promise<Comment[]> {
+export function getComments(recipeId: string): Promise<Comment[]> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM comments WHERE id = ?`, [id], (err, rows) => {
+        db.all(`SELECT * FROM comment WHERE recipe_id = ?`, [recipeId], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
                 let comments: Comment[] = [];
-                for (let row of rows) {
+                rows.forEach((row) => {
                     let comment : Comment = {
                         id: row.id,
                         text: row.text,
-                        userId: row.userId,
-                        recipeId: row.recipeId,
+                        user_id: row.user_id,
+                        recipe_id: row.recipe_id,
                         time: row.time
                     };
                     comments.push(comment);
-                    resolve(comments);
-                }
+                });
+                resolve(comments);
             }
         });
     });

@@ -96,7 +96,7 @@ function createTables(){
         id VARCHAR(36) PRIMARY KEY,
         user_id VARCHAR(36) NOT NULL,
         recipe_id VARCHAR(36) NOT NULL,
-        comment TEXT,
+        text TEXT,
         time DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES user(id),
         FOREIGN KEY (recipe_id) REFERENCES recipe(id));`, (err) => {
