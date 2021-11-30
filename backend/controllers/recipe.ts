@@ -1,6 +1,6 @@
 import express from 'express';
 import * as commentService from '../services/comment';
-import { isAuthorized, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
+import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
 import { validateComment, validateRecipe } from '../middelwares/inputValidation';
@@ -83,6 +83,22 @@ router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
 
     commentService.createComment(req.body).then(comment => {
         res.status(201).json(comment);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+router.get('/:id/comments/:commentId', (req, res) => {
+    commentService.getComment(req.params.commentId).then(comment => {
+        res.status(200).json(comment);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req, res) => {
+    commentService.deleteComment(req.params.commentId).then(() => {
+        res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
     });

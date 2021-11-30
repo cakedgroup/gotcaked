@@ -43,6 +43,37 @@ export function getComments(recipeId: string, limit?:number, offset?:number): Pr
     });
 }
 
+export function getComment(commentId: string): Promise<Comment> {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM comment WHERE id = ?`, [commentId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                let comment : Comment = {
+                    id: row.id,
+                    text: row.text,
+                    user_id: row.user_id,
+                    recipe_id: row.recipe_id,
+                    time: row.time
+                };
+                resolve(comment);
+            }
+        });
+    });
+}
+
+export function deleteComment(commentId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM comment WHERE id = ?`, [commentId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 export function deleteAllComments(recipeId: string): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(`DELETE FROM comment WHERE recipe_id = ?`, [recipeId], (err) => {
