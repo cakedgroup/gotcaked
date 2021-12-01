@@ -1,6 +1,6 @@
 import express from 'express';
-import * as userService from '../services/user';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
+import * as userService from '../services/user';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -50,6 +50,25 @@ router.patch('/:id', isAuthorizedUser, (req, res) => {
 
 });
 
+router.patch('/:id/picture', isAuthorizedUser, (req, res) => {
+    let id: string = req.params.id;
+
+    if (req.files) {
+        if (req.files.picture) {
+            //Update User Picture in Service
+            userService.setPicture(id, req.files.picture).then(user => {
+                res.status(200).json(user);
+            }).catch(err => {
+                errorHandler(err, req, res);
+            });
+        } else {
+            errorHandler(new Error('Wrong file uploaded'), req, res);
+        }
+    } else {
+        errorHandler(new Error('No file uploaded'), req, res);
+    }
+});
+
 router.delete('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
 
@@ -60,6 +79,18 @@ router.delete('/:id', isAuthorizedUser, (req, res) => {
         errorHandler(err, req, res);
     });
 });
+
+router.delete('/:id/picture', isAuthorizedUser, (req, res) => {
+    let id: string = req.params.id;
+
+    //Delete User Picture in Service
+    userService.deletePicture(id).then(() => {
+        res.status(204).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 
 router.get('/random', (req, res) => {
     //Get Random User from Service

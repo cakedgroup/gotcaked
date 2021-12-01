@@ -1,11 +1,9 @@
 import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
-import path from 'path';
 import { authController } from './controllers/auth';
 import { categoryController } from './controllers/category';
 import { welcomeController } from './controllers/main';
-import { pictureController } from './controllers/picture';
 import { recipeController } from './controllers/recipe';
 import { statusController } from './controllers/status';
 import { tagController } from './controllers/tag';
@@ -37,7 +35,6 @@ router.use('/categories', categoryController);
 router.use('/tags', tagController);
 router.use('/recipes', recipeController);
 router.use('/auth', authController);
-router.use('/upload', pictureController);
 
 //404 Route
 router.use((_req: express.Request, res: express.Response) => {
