@@ -1,7 +1,7 @@
-import { db } from './db';
-import { generateUUID } from "../util/uuid";
-import { sqlPager } from '../util/sql';
 import { Ingredient, Rating, Recipe, RecipePicture } from '../models/recipe';
+import { sqlPager } from '../util/sql';
+import { generateUUID } from "../util/uuid";
+import { db } from './db';
 
 
 
@@ -327,10 +327,9 @@ export function getRecipeRating(recipeId: string): Promise<number> {
     });
 }
 
-export function createPicture(pictureId: string, recipeId: string): Promise<void> {
+export function createPicture(recipeId: string, pictureId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO recipe_picture (recipe_id, picture_id) VALUES (?, ?, ?)`,
-            [pictureId, recipeId],
+        db.run(`INSERT INTO recipe_picture (recipe_id, picture_id) VALUES (?, ?)`, [recipeId, pictureId],
             (err) => {
                 if (err) {
                     reject(err);
@@ -343,21 +342,17 @@ export function createPicture(pictureId: string, recipeId: string): Promise<void
 
 export function getPicturesFromRecipe(recipeId: string): Promise<RecipePicture[]> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM recipe_picture WHERE recipe_id = ?`, [recipeId], (err, rows) => {
+        db.all(`SELECT * FROM recipe_picture WHERE recipe_id = ?`, [recipeId], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
-                let picture: RecipePicture[] = [];
-                rows.forEach((row: RecipePicture) => {
-                    picture.push(row);
-                });
-                resolve(picture);
+                resolve(rows);
             }
         });
     });
 }
 
-export function deletePictureFromRecipe(pictureId: string, recipeId: string): Promise<void> {
+export function deletePictureFromRecipe(recipeId: string, pictureId: string): Promise<void> {
     return new Promise((resolve, reject) => {
         db.run(`DELETE FROM recipe_picture WHERE picture_id = ? AND recipe_id = ?`, [pictureId, recipeId], (err) => {
             if (err) {

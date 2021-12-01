@@ -1,9 +1,10 @@
-import { Rating } from "../models/recipe";
-import { Recipe, RecipeSmall } from '../models/recipe';
+import fileUpload from 'express-fileupload';
+import { Rating, Recipe, RecipeSmall } from "../models/recipe";
 import * as categoryDAO from '../storage/category';
+import * as commentDAO from '../storage/comment';
 import * as recipeDAO from '../storage/recipe';
 import * as tagDAO from '../storage/tag';
-import * as commentDAO from '../storage/comment';
+import * as fileHandler from '../util/fileHandler';
 import { generateUUID } from '../util/uuid';
 
 
@@ -37,9 +38,6 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
                             });
                         });
                     });
-                    // TODO Add Picture Reference
-                    
-
                     resolve(recipe);
                 }).catch(error => {
                     reject(error);
@@ -64,12 +62,18 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
                     tags.forEach(tag => {
                         recipe.tags.push(tag);
                     });
-                    resolve(recipe);
+                    //Get Pictures
+                    recipeDAO.getPicturesFromRecipe(recipe.id).then(pictures => {
+                        pictures.forEach(picture => {
+                            recipe.picture_uri.push(picture.picture_id);
+                        });
+                        resolve(recipe);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 }).catch(err => {
                     reject(err);
                 });
-
-                //TODO Serve Pictures
             }).catch(err => {
                 reject(err);
             });
@@ -81,7 +85,7 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
 
 export function getRandomRecipe(categoryId: string, tagId: string): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
-        recipeDAO.getRandomRecipe(categoryId,tagId).then(recipe => {
+        recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
             //Get all ingredients
             recipeDAO.getIngredients(recipe.id).then(ingredients => {
                 ingredients.forEach(ingredient => {
@@ -92,12 +96,18 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
                     tags.forEach(tag => {
                         recipe.tags.push(tag);
                     });
-                    resolve(recipe);
+                    //Get Pictures
+                    recipeDAO.getPicturesFromRecipe(recipe.id).then(pictures => {
+                        pictures.forEach(picture => {
+                            recipe.picture_uri.push(picture.picture_id);
+                        });
+                        resolve(recipe);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 }).catch(err => {
                     reject(err);
                 });
-
-                //TODO Serve Pictures
             }).catch(err => {
                 reject(err);
             });
@@ -105,7 +115,7 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
             reject(error);
         });
     });
-}           
+}
 
 export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
@@ -212,8 +222,6 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                                     });
                                 });
                             });
-
-                            //TODO Update Pictures
                             resolve(recipe);
                         }).catch(err => {
                             reject(err);
@@ -229,7 +237,32 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
     });
 }
 
-export function rateRecipe(rating : Rating) : Promise<void>{
+export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): Promise<{}> {
+    return new Promise<{}>((resolve, reject) => {
+        //Check if recipe exists
+        recipeDAO.getRecipe(recipeID).then(recipe => {
+            if (recipe) {
+                //Save Picture
+                fileHandler.saveFile(picture, "recipe").then((picture_uri) => {
+                    recipeDAO.createPicture(recipeID, picture_uri).then(() => {
+                        resolve(getRecipe(recipeID));
+                    }).catch(err => {
+                        //Delete file, bc the reference was not saved to the db
+                        fileHandler.deleteFile(picture_uri, "recipe")
+                        reject(new Error("Could not save picture1"));
+                    });
+                }).catch(err => {
+                    reject(new Error("Could not save picture2"));
+                });
+            } else {
+                reject(new Error("Recipe does not exist"));
+            }
+        });
+    }
+    );
+}
+
+export function rateRecipe(rating: Rating): Promise<void> {
     rating.vote > 0 ? rating.vote = 1 : rating.vote = -1;
 
     return new Promise<void>((resolve, reject) => {
@@ -261,7 +294,7 @@ export function rateRecipe(rating : Rating) : Promise<void>{
     });
 }
 
-export function getRatingFromUser(user_id : string, recipe_id : string) : Promise<Rating>{
+export function getRatingFromUser(user_id: string, recipe_id: string): Promise<Rating> {
     return new Promise<Rating>((resolve, reject) => {
         recipeDAO.getUserRecipeRating(user_id, recipe_id).then((rating) => {
             resolve(rating);
@@ -271,7 +304,7 @@ export function getRatingFromUser(user_id : string, recipe_id : string) : Promis
     });
 }
 
-export function getRecipeRating(recipe_id : string) : Promise<number>{
+export function getRecipeRating(recipe_id: string): Promise<number> {
     return new Promise<number>((resolve, reject) => {
         recipeDAO.getRecipe(recipe_id).then((recipe) => {
             if (recipe) {

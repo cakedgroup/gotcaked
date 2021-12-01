@@ -2689,6 +2689,75 @@
 					"response": []
 				},
 				{
+					"name": "Add Picture to Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/C:/Users/HUIDAL/Nextcloud/3. Semester/Webengineering 2/WebDev-Projekt/Icons and Pictures/russischer-zupfkuchen.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}/picture",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}",
+								"picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Edit second recipe",
 					"event": [
 						{

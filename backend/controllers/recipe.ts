@@ -61,6 +61,25 @@ router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+router.patch('/:id/picture', isAuthorizedForRecipes, (req, res) => {
+    let id: string = req.params.id;
+
+    if (req.files) {
+        if (req.files.picture) {
+            //Update User Picture in Service
+            recipeService.addPicture(id, req.files.picture).then(recipe => {
+                res.status(200).json(recipe);
+            }).catch(err => {
+                errorHandler(err, req, res);
+            });
+        } else {
+            errorHandler(new Error('Wrong file uploaded'), req, res);
+        }
+    } else {
+        errorHandler(new Error('No file uploaded'), req, res);
+    }
+});
+
 router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     //Delete recipe
     recipeService.deleteRecipe(req.params.id).then(() => {
