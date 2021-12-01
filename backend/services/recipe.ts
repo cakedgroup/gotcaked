@@ -268,7 +268,7 @@ export function deletePicture(recipeID: string, pictureID: string): Promise<{}> 
         recipeDAO.getRecipe(recipeID).then(recipe => {
             if (recipe) {
                 //Get Picture
-                recipeDAO.getPicturesFromRecipe(pictureID).then(pictures => {
+                recipeDAO.getPicturesFromRecipe(recipeID).then(pictures => {
                     pictures.forEach(picture => {
                         if (picture.picture_id === pictureID) {
                             //Delete Picture
