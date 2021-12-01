@@ -1,10 +1,13 @@
 import * as bcrypt from "bcrypt";
 import fileUpload from 'express-fileupload';
+import { JWTContent } from "../models/auth";
 import { User, UserPublic } from "../models/user";
+import * as blacklistDAO from '../storage/blacklist';
 import * as statusDAO from "../storage/status";
 import * as userDAO from "../storage/user";
 import * as fileHandler from '../util/fileHandler';
 import { userTransformer } from '../util/transformer';
+
 
 export function createUser(user: User): Promise<UserPublic> {
   //Default Role
@@ -108,7 +111,7 @@ export function deletePicture(userID: string): Promise<{}> {
 }
 
 
-export function deleteUser(id: string): Promise<boolean> {
+export function deleteUser(id: string, blockJWT: boolean, jwtToken?: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     //Check if User exists
     userDAO.getUserById(id).then(user => {
@@ -122,7 +125,14 @@ export function deleteUser(id: string): Promise<boolean> {
           }
 
           //Delete User from DB
-          userDAO.deleteUser(id).then(() => resolve(true)).catch(() => reject(new Error("Error Deleting User")));
+          userDAO.deleteUser(id).then(() => {
+            //Blacklist JWT Token
+            if (jwtToken && blockJWT) {
+              blacklistDAO.addJWTToBlacklist(jwtToken);
+            }
+
+            resolve(true)
+          }).catch(() => reject(new Error("Error Deleting User")));
         }
       } else {
         reject(new Error("User not found"));

@@ -1383,7 +1383,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],

@@ -2,6 +2,8 @@ import express from 'express';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as userService from '../services/user';
 import { errorHandler } from '../util/errorHandler';
+import * as jwt from 'jsonwebtoken';
+import { JWTContent } from '../models/auth';
 
 const router = express.Router();
 
@@ -71,9 +73,17 @@ router.patch('/:id/picture', isAuthorizedUser, (req, res) => {
 
 router.delete('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
+    //Store JWT to Blacklist JWT
+    let jwtToken: string = req.headers['jwt'] as string;
+    let blockJWT: boolean = false;
+    if (req.jwtContent){
+        if (req.jwtContent.role === "user"){
+            blockJWT = true;
+        }
+    }
 
     //Delete User in Service
-    userService.deleteUser(id).then(() => {
+    userService.deleteUser(id, blockJWT, jwtToken).then(() => {
         res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
