@@ -249,10 +249,10 @@ export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): 
                     }).catch(err => {
                         //Delete file, bc the reference was not saved to the db
                         fileHandler.deleteFile(picture_uri, "recipe")
-                        reject(new Error("Could not save picture1"));
+                        reject(new Error("Could not save picture"));
                     });
                 }).catch(err => {
-                    reject(new Error("Could not save picture2"));
+                    reject(new Error("Could not save picture"));
                 });
             } else {
                 reject(new Error("Recipe does not exist"));
@@ -260,6 +260,42 @@ export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): 
         });
     }
     );
+}
+
+export function deletePicture(recipeID: string, pictureID: string): Promise<{}> {
+    return new Promise<{}>((resolve, reject) => {
+        //Check if recipe exists
+        recipeDAO.getRecipe(recipeID).then(recipe => {
+            if (recipe) {
+                //Get Picture
+                recipeDAO.getPicturesFromRecipe(pictureID).then(pictures => {
+                    pictures.forEach(picture => {
+                        if (picture.picture_id === pictureID) {
+                            //Delete Picture
+                            recipeDAO.deletePictureFromRecipe(recipeID, pictureID).then(() => {
+                                //Delete file
+                                fileHandler.deleteFile(picture.picture_id, "recipe").then(() => {
+                                    resolve(getRecipe(recipeID));
+                                }).catch(err => {
+                                    reject(new Error("Could not delete picture"));
+                                });
+                            }).catch(err => {
+                                reject(new Error("Could not delete picture"));
+                            });
+                        } else {
+                            reject(new Error("Picture does not exist"));
+                        }
+                    });
+                }).catch(err => {
+                    reject(new Error("Picture does not exist"));
+                });
+            } else {
+                reject(new Error("Recipe does not exist"));
+            }
+        }).catch(err => {
+            reject(new Error("Could not get picture"));
+        });
+    });
 }
 
 export function rateRecipe(rating: Rating): Promise<void> {

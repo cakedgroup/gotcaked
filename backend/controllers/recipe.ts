@@ -89,6 +89,19 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+router.delete('/:id/picture/:pictureID', isAuthorizedForRecipes, (req, res) => {
+    let id: string = req.params.id;
+    let pictureID: string = req.params.pictureID;
+
+    //Delete User Picture in Service
+    recipeService.deletePicture(id, pictureID).then(() => {
+        res.status(204).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+
 router.get('/:id/comments', (req, res) => {
     let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
