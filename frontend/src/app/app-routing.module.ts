@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {PageNotFoundComponent} from "./pages/page-not-found/page-not-found.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {
@@ -11,6 +11,7 @@ const routes: Routes = [
     path: '404',
     component: PageNotFoundComponent
   },
+  { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
   {
     path: '**',
     redirectTo: '404'
