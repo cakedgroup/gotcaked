@@ -89,9 +89,9 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
-router.delete('/:id/picture/:pictureID', isAuthorizedForRecipes, (req, res) => {
+router.delete('/:id/picture/', isAuthorizedForRecipes, (req, res) => {
     let id: string = req.params.id;
-    let pictureID: string = req.params.pictureID;
+    let pictureID: string = req.body.picture_uri as string;
 
     //Delete User Picture in Service
     recipeService.deletePicture(id, pictureID).then(() => {
