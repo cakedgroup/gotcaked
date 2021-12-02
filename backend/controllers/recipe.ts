@@ -3,7 +3,7 @@ import * as commentService from '../services/comment';
 import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
-import { validateComment, validateRating, validateRecipe } from '../middelwares/inputValidation';
+import { validateComment, validateRating, validateRecipe, validatePicture } from '../middelwares/inputValidation';
 import { getRatingFromUser } from '../services/recipe';
 import { JWTContent } from '../models/auth';
 
@@ -61,23 +61,15 @@ router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
-router.patch('/:id/picture', isAuthorizedForRecipes, (req, res) => {
+router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req, res) => {
     let id: string = req.params.id;
 
-    if (req.files) {
-        if (req.files.picture) {
-            //Update User Picture in Service
-            recipeService.addPicture(id, req.files.picture).then(recipe => {
-                res.status(200).json(recipe);
-            }).catch(err => {
-                errorHandler(err, req, res);
-            });
-        } else {
-            errorHandler(new Error('Wrong file uploaded'), req, res);
-        }
-    } else {
-        errorHandler(new Error('No file uploaded'), req, res);
-    }
+    //Update User Picture in Service
+    recipeService.addPicture(id, req.files.picture).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
@@ -107,7 +99,7 @@ router.get('/:id/comments', (req, res) => {
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
     let id: string = req.params.id;
-    
+
     commentService.getAllComments(id, limit, offset).then(comments => {
         res.status(200).json(comments);
     }).catch(err => {
@@ -120,7 +112,7 @@ router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-    
+
     //Set recipeId
     let id: string = req.params.id;
     req.body.recipe_id = id;
@@ -153,7 +145,7 @@ router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-        
+
     //Set recipeId
     let id: string = req.params.id;
     req.body.recipe_id = id;
@@ -177,7 +169,7 @@ router.get('/:id/ratingStatus', isAuthorized, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-    
+
     recipeService.getRatingFromUser(req.body.user_id, req.params.id).then(rating => {
         res.status(200).json(rating);
     }).catch(err => {

@@ -4,6 +4,7 @@ import * as userService from '../services/user';
 import { errorHandler } from '../util/errorHandler';
 import * as jwt from 'jsonwebtoken';
 import { JWTContent } from '../models/auth';
+import { validatePicture } from '../middelwares/inputValidation';
 
 const router = express.Router();
 
@@ -52,23 +53,14 @@ router.patch('/:id', isAuthorizedUser, (req, res) => {
 
 });
 
-router.patch('/:id/picture', isAuthorizedUser, (req, res) => {
+router.patch('/:id/picture', isAuthorizedUser, validatePicture, (req, res) => {
     let id: string = req.params.id;
 
-    if (req.files) {
-        if (req.files.picture) {
-            //Update User Picture in Service
-            userService.setPicture(id, req.files.picture).then(user => {
-                res.status(200).json(user);
-            }).catch(err => {
-                errorHandler(err, req, res);
-            });
-        } else {
-            errorHandler(new Error('Wrong file uploaded'), req, res);
-        }
-    } else {
-        errorHandler(new Error('No file uploaded'), req, res);
-    }
+    userService.setPicture(id, req.files.picture).then(user => {
+        res.status(200).json(user);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 router.delete('/:id', isAuthorizedUser, (req, res) => {
@@ -76,8 +68,8 @@ router.delete('/:id', isAuthorizedUser, (req, res) => {
     //Store JWT to Blacklist JWT
     let jwtToken: string = req.headers['jwt'] as string;
     let blockJWT: boolean = false;
-    if (req.jwtContent){
-        if (req.jwtContent.role === "user"){
+    if (req.jwtContent) {
+        if (req.jwtContent.role === "user") {
             blockJWT = true;
         }
     }

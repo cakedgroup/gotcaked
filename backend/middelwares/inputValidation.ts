@@ -29,7 +29,7 @@ export function validateCategory(req: express.Request, res: express.Response, ne
     }
 }
 
-export function validateComment(req: express.Request, res: express.Response, next: express.NextFunction){
+export function validateComment(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (req.body) {
         req.body = commentTransformer(req.body);
         next();
@@ -45,5 +45,18 @@ export function validateRating(req: express.Request, res: express.Response, next
         next();
     } else {
         res.status(400).json({ message: "Rating is not valid" });
+    }
+}
+
+
+export function validatePicture(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (req.files) {
+        if (req.files.picture && req.files.picture.mimetype.includes("image")) {
+            next();
+        } else {
+            res.status(400).json({ message: "Picture is not valid" });
+        }
+    } else {
+        res.status(400).json({ message: "No file uploaded" });
     }
 }

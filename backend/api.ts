@@ -18,7 +18,13 @@ router.use(cors());
 router.use(express.json());
 router.use(logger.logToConsole);
 router.use(checkJWT);
-router.use(fileUpload());
+router.use(fileUpload({
+  limits: {
+    fileSize: 2 * 1024 * 1024 // 2 MB
+  },
+  abortOnLimit: true,
+  
+}));
 
 
 declare module 'express-serve-static-core' {
