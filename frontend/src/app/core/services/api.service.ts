@@ -15,6 +15,10 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
+  getStatus(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/status`);
+  }
+
   createEcho(echo: CreateEchoInput): Observable<Echo> {
     return this.http.post<Echo>(
       `${this.baseUrl}/echo`,
