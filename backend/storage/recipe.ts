@@ -229,9 +229,21 @@ export function getIngredients(recipeId: string): Promise<Ingredient[]> {
     });
 }
 
-export function deleteIngredient(recipeid: string): Promise<void> {
+export function deleteIngredient(recipeId: string, IngredientId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        db.run(`DELETE FROM ingredient WHERE recipe_id = ?`, [recipeid], (err) => {
+        db.run(`DELETE FROM ingredient WHERE recipe_id = ? AND id = ?`, [recipeId, IngredientId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+export function deleteAllIngredients(recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM ingredient WHERE recipe_id = ?`, [recipeId], (err) => {
             if (err) {
                 reject(err);
             } else {

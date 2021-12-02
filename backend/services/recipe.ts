@@ -1,5 +1,5 @@
 import fileUpload from 'express-fileupload';
-import { Rating, Recipe, RecipeSmall, RecipePicture } from '../models/recipe';
+import { Rating, Recipe, RecipeSmall } from '../models/recipe';
 import * as categoryDAO from '../storage/category';
 import * as commentDAO from '../storage/comment';
 import * as recipeDAO from '../storage/recipe';
@@ -147,31 +147,40 @@ export function deleteRecipe(recipeID: string): Promise<void> {
         //Check if recipe exists
         recipeDAO.getRecipe(recipeID).then(recipe => {
             if (recipe) {
-                //Delete all ingredients
-                recipeDAO.getIngredients(recipeID).then(ingredients => {
-                    ingredients.forEach(ingredient => {
-                        recipeDAO.deleteIngredient(ingredient.id).catch(err => {
-                            reject(err);
-                        });
-                        //TODO Delete all ratings
-                        //Delete all comments from recipe
-                        commentDAO.deleteAllComments(recipeID).catch(err => {
-                            reject(err);
-                        });
-                        //Delete Recipe
-                        recipeDAO.deleteRecipe(recipeID).then(() => {
-                            resolve();
-                        }).catch(err => {
-                            reject(err);
-                        });
-
-                        //TODO Delete all pictures
+                //TODO Delete all ratings
+                Promise.all([commentDAO.deleteAllComments(recipeID), recipeDAO.deleteAllIngredients(recipeID), deleteAllPicturesFromRecipe(recipeID)]).then(() => {
+                    //Delete Recipe
+                    recipeDAO.deleteRecipe(recipeID).then(() => {
+                        resolve();
+                    }).catch(err => {
+                        reject(err);
                     });
-                }).catch(() => reject(new Error('Recipe does not exist')));
+
+                }).catch(err => {
+                    reject(err);
+                });
             } else {
                 reject(new Error('Recipe does not exist'));
             }
-        }).catch(() => reject(new Error("Recipe does not exist")));
+        }).catch(err => {
+            reject(new Error('Recipe does not exist'));
+        });
+    });
+}
+
+
+function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        //Get all pictures and delete them on the file system and db
+        recipeDAO.getPicturesFromRecipe(recipeID).then(pictures => {
+            Promise.all(pictures.map(picture => {
+                fileHandler.deleteFile(picture.picture_id, "recipe").then(() => resolve()).catch(err => {
+                    reject(new Error('Could not delete picture'));
+                });
+            })).then(() => {
+                recipeDAO.deleteAllPicturesFromRecipe(recipeID).then(() => resolve()).catch(err => reject(err));
+            }).catch(err => reject(err));
+        });
     });
 }
 
@@ -182,54 +191,53 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
             if (category) {
                 //Get current Recipe
                 recipeDAO.getRecipe(recipeID).then(recipe => {
-                    //Update recipe fields
-                    recipe.name = updatedRecipe.name || recipe.name;
-                    recipe.description = updatedRecipe.description || recipe.description;
-                    recipe.difficulty = updatedRecipe.difficulty || recipe.difficulty;
-                    recipe.time = updatedRecipe.time || recipe.time;
-                    recipe.category_id = updatedRecipe.category_id || recipe.category_id;
-                    recipe.ingredients = updatedRecipe.ingredients || recipe.ingredients;
-                    recipe.tags = updatedRecipe.tags || recipe.tags;
-                    recipe.preparation = updatedRecipe.preparation || recipe.preparation;
+                    if (recipe) {
+                        //Update recipe fields
+                        recipe.name = updatedRecipe.name || recipe.name;
+                        recipe.description = updatedRecipe.description || recipe.description;
+                        recipe.difficulty = updatedRecipe.difficulty || recipe.difficulty;
+                        recipe.time = updatedRecipe.time || recipe.time;
+                        recipe.category_id = updatedRecipe.category_id || recipe.category_id;
+                        recipe.ingredients = updatedRecipe.ingredients || recipe.ingredients;
+                        recipe.tags = updatedRecipe.tags || recipe.tags;
+                        recipe.preparation = updatedRecipe.preparation || recipe.preparation;
 
-                    //Update recipe
-                    recipeDAO.updateRecipe(recipe).then(recipe => {
-                        //Delete all ingredients
-                        recipeDAO.getIngredients(recipeID).then(ingredients => {
-                            ingredients.forEach(ingredient => {
-                                recipeDAO.deleteIngredient(ingredient.id).catch(err => {
-                                    reject(err);
-                                });
-                            });
-                            //Create all ingredients
-                            recipe.ingredients.forEach(ingredient => {
-                                ingredient.id = generateUUID();
-                                ingredient.recipe_id = recipe.id;
-                                //Create ingredient
-                                recipeDAO.createIngredient(ingredient).catch(err => {
-                                    reject(err);
-                                });
-                            });
-                            //Create all tags and add them to recipe
-                            recipe.tags.forEach(tag => {
-                                //Create tag if not exists
-                                tagDAO.createTag(tag).then().catch(err => {
-                                    //Dont catch error (tag already exists)
-                                }).finally(() => {
-                                    //Add tag to recipe
-                                    tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
+                        //Update recipe
+                        recipeDAO.updateRecipe(recipe).then(recipe => {
+                            //Delete all ingredients //TODO Filter for changed ingredients
+                            recipeDAO.deleteAllIngredients(recipeID).then(() => {
+                                //Create all ingredients
+                                recipe.ingredients.forEach(ingredient => {
+                                    ingredient.id = generateUUID();
+                                    ingredient.recipe_id = recipe.id;
+                                    //Create ingredient
+                                    recipeDAO.createIngredient(ingredient).catch(err => {
                                         reject(err);
                                     });
                                 });
+                                //Create all tags and add them to recipe
+                                recipe.tags.forEach(tag => {
+                                    //Create tag if not exists
+                                    tagDAO.createTag(tag).then().catch(err => {
+                                        //Dont catch error (tag already exists)
+                                    }).finally(() => {
+                                        //Add tag to recipe
+                                        tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
+                                            reject(err);
+                                        });
+                                    });
+                                });
+                                resolve(recipe);
                             });
-                            resolve(recipe);
                         }).catch(err => {
                             reject(err);
                         });
-                    }).catch(error => {
-                        reject(error);
-                    });
-                }).catch(() => reject(new Error('Recipe does not exist')));
+                    } else {
+                        reject(new Error('Recipe does not exist'));
+                    }
+                }).catch(error => {
+                    reject(new Error('Recipe does not exist'));
+                });
             } else {
                 reject(new Error('Category does not exist'));
             }
@@ -269,6 +277,7 @@ export function deletePicture(recipeID: string, pictureID: string): Promise<{}> 
             if (recipe) {
                 //Get Picture
                 recipeDAO.getPicturesFromRecipe(recipeID).then(pictures => {
+                    //Check if Picture exists in recipe
                     let pictureExists: boolean = pictures.filter(picture => picture.picture_id === pictureID).length > 0;
                     if (pictureExists) {
                         //Delete Picture
@@ -292,7 +301,7 @@ export function deletePicture(recipeID: string, pictureID: string): Promise<{}> 
                 reject(new Error("Recipe does not exist"));
             }
         }).catch(err => {
-            reject(new Error("Could not get picture"));
+            reject(new Error("Recipe does not exist"));
         });
     });
 }

@@ -1437,7 +1437,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],
@@ -2701,8 +2701,11 @@
 									"\r",
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
-									"pm.test(\"Recieving Correct User\", function () {\r",
-									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"pm.test(\"Recieving Correct Recipe\", function () {\r",
+									"    pm.expect(data.user_id).equal(pm.globals.get(\"userID-3\"));\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"recipeId-2\"));\r",
+									"    pm.expect(data.picture_uri[0]).exist;    \r",
+									"    pm.globals.set(\"picture_uri\", data.picture_uri[0]);\r",
 									"}); "
 								],
 								"type": "text/javascript"
@@ -2764,15 +2767,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status Code is 200\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status Code is 204\", function() {\r",
+									"    pm.response.to.have.status(204);\r",
 									"});\r",
-									"\r",
-									"var data = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"Recieving Correct User\", function () {\r",
-									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
-									"}); "
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2798,14 +2796,8 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "picture",
-									"type": "file",
-									"src": "/C:/Users/HUIDAL/Nextcloud/3. Semester/Webengineering 2/WebDev-Projekt/Icons and Pictures/russischer-zupfkuchen.jpg"
-								}
-							],
+							"mode": "raw",
+							"raw": "{\r\n    \"picture_uri\": \"{{picture_uri}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2813,7 +2805,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiURL}}/recipes/{{recipeId-2}}/picture/13",
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}/picture/",
 							"host": [
 								"{{apiURL}}"
 							],
@@ -2821,7 +2813,7 @@
 								"recipes",
 								"{{recipeId-2}}",
 								"picture",
-								"13"
+								""
 							]
 						}
 					},
