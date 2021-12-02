@@ -1,13 +1,14 @@
 import express from 'express';
+import { validatePicture } from '../middelwares/inputValidation';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as userService from '../services/user';
 import { errorHandler } from '../util/errorHandler';
-import * as jwt from 'jsonwebtoken';
-import { JWTContent } from '../models/auth';
-import { validatePicture } from '../middelwares/inputValidation';
 
 const router = express.Router();
 
+// @route   GET api/users
+// @desc    Get all users
+// @access  Public
 router.get('/', (req, res) => {
     let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
@@ -20,6 +21,9 @@ router.get('/', (req, res) => {
     });
 });
 
+// @route   POST api/users
+// @desc    Create new user
+// @access  Public
 router.post('/', (req, res) => {
     //Create User in Service
     userService.createUser(req.body).then(user => {
@@ -30,6 +34,9 @@ router.post('/', (req, res) => {
     });
 });
 
+// @route   GET api/users/:id
+// @desc    Get user with id
+// @access  Public
 router.get('/:id', (req, res) => {
     let id: string = req.params.id;
 
@@ -41,6 +48,9 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// @route   PATCH api/users/:id
+// @desc    Update user with id
+// @access  User
 router.patch('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
 
@@ -63,6 +73,9 @@ router.patch('/:id/picture', isAuthorizedUser, validatePicture, (req, res) => {
     });
 });
 
+// @route   DELETE api/users/:id
+// @desc    Delete user with id
+// @access  User
 router.delete('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
     //Store JWT to Blacklist JWT
@@ -94,6 +107,9 @@ router.delete('/:id/picture', isAuthorizedUser, (req, res) => {
 });
 
 
+// @route   GET api/users/random
+// @desc    Get random user
+// @access  Public
 router.get('/random', (req, res) => {
     //Get Random User from Service
     userService.getRandomUser().then(user => {
@@ -103,16 +119,25 @@ router.get('/random', (req, res) => {
     });
 });
 
+// @route   GET api/users/:id/recipes
+// @desc    Get all recipes of user
+// @access  Public
 router.get('/:id/recipes', (req, res) => {
     res.status(501);
     res.send('To be implemented.');
 });
 
+// @route   GET api/users/:id/liked
+// @desc    Get all liked recipes of user
+// @access  Public
 router.get('/:id/liked', (req, res) => {
     res.status(501);
     res.send('To be implemented.');
 });
 
+// @route   GET api/users/:id/list
+// @desc    Get all recipes on list of user
+// @access  Public
 router.get('/:id/list', (req, res) => {
     res.status(501);
     res.send('To be implemented.');

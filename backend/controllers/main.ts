@@ -3,6 +3,9 @@ import {getVersion} from "../util/version";
 
 const router = express.Router();
 
+// @route   GET api/
+// @desc    Get welcome message
+// @access  Public
 router.get('/', (req, res) => {
     //Build JSON Object
     let welcome = {
