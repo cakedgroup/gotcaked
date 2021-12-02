@@ -1,17 +1,49 @@
 .header {
-  background-color: #000000;
+  background-color: var(--secondary-background-color);
   padding: 0 24px;
   height: 56px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 500px 0 rgba(0, 0, 0, 0.1);
 }
 
 .header-nav {
-  color: #fff;
-  display: inline-block;
+  color: var(--primary-text-color);
+  display: inline-flex;
   line-height: 56px;
+}
+
+.icon-text {
+  font-family: 'Sail', sans-serif;
+  margin-top: auto;
+  font-size: 24pt;
+}
+
+.icon {
+  width: 4em;
+  margin-top: -1.5em;
+  margin-right: 0.5em;
+}
+
+.search-icon{
+  width: 2.5em;
+}
+
+.user-icon{
+  width: 3em;
+  margin-left: 20px;
+}
+
+.category{
+  text-decoration: none;
+  color: var(--primary-text-color);
+  font-family: 'Darker Grotesque', sans-serif;
+  font-style: bold;
+  font-size: 18pt;
+  margin-right: 25px;
 }
 
 .left {
   float: left;
+  text-decoration: none;
 }
 
 .right {
