@@ -70,6 +70,9 @@ router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+// @route   PATCH api/recipes/:id/picture
+// @desc    Add a picture to recipe
+// @access  Author of Recipe 
 router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req, res) => {
     let id: string = req.params.id;
 
@@ -93,6 +96,9 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+// @route   DELETE api/recipes/:id/picture
+// @desc    Delete single picture from recipe
+// @access  Author of Recipe
 router.delete('/:id/picture/', isAuthorizedForRecipes, (req, res) => {
     let id: string = req.params.id;
     let pictureID: string = req.body.picture_uri as string;

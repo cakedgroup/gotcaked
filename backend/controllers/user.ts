@@ -63,6 +63,9 @@ router.patch('/:id', isAuthorizedUser, (req, res) => {
 
 });
 
+// @route   PATCH api/users/:id/picture
+// @desc    Upload a new profile picture
+// @access  User
 router.patch('/:id/picture', isAuthorizedUser, validatePicture, (req, res) => {
     let id: string = req.params.id;
 
@@ -95,6 +98,10 @@ router.delete('/:id', isAuthorizedUser, (req, res) => {
     });
 });
 
+
+// @route   DELETE api/users/:id/picture
+// @desc    Delete Users profile picture
+// @access  User
 router.delete('/:id/picture', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
 
