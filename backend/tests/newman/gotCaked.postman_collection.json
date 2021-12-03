@@ -995,7 +995,7 @@
 								{
 									"key": "picture",
 									"type": "file",
-									"src": "/C:/Users/HUIDAL/Nextcloud/3. Semester/Webengineering 2/WebDev-Projekt/Icons and Pictures/russischer-zupfkuchen.jpg"
+									"src": "./data/russischer-zupfkuchen.jpg"
 								}
 							],
 							"options": {
@@ -2737,7 +2737,7 @@
 								{
 									"key": "picture",
 									"type": "file",
-									"src": "/C:/Users/HUIDAL/Nextcloud/3. Semester/Webengineering 2/WebDev-Projekt/Icons and Pictures/russischer-zupfkuchen.jpg"
+									"src": "./data/russischer-zupfkuchen.jpg"
 								}
 							],
 							"options": {
