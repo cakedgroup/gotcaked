@@ -1,11 +1,9 @@
 import express from 'express';
-import * as commentService from '../services/comment';
+import { validateComment, validatePicture, validateRating, validateRecipe } from '../middelwares/inputValidation';
 import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
+import * as commentService from '../services/comment';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
-import { validateComment, validateRating, validateRecipe } from '../middelwares/inputValidation';
-import { getRatingFromUser } from '../services/recipe';
-import { JWTContent } from '../models/auth';
 
 
 const router = express.Router();
@@ -72,6 +70,20 @@ router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+// @route   PATCH api/recipes/:id/picture
+// @desc    Add a picture to recipe
+// @access  Author of Recipe 
+router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req, res) => {
+    let id: string = req.params.id;
+
+    //Update User Picture in Service
+    recipeService.addPicture(id, req.files.picture).then(recipe => {
+        res.status(200).json(recipe);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 // @route   DELETE api/recipes/:id
 // @desc    Delete recipe with id
 // @access  Author of Recipe
@@ -84,6 +96,22 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
     });
 });
 
+// @route   DELETE api/recipes/:id/picture
+// @desc    Delete single picture from recipe
+// @access  Author of Recipe
+router.delete('/:id/picture/', isAuthorizedForRecipes, (req, res) => {
+    let id: string = req.params.id;
+    let pictureID: string = req.body.picture_uri as string;
+
+    //Delete User Picture in Service
+    recipeService.deletePicture(id, pictureID).then(() => {
+        res.status(204).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+
 // @route   GET api/recipes/:id/comments
 // @desc    Get comments of recipe
 // @access  Public
@@ -92,7 +120,7 @@ router.get('/:id/comments', (req, res) => {
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
     let id: string = req.params.id;
-    
+
     commentService.getAllComments(id, limit, offset).then(comments => {
         res.status(200).json(comments);
     }).catch(err => {
@@ -108,7 +136,7 @@ router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-    
+
     //Set recipeId
     let id: string = req.params.id;
     req.body.recipe_id = id;
@@ -150,7 +178,7 @@ router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-        
+
     //Set recipeId
     let id: string = req.params.id;
     req.body.recipe_id = id;
@@ -180,7 +208,7 @@ router.get('/:id/ratingStatus', isAuthorized, (req, res) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
-    
+
     recipeService.getRatingFromUser(req.body.user_id, req.params.id).then(rating => {
         res.status(200).json(rating);
     }).catch(err => {

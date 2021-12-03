@@ -1,6 +1,7 @@
 import express from 'express';
-import * as userService from '../services/user';
+import { validatePicture } from '../middelwares/inputValidation';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
+import * as userService from '../services/user';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -62,19 +63,56 @@ router.patch('/:id', isAuthorizedUser, (req, res) => {
 
 });
 
+// @route   PATCH api/users/:id/picture
+// @desc    Upload a new profile picture
+// @access  User
+router.patch('/:id/picture', isAuthorizedUser, validatePicture, (req, res) => {
+    let id: string = req.params.id;
+
+    userService.setPicture(id, req.files.picture).then(user => {
+        res.status(200).json(user);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 // @route   DELETE api/users/:id
 // @desc    Delete user with id
 // @access  User
 router.delete('/:id', isAuthorizedUser, (req, res) => {
     let id: string = req.params.id;
+    //Store JWT to Blacklist JWT
+    let jwtToken: string = req.headers['jwt'] as string;
+    let blockJWT: boolean = false;
+    if (req.jwtContent) {
+        if (req.jwtContent.role === "user") {
+            blockJWT = true;
+        }
+    }
 
     //Delete User in Service
-    userService.deleteUser(id).then(() => {
+    userService.deleteUser(id, blockJWT, jwtToken).then(() => {
         res.status(204).send();
     }).catch(err => {
         errorHandler(err, req, res);
     });
 });
+
+
+// @route   DELETE api/users/:id/picture
+// @desc    Delete Users profile picture
+// @access  User
+router.delete('/:id/picture', isAuthorizedUser, (req, res) => {
+    let id: string = req.params.id;
+
+    //Delete User Picture in Service
+    userService.deletePicture(id).then(() => {
+        res.status(204).send();
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 
 // @route   GET api/users/random
 // @desc    Get random user

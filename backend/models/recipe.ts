@@ -12,6 +12,7 @@ export interface Recipe {
     time: Number;
     category_id: string;
     user_id: string;
+    picture_uri: string[];
 }
 
 export interface RecipeSmall {
@@ -30,6 +31,11 @@ export interface Ingredient {
     name: string;
     amount: string;
     unit: string;
+    recipe_id: string;
+}
+
+export interface RecipePicture {
+    picture_id: string;
     recipe_id: string;
 }
 

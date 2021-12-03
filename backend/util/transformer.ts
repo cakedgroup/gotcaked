@@ -30,7 +30,8 @@ export function recipeTransformer(recipe: Recipe): Recipe {
         difficulty: recipe.difficulty,
         category_id: recipe.category_id,
         user_id: recipe.user_id,
-        time: recipe.time
+        time: recipe.time,
+        picture_uri: recipe.picture_uri
     }
 }
 

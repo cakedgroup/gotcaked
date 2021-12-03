@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "af95ae79-4013-4a56-9d1e-3fcaf916468a",
+		"_postman_id": "ee120d48-9397-48d2-a2a7-255c5e30c5ea",
 		"name": "gotCaked",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -950,7 +950,76 @@
 					"response": []
 				},
 				{
-					"name": "Edit User - With Admin Tolen",
+					"name": "Edit/Set Users Picture",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct User\", function () {\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "./data/russischer-zupfkuchen.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}/picture",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}",
+								"picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User - With Admin Token",
 					"event": [
 						{
 							"listen": "test",
@@ -1195,6 +1264,53 @@
 					"response": []
 				},
 				{
+					"name": "Delete User Picture",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/users/{{userID}}/picture",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users",
+								"{{userID}}",
+								"picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete User",
 					"event": [
 						{
@@ -1267,7 +1383,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],
@@ -1321,7 +1437,7 @@
 						"header": [
 							{
 								"key": "jwt",
-								"value": "{{jwtToken}}",
+								"value": "{{jwtToken-admin}}",
 								"type": "text"
 							}
 						],
@@ -2573,6 +2689,137 @@
 					"response": []
 				},
 				{
+					"name": "Add Picture to Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var data = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Recieving Correct Recipe\", function () {\r",
+									"    pm.expect(data.user_id).equal(pm.globals.get(\"userID-3\"));\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"recipeId-2\"));\r",
+									"    pm.expect(data.picture_uri[0]).exist;    \r",
+									"    pm.globals.set(\"picture_uri\", data.picture_uri[0]);\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "./data/russischer-zupfkuchen.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}/picture",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}",
+								"picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Picture from Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 204\", function() {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\");\r",
+									"pm.globals.set(\"randomUserNEW\", userName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"picture_uri\": \"{{picture_uri}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiURL}}/recipes/{{recipeId-2}}/picture/",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipeId-2}}",
+								"picture",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Edit second recipe",
 					"event": [
 						{
@@ -3019,7 +3266,7 @@
 									"var data = JSON.parse(responseBody);",
 									"",
 									"pm.test(\"Recieving Correct Rating\", function () {",
-									"    pm.expect(data.rating).equal(1);",
+									"    pm.expect(data.vote).equal(1);",
 									"}); "
 								],
 								"type": "text/javascript"
