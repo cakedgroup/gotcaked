@@ -15,8 +15,10 @@ export class WelcomePageComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("WelcomePage");
-    this.authService.getJWTToken().subscribe(token => {
-      this.userName = token as String;
+    this.authService.getUser().subscribe(user => {
+      if (user !== null) {
+        this.userName = user.name;
+      }
     });
   }
 }

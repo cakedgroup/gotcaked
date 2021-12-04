@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { CreateEchoInput, Echo } from '../../models/echo.model';
 
@@ -17,6 +18,10 @@ export class ApiService {
 
   getStatus(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/status`);
+  }
+
+  getUser(id: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
   createEcho(echo: CreateEchoInput): Observable<Echo> {

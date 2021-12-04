@@ -16,3 +16,9 @@ export interface JWT {
   token: string;
 }
 
+export interface JWTContent {
+  id: string;
+  email: string;
+  role: string;
+}
+

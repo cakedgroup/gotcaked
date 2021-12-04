@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, observable, Observable } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { JWT, User } from 'src/app/models/user.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { JWT, JWTContent, User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { UserLogin } from '../../models/user.model';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +15,14 @@ export class AuthService {
   private jwtToken = new BehaviorSubject<String>(null);
   private userInformation = new BehaviorSubject<User>(null);
 
-  private testUser: User = {
-    id: "1",
-    name: "test",
-    description: "test",
-    email: "test",
-    picture_uri: "test"
-  };
-
-  constructor(private http: HttpClient) {
-
+  constructor(private http: HttpClient, private apiService: ApiService) {
   }
 
   //Creating Headers
   createAuthorizationHeader(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      '"token': this.jwtToken.value as string
+      'jwt': this.jwtToken.value as string
     });
   }
 
@@ -44,6 +35,7 @@ export class AuthService {
   setJWTToken(token: String): void {
     this.jwtToken.next(token);
     localStorage.setItem('token', token as string);
+    this.setUser();
   }
 
   //BehaviorSubject to get and set User-Infos
@@ -51,18 +43,32 @@ export class AuthService {
     return this.userInformation;
   }
 
-  setUser(user: User) {
-    this.userInformation.next(user);
-  }
+  setUser(): void {
+    //Get User-ID from JWTToken
+    let decodedJwtData = this.parseJWT();
 
-  autoLogin() {
-    let token = localStorage.getItem('token');
-    if (token != null && token != undefined && token != '') {
-      this.jwtToken.next(token);
-      this.setUser(this.testUser);
+    if (decodedJwtData !== null) {
+      //Getting User-Information from Backend
+      this.apiService.getUser(decodedJwtData.id).subscribe(user => {
+        if (user !== null) {
+          //Setting Fresh User-Information to BehaviorSubject
+          this.userInformation.next(user);
+        }
+      });
+    } else {
+      //Setting User-Information to null
+      this.userInformation.next(null);
     }
   }
 
+  //AutoLogin User if JWT Token exists in localStorage
+  autoLogin() {
+    let token = localStorage.getItem('token');
+    if (token !== null && token !== undefined && token !== "" && token !== "null") {
+      this.jwtToken.next(token);
+      this.setUser();
+    }
+  }
 
   //Backend-API Calls
   //Login User to get JWT Token
@@ -71,10 +77,20 @@ export class AuthService {
   }
 
   //Logout User to delete JWT Token
-  userLogout(): Observable<any> {
-    return this.http.post<any>(this.baseUrl + '/auth/logout', { headers: this.createAuthorizationHeader() });
+  userLogout(): Observable<HttpResponse<any>> {
+    return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader(), observe: 'response' });
   }
 
-
-
+  //Function to get JWTContent from JWTToken
+  private parseJWT(): JWTContent {
+    if (this.jwtToken.value === null) {
+      return null;
+    } else {
+      let jwt = this.jwtToken.value as string;
+      let jwtData = jwt.split('.')[1];
+      let decodedJwtJsonData = window.atob(jwtData);
+      let decodedJwtData: JWTContent = JSON.parse(decodedJwtJsonData);
+      return decodedJwtData;
+    }
+  }
 }

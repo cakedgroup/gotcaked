@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logout-page',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogoutPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.logout();
   }
 
+  logout() {
+    this.authService.userLogout().subscribe(response => {
+      console.log(response.status);
+      if (response.status === 200) {
+        this.authService.setJWTToken(null);
+        this.router.navigate(['/']);
+      } else {
+        console.log(response.status);
+      }
+    });
+  }
 }
