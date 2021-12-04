@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../../../core/services/api.service";
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -7,13 +7,16 @@ import { ApiService } from "../../../core/services/api.service";
   styleUrls: ['./welcome-page.component.css']
 })
 export class WelcomePageComponent implements OnInit {
-  userName: string = 'TestUser';
+  userName: String = 'TestUser';
 
-  constructor(private apiService: ApiService) {
+  constructor(private authService: AuthService) {
 
   }
 
   ngOnInit(): void {
     console.log("WelcomePage");
+    this.authService.getJWTToken().subscribe(token => {
+      this.userName = token as String;
+    });
   }
 }

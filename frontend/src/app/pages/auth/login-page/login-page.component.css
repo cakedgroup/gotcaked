@@ -1,0 +1,49 @@
+.login-form-container {
+  background-color: white;
+  /* TODO Make this dynamic */
+  border-radius: 7px;
+  margin: 0 auto;
+  display: grid;
+  width: fit-content;
+  padding: 3em;
+  padding-bottom: 5em;
+}
+
+.form-input {
+  background-color: var(--input-field-color);
+  font-family: 'IBM Plex Mono', monospace;
+  border-style: solid;
+  width: 98%;
+  height: 30px;
+  border-radius: 10px;
+  margin-bottom: 8%;
+  margin-top: 5px;
+}
+
+.empty-div{
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.text{
+    color: #949494;
+    margin-left: 1%;
+}
+
+.login-button{
+    font-family: 'IBM Plex Mono', monospace;
+    float: right;
+    margin-top: 1%;
+    background-color: var(--input-field-color);
+    border-style: solid;
+    border-radius: 4px;
+    padding: 3px 7px;
+}
+
+.login-form-failed-login {
+    color: red;
+}
+
+.form-title-text {
+    font-weight: 400;
+}

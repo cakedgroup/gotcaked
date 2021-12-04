@@ -7,7 +7,8 @@ import { Category } from '../../models/category.model';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  categories: Category[] = [{name: "Cake", description: "Cake.."}, {name: "Muffin", description: "Muffin.."}, {name: "Cookies", description: "Cookies.."}];
+  categories: Category[] = [{ name: "Cake", description: "Cake.." }, { name: "Muffin", description: "Muffin.." }, { name: "Cookies", description: "Cookies.." }];
+  showMenu: boolean = false;
 
   constructor() {
   }
@@ -16,4 +17,11 @@ export class HeaderComponent implements OnInit {
     console.log(this.categories);
   }
 
+  disableMenu(){
+    this.showMenu = false;
+  }
+
+  enableMenu(){
+    this.showMenu = true;
+  }
 }

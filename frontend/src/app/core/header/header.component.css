@@ -41,6 +41,11 @@
   margin-right: 25px;
 }
 
+.menu-hover{
+  width: 100px;
+  height: 100px;
+}
+
 .left {
   float: left;
   text-decoration: none;

@@ -1,16 +1,18 @@
 <div class="header">
   <div class="header-nav left">
-    <a href="/" class="header-nav left">
+    <a routerLink="/" class="header-nav left">
       <img src="/assets/icons/cake_icon.svg" alt="icon" class="icon">
       <p class="icon-text">gotCaked</p>
     </a>
   </div>
   <div class="header-nav right">
     <div *ngFor="let category of categories">
-      <a href="/category/{{ category.name }}" class="category"> {{ category.name }}</a>
+      <a routerLink="/category/{{ category.name }}" class="category"> {{ category.name }}</a>
     </div>
 
     <img src="/assets/icons/search_icon.svg" alt="search-icon" class="search-icon">
-    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon">
+    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon" (mouseenter)="enableMenu()">
+
   </div>
 </div>
+<app-menu *ngIf="showMenu" (mouseenter)="enableMenu()"></app-menu>
