@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { JWT, JWTContent, User } from 'src/app/models/user.model';
+import { JWT, User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { UserLogin } from '../../models/user.model';
+import * as JWTUtils from '../utils/jwt-utils';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -45,7 +46,7 @@ export class AuthService {
 
   setUser(): void {
     //Get User-ID from JWTToken
-    let decodedJwtData = this.parseJWT();
+    let decodedJwtData = JWTUtils.parseJWT(this.jwtToken.value as string);
 
     if (decodedJwtData !== null) {
       //Getting User-Information from Backend
@@ -79,18 +80,5 @@ export class AuthService {
   //Logout User to delete JWT Token
   userLogout(): Observable<HttpResponse<any>> {
     return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader(), observe: 'response' });
-  }
-
-  //Function to get JWTContent from JWTToken
-  private parseJWT(): JWTContent {
-    if (this.jwtToken.value === null) {
-      return null;
-    } else {
-      let jwt = this.jwtToken.value as string;
-      let jwtData = jwt.split('.')[1];
-      let decodedJwtJsonData = window.atob(jwtData);
-      let decodedJwtData: JWTContent = JSON.parse(decodedJwtJsonData);
-      return decodedJwtData;
-    }
   }
 }

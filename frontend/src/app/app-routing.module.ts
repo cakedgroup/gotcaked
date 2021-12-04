@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
+import { isLoggedIn, isLoggedOut, isAdmin } from './core/services/authGuard';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'settings',
+    canActivate: [isLoggedIn],
     loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule)
   },
   {
@@ -33,7 +35,13 @@ const routes: Routes = [
   },
   {
     path: 'register',
+    canActivate: [isLoggedOut],
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
+  },
+  {
+    path: 'admin',
+    canActivate: [isAdmin],
+    loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: '404',
