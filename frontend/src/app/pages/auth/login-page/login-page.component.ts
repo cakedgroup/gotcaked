@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserLogin } from 'src/app/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -15,10 +14,16 @@ export class LoginPageComponent implements OnInit {
     password: ''
   };
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log("Login page");
+    this.getCredentials();
+  }
+
+  //Getting Email and Password from Registration Page
+  getCredentials(): void {
+    this.userLogin.email = this.route.snapshot.paramMap.get('email');
+    this.userLogin.password = this.route.snapshot.paramMap.get('password');
   }
 
   loginHandler(): void {
