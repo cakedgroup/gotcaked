@@ -1,15 +1,16 @@
 <div class="login-form-container">
   <form (submit)="loginHandler()">
     <div class="empty-div">
-      <h1 class="form-title-text">Login</h1>
-      <label class="form-label-text">Email</label>
+      <h1 class="form-title">Login</h1>
+      <label class="form-label">Email</label>
       <input class="form-input" [(ngModel)]="userLogin.email" name="email" type="email" placeholder="E-Mail" required>
 
-      <label class="form-label-text">Password</label>
-      <input class="form-input" [(ngModel)]="userLogin.password" name="password" type="password" placeholder="Password" required>
+      <label class="form-label">Password</label>
+      <input class="form-input" [(ngModel)]="userLogin.password" name="password" type="password" placeholder="Password"
+        required>
 
-      <a class="text" to="/register">Register</a>
-      <button class="login-button" type="submit">Login</button>
+      <button class="login-button left" routerLink="/register">Register</button>
+      <button class="login-button right" type="submit">Login</button>
     </div>
   </form>
 </div>

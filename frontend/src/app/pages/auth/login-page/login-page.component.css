@@ -1,17 +1,29 @@
 .login-form-container {
-  background-color: white;
-  /* TODO Make this dynamic */
-  border-radius: 7px;
+  background-color: var(--secondary-background-color);
+  border-radius: 1em;
   margin: 0 auto;
-  display: grid;
-  width: fit-content;
   padding: 3em;
   padding-bottom: 5em;
+  width: fit-content;
+}
+
+.form-title {
+  font-family: "Darker Grotesque", sans-serif;
+  text-align: center;
+  font-size: 32pt;
+  margin-top: -10%;
+}
+
+.form-label{
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 5px;
 }
 
 .form-input {
-  background-color: var(--input-field-color);
-  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--primary-background-color);
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
   border-style: solid;
   width: 98%;
   height: 30px;
@@ -20,30 +32,37 @@
   margin-top: 5px;
 }
 
-.empty-div{
-    max-width: 400px;
-    margin: 0 auto;
+.empty-div {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.text{
-    color: #949494;
-    margin-left: 1%;
+.login-button {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  margin-top: 1%;
+  background-color: var(--primary-color);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 3px 20px;
 }
 
-.login-button{
-    font-family: 'IBM Plex Mono', monospace;
-    float: right;
-    margin-top: 1%;
-    background-color: var(--input-field-color);
-    border-style: solid;
-    border-radius: 4px;
-    padding: 3px 7px;
+.text {
+  color: #949494;
+  margin-left: 1%;
+  font-family: "Darker Grotesque", sans-serif;
 }
+
 
 .login-form-failed-login {
-    color: red;
+  color: red;
 }
 
-.form-title-text {
-    font-weight: 400;
+.right {
+  float: right;
 }
+
+.left{
+  float: left;
+}
+
