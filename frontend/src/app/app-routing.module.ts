@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/about/about.module').then(m => m.AboutModule)
   },
   {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
+  },
+  {
     path: '404',
     component: PageNotFoundComponent
   },
