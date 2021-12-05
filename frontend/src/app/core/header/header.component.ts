@@ -7,6 +7,7 @@ import { Category } from '../../models/category.model';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  //TODO Add Service to fetch categories
   categories: Category[] = [{ name: "Cake", description: "Cake.." }, { name: "Muffin", description: "Muffin.." }, { name: "Cookies", description: "Cookies.." }];
   showUserMenu: boolean = false;
   showCategoryMenu: boolean = false;
