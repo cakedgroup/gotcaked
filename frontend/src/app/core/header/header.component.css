@@ -59,6 +59,24 @@
   float: right;
 }
 
+.user-menu-hitbox{
+  display: inherit;
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  top: 0px;
+  right: 0px;
+}
+
+.category-menu-hitbox{
+  display: inherit;
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  top: 0px;
+  right: 90px;
+}
+
 
 @media screen and (max-width: 800px) {
   .user-icon{

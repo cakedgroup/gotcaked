@@ -12,10 +12,15 @@
     </div>
 
     <img src="/assets/icons/search_icon.svg" alt="search-icon" class="search-icon">
-    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon" (mouseenter)="enableUserMenu()">
-
+    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon" >
   </div>
+
 </div>
 <!--- Menus for Mobile and User Interactions has to be outside of Navbar --->
-<app-menu *ngIf="showUserMenu" (mouseenter)="enableUserMenu()"></app-menu>
-<app-category-menu *ngIf="showCategoryMenu" [categories]="this.categories"></app-category-menu>
+<div (mouseleave)="disableUserMenu()" (mouseenter)="enableUserMenu()" class="user-menu-hitbox">
+  <app-menu *ngIf="showUserMenu"></app-menu>
+</div>
+
+<div (mouseleave)="disableCategoryMenu()" (mouseenter)="enableCategoryMenu()" class="category-menu-hitbox">
+  <app-category-menu *ngIf="showCategoryMenu" [categories]="this.categories"></app-category-menu>
+</div>

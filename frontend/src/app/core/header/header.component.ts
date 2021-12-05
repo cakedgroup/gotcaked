@@ -18,19 +18,19 @@ export class HeaderComponent implements OnInit {
     console.log(this.categories);
   }
 
-  disableUserMenu(){
+  disableUserMenu() {
     this.showUserMenu = false;
   }
 
-  enableUserMenu(){
+  enableUserMenu() {
     this.showUserMenu = true;
   }
 
-  disableCategoryMenu(){
+  disableCategoryMenu() {
     this.showCategoryMenu = false;
   }
 
-  enableCategoryMenu(){
+  enableCategoryMenu() {
     this.showCategoryMenu = true;
   }
 
