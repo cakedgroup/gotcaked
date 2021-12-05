@@ -10,6 +10,7 @@ import { HeaderComponent } from "./core/header/header.component";
 import { MenuComponent } from "./core/header/menu/menu.component";
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 import { SharedModule } from "./shared/shared.module";
+import { CategoryMenuComponent } from './core/header/category-menu/category-menu.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from "./shared/shared.module";
     HeaderComponent,
     FooterComponent,
     PageNotFoundComponent,
-    MenuComponent
+    MenuComponent,
+    CategoryMenuComponent
   ],
   imports: [
     CommonModule,
