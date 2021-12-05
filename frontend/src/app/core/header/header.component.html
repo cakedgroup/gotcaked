@@ -6,6 +6,7 @@
     </a>
   </div>
   <div class="header-nav right">
+    <img src="/assets/icons/menu_icon.svg" alt="menu-icon" class="menu-icon">
     <div *ngFor="let category of categories">
       <a routerLink="/category/{{ category.name }}" class="category"> {{ category.name }}</a>
     </div>

@@ -32,6 +32,10 @@
   margin-left: 20px;
 }
 
+.menu-icon{
+  display: none;
+}
+
 .category{
   text-decoration: none;
   color: var(--primary-text-color);
@@ -53,4 +57,30 @@
 
 .right {
   float: right;
+}
+
+
+@media screen and (max-width: 800px) {
+  .user-icon{
+    width: 3em;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: -10px;
+  }
+
+  .search-icon{
+    margin-top: 5px;
+    width: 2.5em;
+  }
+
+  .category {
+    display: none;
+  }
+
+  .menu-icon {
+      display: inherit;
+      margin-top: 8px;
+      margin-right: 10px;
+      height: 2.5em;
+  }
 }
