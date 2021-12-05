@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
-import { CreateEchoInput, Echo } from '../../models/echo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,38 +14,20 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  createEcho(echo: CreateEchoInput): Observable<Echo> {
-    return this.http.post<Echo>(
-      `${this.baseUrl}/echo`,
-      echo
-    ).pipe(
-      catchError((err) => {
-        console.log('In Service:', err);
-        return throwError(err);
-      })
-    );
+  getStatus(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/status`);
   }
 
-  doError(): Observable<Echo> {
-    return this.http.post<Echo>(
-      `${this.baseUrl}/echo`,
-      {}
-    ).pipe(
-      catchError((err) => {
-        console.log('In Service:', err);
-        return throwError(err);
-      })
-    );
+  getUser(id: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
-  getEchos(contains?: string): Observable<Echo[]> {
-    return this.http.get<Echo[]>(
-      `${this.baseUrl}/echo`,
-      {
-        params: contains ? {
-          contains
-        } : undefined
-      }
-    );
+  createUser(user: UserRegister): Observable<HttpResponse<User>> {
+    return this.http.post<any>(`${this.baseUrl}/users`, user, { observe: 'response' });
   }
+
+  updateUser(user: User): Observable<HttpResponse<User>> {
+    return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
+  }
+
 }
