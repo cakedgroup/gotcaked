@@ -92,6 +92,74 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
     });
 }
 
+export function getRecipesFromUser(userId: string): Promise<Recipe[]> {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM recipe WHERE user_id = ?`, [userId], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (rows) {
+                    let recipes: Recipe[] = [];
+                    rows.forEach((row) => {
+                        let recipe: Recipe = {
+                            id: row.id,
+                            name: row.name,
+                            description: row.description,
+                            preparation: row.preparation,
+                            createdAt: row.createdAt,
+                            difficulty: row.difficulty,
+                            time: row.time,
+                            category_id: row.category_id,
+                            user_id: row.user_id,
+                            tags: [],
+                            ingredients: [],
+                            picture_uri: []
+                        };
+                        recipes.push(recipe);
+                    });
+                    resolve(recipes);
+                } else {
+                    reject(new Error("Recipe not found"));
+                }
+            }
+        });
+    });
+}
+
+export function getLikedRecipesFromUser(userId: string): Promise<Recipe[]> {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM recipe WHERE id IN (SELECT recipe_id FROM rating WHERE user_id = ? AND vote = 1)`, [userId], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (rows) {
+                    let recipes: Recipe[] = [];
+                    rows.forEach((row) => {
+                        let recipe: Recipe = {
+                            id: row.id,
+                            name: row.name,
+                            description: row.description,
+                            preparation: row.preparation,
+                            createdAt: row.createdAt,
+                            difficulty: row.difficulty,
+                            time: row.time,
+                            category_id: row.category_id,
+                            user_id: row.user_id,
+                            tags: [],
+                            ingredients: [],
+                            picture_uri: []
+                        };
+                        recipes.push(recipe);
+                    });
+                    resolve(recipes);
+                } else {
+                    reject(new Error("Recipe not found"));
+                }
+            }
+        });
+    });
+}
+
 export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
     let query: string = "SELECT * FROM recipe";
     query = sqlPager(query, limit, offset);
@@ -126,7 +194,6 @@ export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
 }
 
 export function getRecipesByCategory(categoryId: string, limit?: number, offset?: number): Promise<Recipe[]> {
-
     let query: string = "SELECT * FROM recipe WHERE category_id = ?";
     query = sqlPager(query, limit, offset);
 
@@ -135,6 +202,7 @@ export function getRecipesByCategory(categoryId: string, limit?: number, offset?
             if (err) {
                 reject(err);
             } else {
+                console.log(rows);
                 let recipes: Recipe[] = [];
                 rows.forEach((row) => {
                     recipes.push(row);
@@ -145,12 +213,12 @@ export function getRecipesByCategory(categoryId: string, limit?: number, offset?
     });
 }
 
-export function getRecipesByTag(tagId: string, limit?: number, offset?: number): Promise<Recipe[]> {
-    let query: string = "SELECT * FROM recipe r JOIN recipe_tag rt ON r.id = rt.recipe_id WHERE rt.tag_id = ?";
+export function getRecipesByTag(tagName: string, limit?: number, offset?: number): Promise<Recipe[]> {
+    let query: string = "SELECT * FROM recipe r JOIN recipe_tag rt ON r.id = rt.recipe_id WHERE rt.tag_name = ?";
     query = sqlPager(query, limit, offset);
 
     return new Promise((resolve, reject) => {
-        db.all(query, [tagId], (err, rows) => {
+        db.all(query, [tagName], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
