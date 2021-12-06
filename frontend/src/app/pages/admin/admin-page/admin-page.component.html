@@ -1,1 +1,47 @@
-<p>admin-page works!</p>
+<div class="settings-form-container">
+  <div class="empty-div">
+    <h1 class="form-title">Admin-Settings</h1>
+
+    <!-- Category Section -->
+    <form>
+      <h2 class="section-title">Categories</h2>
+      <hr class="section-line">
+      <!--List Current Categories -->
+      <div class="form-container" *ngFor="let category of categories;let index = index;">
+        <div class="form-input-container">
+          <label class="form-label" for="category-name-{{index}}">Name</label>
+          <input class="form-input" type="text" name="category-name-{{index}}" placeholder="Category Name"
+            [(ngModel)]="category.name">
+        </div>
+        <div class="form-input-container">
+          <label class="form-label" for="category-name-{{index}}">Description</label>
+          <input class="form-input" type="text" name="category-name-{{index}}" placeholder="Category Name"
+            [(ngModel)]="category.description">
+        </div>
+        <button class="delete-button">Delete Item</button>
+      </div>
+    </form>
+
+    <!-- Add Category -->
+    <form>
+      <div class="form-container">
+        <div class="form-input-container">
+          <label class="form-label" for="category-name--new">Name</label>
+          <input class="form-input" type="text" name="category-name" placeholder="Category Name">
+        </div>
+
+        <div class="form-input-container">
+          <label class="form-label" for="category-name-new">Description</label>
+          <input class="form-input" type="text" name="category-name-new" placeholder="Category Name">
+        </div>
+        <button class="delete-button">Add Item</button>
+      </div>
+    </form>
+
+    <!--Tags Section-->
+    <form>
+      <h2 class="section-title">Tags</h2>
+      <hr class="section-line">
+    </form>
+  </div>
+</div>
