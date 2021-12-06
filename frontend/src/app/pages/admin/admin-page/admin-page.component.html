@@ -14,27 +14,28 @@
             [(ngModel)]="category.name">
         </div>
         <div class="form-input-container">
-          <label class="form-label" for="category-name-{{index}}">Description</label>
-          <input class="form-input" type="text" name="category-name-{{index}}" placeholder="Category Name"
+          <label class="form-label" for="category-description-{{index}}">Description</label>
+          <input class="form-input" type="text" name="category-description-{{index}}" placeholder="Category Description"
             [(ngModel)]="category.description">
         </div>
-        <button class="delete-button">Delete Item</button>
+        <button class="delete-button" (click)="updateHandler(category)"><fa-icon [icon]="faCheckCircle"></fa-icon></button>
+        <button class="delete-button" (click)="deleteHandler(category.name)"><fa-icon [icon]="faTrash"></fa-icon></button>
       </div>
     </form>
 
     <!-- Add Category -->
-    <form>
+    <form (submit)="addHandler()">
       <div class="form-container">
         <div class="form-input-container">
           <label class="form-label" for="category-name--new">Name</label>
-          <input class="form-input" type="text" name="category-name" placeholder="Category Name">
+          <input class="form-input" type="text" name="category-name" placeholder="Category Name" [(ngModel)]="tempCategory.name">
         </div>
 
         <div class="form-input-container">
-          <label class="form-label" for="category-name-new">Description</label>
-          <input class="form-input" type="text" name="category-name-new" placeholder="Category Name">
+          <label class="form-label" for="category-description-new">Description</label>
+          <input class="form-input" type="text" name="category-description-new" placeholder="Category Description" [(ngModel)]="tempCategory.description">
         </div>
-        <button class="delete-button">Add Item</button>
+        <button class="delete-button" type="submit">Add Item</button>
       </div>
     </form>
 

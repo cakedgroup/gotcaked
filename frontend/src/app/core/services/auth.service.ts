@@ -5,7 +5,6 @@ import { JWT, User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { UserLogin } from '../../models/user.model';
 import * as JWTUtils from '../utils/jwt-utils';
-import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +12,27 @@ import { ApiService } from './api.service';
 export class AuthService {
 
   private readonly baseUrl = environment.backend;
-  private jwtToken = new BehaviorSubject<String>(null);
+  private jwtToken = new BehaviorSubject<string>(null);
   private userInformation = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient, private apiService: ApiService) {
+  constructor(private http: HttpClient) {
   }
 
-  //Creating Headers
+  //Create Header for Authorization
   createAuthorizationHeader(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'jwt': this.jwtToken.value as string
+      'jwt': this.jwtToken.value
     });
   }
 
   //BehaviorSubject to get JWTToken
-  getJWTToken(): BehaviorSubject<String> {
+  getJWTToken(): BehaviorSubject<string> {
     return this.jwtToken;
   }
 
   //Set JWTToken
-  setJWTToken(token: String): void {
+  setJWTToken(token: string): void {
     this.jwtToken.next(token);
     localStorage.setItem('token', token as string);
     this.setUser();
@@ -46,13 +45,12 @@ export class AuthService {
 
   setUser(): void {
     //Get User-ID from JWTToken
-    let decodedJwtData = JWTUtils.parseJWT(this.jwtToken.value as string);
+    let decodedJwtData = JWTUtils.parseJWT(this.jwtToken.value);
 
     if (decodedJwtData !== null) {
       //Getting User-Information from Backend
-      this.apiService.getUser(decodedJwtData.id).subscribe(user => {
+      this.http.get<User>(this.baseUrl + '/users/' + decodedJwtData.id).subscribe(user => {
         if (user !== null) {
-          //Setting Fresh User-Information to BehaviorSubject
           this.userInformation.next(user);
         }
       });
