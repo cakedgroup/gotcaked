@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 // @route   POST api/categories/
 // @desc    Create a category
 // @access  Admin
-router.post('/', isAuthorizedAdmin, validateCategory,(req, res) => {
+router.post('/', isAuthorizedAdmin, validateCategory, (req, res) => {
     categoryService.createCategory(req.body).then(category => {
         res.status(201).json(category);
     }).catch(err => {
@@ -34,6 +34,20 @@ router.post('/', isAuthorizedAdmin, validateCategory,(req, res) => {
 router.get('/:name', (req, res) => {
     categoryService.getCategoryById(req.params.name).then(category => {
         res.status(200).json(category);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
+// @route   GET api/categories/:name
+// @desc    Get all Recipes by a category
+// @access  Public
+router.get('/:name/recipes', (req, res) => {
+    let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
+    let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
+
+    categoryService.getRecipesByCategory(req.params.name, limit, offset).then(recipes => {
+        res.status(200).json(recipes);
     }).catch(err => {
         errorHandler(err, req, res);
     });
@@ -69,4 +83,4 @@ router.get('/random', (req, res) => {
     res.send('To be implemented.');
 });
 
-export {router as categoryController};
+export { router as categoryController };
