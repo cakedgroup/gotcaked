@@ -1,8 +1,11 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Recipe } from 'src/app/models/recipe.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +32,10 @@ export class ApiService {
   updateUser(user: User): Observable<HttpResponse<User>> {
     return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
   }
+
+  getRecipes(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
+  }
+
 
 }

@@ -1,1 +1,17 @@
-<p>recipe-preview works!</p>
+<div class="recipe-box">
+    <img class="recipe-image" src="https://static.fanpage.it/wp-content/uploads/sites/22/2019/01/raspberry-custard-kuchen_9.jpg" alt="Image">
+    <div class="recipe-info">
+        <h1>{{recipe.name}}</h1>
+        <p>{{recipe.description}}</p>
+        <div class="recipe-stats">
+            <p class="recipe-stats-item">{{recipe.time}} Min</p>
+            <p class="recipe-stats-item">{{recipe.difficulty}}</p>
+            <p class="recipe-stats-item">10 Votes</p>
+        </div>
+        <div class="recipe-tags">
+            <p *ngFor="let tag of recipe.tags">{{tag.name}}</p>  
+        </div>
+    </div>
+</div>
+
+

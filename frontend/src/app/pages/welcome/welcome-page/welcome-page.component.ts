@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Recipe } from 'src/app/models/recipe.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { ApiService } from 'src/app/core/services/api.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -8,8 +10,9 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class WelcomePageComponent implements OnInit {
   userName: String = 'TestUser';
+  recipes: Recipe[] = [];
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private apiService: ApiService) {
 
   }
 
@@ -20,5 +23,14 @@ export class WelcomePageComponent implements OnInit {
         this.userName = user.name;
       }
     });
+
+    this.apiService.getRecipes().subscribe((recipes) => {
+      if (recipes !== null) {
+        this.recipes = recipes;
+      }
+    }
+    );
+
   }
 }
+
