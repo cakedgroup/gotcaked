@@ -49,6 +49,7 @@ export class isAdmin implements CanActivate {
   private isAdmin: boolean = false;
 
   constructor(private authService: AuthService) {
+    this.getAuthStatus();
   }
 
   canActivate(): boolean {
