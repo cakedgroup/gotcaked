@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Category } from 'src/app/models/category.model';
 import { ApiService } from '../../../core/services/api.service';
 
@@ -12,6 +12,7 @@ export class AdminPageComponent implements OnInit {
   //FA-Icons
   faTrash = faTrash;
   faCheckCircle = faCheckCircle;
+  faPlus = faPlus;
 
   //Vars
   categories: Category[];
@@ -30,15 +31,6 @@ export class AdminPageComponent implements OnInit {
   addHandler() {
     this.addCategory(this.tempCategory);
   }
-
-  deleteHandler(categoryName: string) {
-    this.deleteCategory(categoryName);
-  }
-
-  updateHandler(category: Category) {
-    this.updateCategory(category);
-  }
-
 
   loadCategories() {
     this.apiService.getCategories().subscribe(
@@ -80,4 +72,8 @@ export class AdminPageComponent implements OnInit {
       }
     });
   }
+
+  //TODO Add Tags
+  //TODO Delete Tags
+  //TODO List Tags
 }
