@@ -10,6 +10,7 @@ services:
       - 3000
     volumes:
       - ../gotcaked-storage:/opt/gotcaked/backend/databases
+      - ../gotcaked-static-storage:/opt/gotcaked/backend/static
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"

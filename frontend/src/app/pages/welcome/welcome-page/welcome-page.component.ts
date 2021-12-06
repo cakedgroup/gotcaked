@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Echo} from "../../../models/echo.model";
-import {ApiService} from "../../../core/services/api.service";
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -8,45 +7,18 @@ import {ApiService} from "../../../core/services/api.service";
   styleUrls: ['./welcome-page.component.css']
 })
 export class WelcomePageComponent implements OnInit {
+  userName: String = 'TestUser';
 
-  createInput: string;
-  filterInput: string;
+  constructor(private authService: AuthService) {
 
-  echos: Echo[];
-
-  constructor(private apiService: ApiService) {
-    this.loadEchos();
   }
 
   ngOnInit(): void {
-  }
-
-  addEcho(): void {
-    this.apiService.createEcho({
-      message: this.createInput
-    }).subscribe((data: Echo) => {
-      if (this.echos) {
-        this.echos.push(data);
-        this.echos.sort((a, b) => a.message.localeCompare(b.message));
-      } else {
-        this.echos = [data];
+    console.log("WelcomePage");
+    this.authService.getUser().subscribe(user => {
+      if (user !== null) {
+        this.userName = user.name;
       }
-    });
-  }
-
-  loadEchos(): void {
-    this.apiService.getEchos(this.filterInput)
-      .subscribe((data: Echo[]) => {
-        this.echos = data;
-        this.echos.sort((a, b) => a.message.localeCompare(b.message));
-      });
-  }
-
-  error(): void {
-    this.apiService.doError().subscribe((data: Echo) => {
-      console.log(data);
-    }, (error: any) => {
-      console.log('In Component:', error);
     });
   }
 }

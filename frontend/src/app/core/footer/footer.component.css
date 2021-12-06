@@ -1,6 +1,14 @@
 .footer {
-  background-color: #000000;
-  line-height: 56px;
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  line-height: 25px;
   text-align: center;
-  color: #999999;
+  font-family: 'Darker_Grotesque', sans-serif;
+  text-decoration: none;
+}
+
+.footer-text{
+  text-decoration: none;
+  color: var(--primary-text-color);
 }

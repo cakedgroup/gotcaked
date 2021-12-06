@@ -1,4 +1,5 @@
-import { getCounterTable } from "../models/status";
+
+import { getCounterTable } from "../storage/status";
 import { getVersion } from "../util/version";
 
 export function getCurrentStatus(): Promise<any> {

@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Category } from '../../models/category.model';
 
 @Component({
   selector: 'app-header',
@@ -6,11 +7,32 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  //TODO Add Service to fetch categories
+  categories: Category[] = [{ name: "Cake", description: "Cake.." }, { name: "Muffin", description: "Muffin.." }, { name: "Cookies", description: "Cookies.." }];
+  showUserMenu: boolean = false;
+  showCategoryMenu: boolean = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    console.log(this.categories);
+  }
+
+  disableUserMenu() {
+    this.showUserMenu = false;
+  }
+
+  enableUserMenu() {
+    this.showUserMenu = true;
+  }
+
+  disableCategoryMenu() {
+    this.showCategoryMenu = false;
+  }
+
+  enableCategoryMenu() {
+    this.showCategoryMenu = true;
   }
 
 }

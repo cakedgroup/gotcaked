@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { apiRouter } from './api'
+import { fileServer } from './files';
 
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/app.env' });
@@ -8,6 +9,7 @@ dotenv.config({ path: './config/app.env' });
 const app = express();
 
 app.use('/api', apiRouter);
+app.use('/files', fileServer);
 
 app.use(express.static(process.env.FRONTEND_DIST_PATH as string));
 app.use((_req, res) => {

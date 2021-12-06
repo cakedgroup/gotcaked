@@ -1,0 +1,8 @@
+.info{
+  text-align: center;
+  font-family: 'Darker_Grotesque', sans-serif;
+}
+
+.info-link{
+  color: var(--primary-text-color);
+}

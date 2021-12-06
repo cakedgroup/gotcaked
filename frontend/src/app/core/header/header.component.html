@@ -1,8 +1,26 @@
 <div class="header">
   <div class="header-nav left">
-    Links
+    <a routerLink="/" class="header-nav left">
+      <img src="/assets/icons/cake_icon.svg" alt="icon" class="icon">
+      <p class="icon-text">gotCaked</p>
+    </a>
   </div>
   <div class="header-nav right">
-    Rechts
+    <img src="/assets/icons/menu_icon.svg" alt="menu-icon" class="menu-icon">
+    <div *ngFor="let category of categories">
+      <a routerLink="/category/{{ category.name }}" class="category"> {{ category.name }}</a>
+    </div>
+
+    <img src="/assets/icons/search_icon.svg" alt="search-icon" class="search-icon">
+    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon" >
   </div>
+
+</div>
+<!--- Menus for Mobile and User Interactions has to be outside of Navbar --->
+<div (mouseleave)="disableUserMenu()" (mouseenter)="enableUserMenu()" class="user-menu-hitbox">
+  <app-menu *ngIf="showUserMenu"></app-menu>
+</div>
+
+<div (mouseleave)="disableCategoryMenu()" (mouseenter)="enableCategoryMenu()" class="category-menu-hitbox">
+  <app-category-menu *ngIf="showCategoryMenu" [categories]="this.categories"></app-category-menu>
 </div>

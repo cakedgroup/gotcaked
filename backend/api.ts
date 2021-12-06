@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import { authController } from './controllers/auth';
 import { categoryController } from './controllers/category';
 import { welcomeController } from './controllers/main';
@@ -9,7 +10,7 @@ import { tagController } from './controllers/tag';
 import { userController } from './controllers/user';
 import { checkJWT } from './middelwares/jwtCheck';
 import * as logger from './middelwares/logger';
-import { JWTContent } from './services/auth';
+import { JWTContent } from './models/auth';
 
 const router = express.Router();
 
@@ -17,11 +18,20 @@ router.use(cors());
 router.use(express.json());
 router.use(logger.logToConsole);
 router.use(checkJWT);
+router.use(fileUpload({
+  limits: {
+    fileSize: 2 * 1024 * 1024 // 2 MB
+  },
+  abortOnLimit: true,
+  
+}));
 
-declare module 'express-serve-static-core'{
-    interface Request {
-      jwtContent?: JWTContent;
-    }
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    jwtContent?: JWTContent;
+    files?: any;
+  }
 }
 
 router.use('/', welcomeController);
@@ -36,7 +46,6 @@ router.use('/auth', authController);
 router.use((_req: express.Request, res: express.Response) => {
   res.status(404);
   res.json({ "status": "Route does not exist" });
-  res.send();
 });
 
 

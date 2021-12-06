@@ -1,11 +1,15 @@
 import express from "express";
-import { getVersion } from "../util/version";
+import {getVersion} from "../util/version";
+
 const router = express.Router();
 
+// @route   GET api/
+// @desc    Get welcome message
+// @access  Public
 router.get('/', (req, res) => {
     //Build JSON Object
     let welcome = {
-        "message": "Welome to our backend!",
+        "message": "Welcome to our backend!",
         "version": getVersion(),
         "status": "/status"
     }
@@ -16,4 +20,4 @@ router.get('/', (req, res) => {
 });
 
 
-export { router as welcomeController }
+export {router as welcomeController}

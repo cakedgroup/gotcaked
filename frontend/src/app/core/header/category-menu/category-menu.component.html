@@ -1,0 +1,5 @@
+<div class="menu-container" >
+  <div *ngFor="let category of categories">
+    <a routerLink="/category/{{ category.name }}" class="category"> {{ category.name }}</a>
+  </div>
+</div>
