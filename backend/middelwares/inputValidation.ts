@@ -21,7 +21,7 @@ export function validateTag(req: express.Request, res: express.Response, next: e
 }
 
 export function validateCategory(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.body) {
+    if (req.body && req.body.name !== null && req.body.name !== undefined && req.body.name !== "") {
         req.body = categoryTransformer(req.body);
         next();
     } else {
