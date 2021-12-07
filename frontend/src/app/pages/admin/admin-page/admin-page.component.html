@@ -26,48 +26,17 @@
         </button>
       </div>
     </form>
-
     <!-- Add Category -->
     <form (submit)="addCategoryHandler()">
-      <div class="form-container">
-        <div class="form-input-container">
-          <label class="form-label" for="category-name--new">Name</label>
-          <input class="form-input" type="text" name="category-name" placeholder="Category Name"
-            [(ngModel)]="tempCategory.name">
-        </div>
-
-        <div class="form-input-container">
-          <label class="form-label" for="category-description-new">Description</label>
-          <input class="form-input" type="text" name="category-description-new" placeholder="Category Description"
-            [(ngModel)]="tempCategory.description">
-        </div>
-        <button class="delete-button" type="submit">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
-      </div>
+      <app-form-create-field [(model)]="tempCategory" model_type="Category"></app-form-create-field>
     </form>
 
     <!--Tags Section-->
-
     <h2 class="section-title">Tags</h2>
     <hr class="section-line">
     <!--Add new a Tag -->
     <form (submit)="addTagHandler()">
-      <div class="form-container">
-        <div class="form-input-container">
-          <label class="form-label" for="tag-name-new">Name</label>
-          <input class="form-input" type="text" name="tag-name" placeholder="Tag Name" [(ngModel)]="tempTag.name">
-        </div>
-
-        <div class="form-input-container">
-          <label class="form-label" for="tag-description-new">Description</label>
-          <input class="form-input" type="text" name="tag-description-new" placeholder="Tag Description"
-            [(ngModel)]="tempTag.description">
-        </div>
-        <button class="delete-button" type="submit">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
-      </div>
+      <app-form-create-field [(model)]="tempTag" model_type="Tag"></app-form-create-field>
     </form>
 
     <!--List Current Tags -->
