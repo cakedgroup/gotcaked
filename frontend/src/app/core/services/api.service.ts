@@ -1,11 +1,11 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { Category } from '../../models/category.model';
 import { AuthService } from './auth.service';
-import { Tag } from 'src/app/models/tag.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class ApiService {
   }
 
   createCategory(category: Category): Observable<HttpResponse<Category>> {
-    return this.http.post<Category>(`${this.baseUrl}/categories`, category, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+    return this.http.post<Category>(`${this.baseUrl}/categories`, category, {observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
   updateCategory(category: Category): Observable<HttpResponse<Category>> {

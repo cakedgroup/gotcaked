@@ -70,12 +70,6 @@
   margin-right: auto;
 }
 
-.text {
-  color: #949494;
-  margin-left: 1%;
-  font-family: "Darker Grotesque", sans-serif;
-}
-
 .tag-container {
   display: flex;
   flex-wrap: wrap;
@@ -106,6 +100,18 @@
   height: 25px;
 }
 
+.error-msg{
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  color: red;
+}
+
+.form-button-container{
+  display: flex;
+  flex-wrap: row wrap;
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .form-input {
     width: 105%;
@@ -116,5 +122,8 @@
   }
   .form-container {
     flex-direction: column;
+  }
+  .tag-container{
+    margin-top: 50px;
   }
 }

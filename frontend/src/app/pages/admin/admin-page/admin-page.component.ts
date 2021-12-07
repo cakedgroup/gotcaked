@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faCheckCircle, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Category } from 'src/app/models/category.model';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
@@ -13,11 +13,13 @@ export class AdminPageComponent implements OnInit {
   //FA-Icons
   faTrash = faTrash;
   faCheckCircle = faCheckCircle;
-  faPlus = faPlus;
 
   //Vars
   categories: Category[];
   tags: Tag[];
+  failedCategoryRequest: boolean = false;
+  failedTagRequest: boolean = false;
+  failedErrorMessage: string = "";
 
   //Temp-Objects to Create A New Object
   tempCategory: Category = {
@@ -38,17 +40,25 @@ export class AdminPageComponent implements OnInit {
     this.loadTags();
   }
 
+  resetErrorMessages() {
+    this.failedCategoryRequest = false;
+    this.failedTagRequest = false;
+    this.failedErrorMessage = "";
+  }
+
   //
   //Form-Handler
   //
 
   //Add new Category Handler
   addCategoryHandler() {
+    this.resetErrorMessages();
     this.addCategory(this.tempCategory);
   }
 
   //Add new Tag Handler
   addTagHandler() {
+    this.resetErrorMessages();
     this.addTag(this.tempTag);
   }
 
@@ -56,7 +66,6 @@ export class AdminPageComponent implements OnInit {
   //
   // Category-API-Calls
   //
-
   //Fetch all Categories from API
   loadCategories() {
     this.apiService.getCategories().subscribe(
@@ -71,11 +80,16 @@ export class AdminPageComponent implements OnInit {
     this.apiService.createCategory(category).subscribe(res => {
       if (res.status === 201) {
         this.loadCategories();
+        this.resetErrorMessages();
         this.tempCategory.name = '';
         this.tempCategory.description = '';
-      } else {
-        console.log('Error Creating Category');
+      } else if (res.status === 409) {
+        this.failedCategoryRequest = true;
+        this.failedErrorMessage = "Category already exists!";
       }
+    }, () => {
+      this.failedCategoryRequest = true;
+      this.failedErrorMessage = "Error Creating Category";
     });
   }
 
@@ -84,9 +98,14 @@ export class AdminPageComponent implements OnInit {
     this.apiService.updateCategory(category).subscribe(res => {
       if (res.status === 200) {
         this.loadCategories();
+        this.resetErrorMessages();
       } else {
-        console.log('Error Updating Category');
+        this.failedCategoryRequest = true;
+        this.failedErrorMessage = "Error Updating Category";
       }
+    }, () => {
+      this.failedCategoryRequest = true;
+      this.failedErrorMessage = "Error Updating Category";
     });
   }
 
@@ -95,21 +114,25 @@ export class AdminPageComponent implements OnInit {
     this.apiService.deleteCategory(categoryName).subscribe(res => {
       if (res.status === 204) {
         this.loadCategories();
+        this.resetErrorMessages();
       } else {
-        console.log('Error Deleting Category');
+        this.failedCategoryRequest = true;
+        this.failedErrorMessage = "Error Deleting Category";
       }
-    });
+    },
+      () => {
+        this.failedCategoryRequest = true;
+        this.failedErrorMessage = "Error Deleting Category";
+      });
   }
 
   //
   // Category-API-Calls
   //
-
   //Fetch all Tags from API
   loadTags() {
     this.apiService.getTags().subscribe(
       (data: Tag[]) => {
-        console.log(data);
         this.tags = data;
       }
     );
@@ -120,11 +143,16 @@ export class AdminPageComponent implements OnInit {
     this.apiService.createTag(tag).subscribe(res => {
       if (res.status === 201) {
         this.loadTags();
+        this.resetErrorMessages();
         this.tempTag.name = '';
         this.tempTag.description = '';
-      } else {
-        console.log('Error Creating Tag');
+      } else if (res.status === 409) {
+        this.failedTagRequest = true;
+        this.failedErrorMessage = "Category already exists!";
       }
+    }, () => {
+      this.failedTagRequest = true;
+      this.failedErrorMessage = "Error Creating Tag";
     });
   }
 
@@ -133,9 +161,14 @@ export class AdminPageComponent implements OnInit {
     this.apiService.deleteTag(tagName).subscribe(res => {
       if (res.status === 204) {
         this.loadTags();
+        this.resetErrorMessages();
       } else {
-        console.log('Error Deleting Tag');
+        this.failedTagRequest = true;
+        this.failedErrorMessage = "Error Deleting Tag";
       }
+    }, () => {
+      this.failedTagRequest = true;
+      this.failedErrorMessage = "Error Deleting Tag";
     });
   }
 }

@@ -38,3 +38,16 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+@media (max-width: 600px) {
+  .form-input {
+    width: 105%;
+  }
+  .delete-button {
+    max-width: min-content;
+    margin: auto;
+  }
+  .form-container {
+    flex-direction: column;
+  }
+}
