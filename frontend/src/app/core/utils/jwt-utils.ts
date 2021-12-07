@@ -11,3 +11,15 @@ export function parseJWT(token: string): JWTContent {
     return decodedJwtData;
   }
 }
+
+export function isTokenExpired(token: string): boolean {
+  let decodedJwtData: JWTContent = parseJWT(token);
+  if (decodedJwtData === null) {
+    return true;
+  } else {
+    let date = new Date(0);
+    date.setUTCSeconds(decodedJwtData.exp);
+    let now = new Date();
+    return now.valueOf() > date.valueOf();
+  }
+}

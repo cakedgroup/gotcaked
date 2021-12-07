@@ -64,8 +64,14 @@ export class AuthService {
   autoLogin() {
     let token = localStorage.getItem('token');
     if (token !== null && token !== undefined && token !== "" && token !== "null") {
-      this.jwtToken.next(token);
-      this.setUser();
+      //Check if JWT Token is expired
+      if (JWTUtils.isTokenExpired(token)) {
+        //Delete JWT Token
+        localStorage.removeItem('token');
+      } else {
+        this.jwtToken.next(token);
+        this.setUser();
+      }
     }
   }
 
