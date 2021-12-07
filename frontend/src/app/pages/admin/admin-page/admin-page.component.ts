@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faCheckCircle, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Category } from 'src/app/models/category.model';
+import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
 
 @Component({
@@ -16,7 +17,15 @@ export class AdminPageComponent implements OnInit {
 
   //Vars
   categories: Category[];
+  tags: Tag[];
+
+  //Temp-Objects to Create A New Object
   tempCategory: Category = {
+    name: '',
+    description: '',
+  };
+
+  tempTag: Tag = {
     name: '',
     description: '',
   };
@@ -26,21 +35,38 @@ export class AdminPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadTags();
   }
 
-  addHandler() {
+  //
+  //Form-Handler
+  //
+
+  //Add new Category Handler
+  addCategoryHandler() {
     this.addCategory(this.tempCategory);
   }
 
+  //Add new Tag Handler
+  addTagHandler() {
+    this.addTag(this.tempTag);
+  }
+
+
+  //
+  // Category-API-Calls
+  //
+
+  //Fetch all Categories from API
   loadCategories() {
     this.apiService.getCategories().subscribe(
       (data: Category[]) => {
-        console.log(data);
         this.categories = data;
       }
     );
   }
 
+  //Add a new Category at the API
   addCategory(category: Category) {
     this.apiService.createCategory(category).subscribe(res => {
       if (res.status === 201) {
@@ -53,6 +79,7 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
+  //Update an existing Category at the API
   updateCategory(category: Category) {
     this.apiService.updateCategory(category).subscribe(res => {
       if (res.status === 200) {
@@ -63,6 +90,7 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
+  //Delete an existing Category at the API
   deleteCategory(categoryName: string) {
     this.apiService.deleteCategory(categoryName).subscribe(res => {
       if (res.status === 204) {
@@ -73,7 +101,41 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
-  //TODO Add Tags
-  //TODO Delete Tags
-  //TODO List Tags
+  //
+  // Category-API-Calls
+  //
+
+  //Fetch all Tags from API
+  loadTags() {
+    this.apiService.getTags().subscribe(
+      (data: Tag[]) => {
+        console.log(data);
+        this.tags = data;
+      }
+    );
+  }
+
+  //Add a new Tag at the API
+  addTag(tag: Tag) {
+    this.apiService.createTag(tag).subscribe(res => {
+      if (res.status === 201) {
+        this.loadTags();
+        this.tempTag.name = '';
+        this.tempTag.description = '';
+      } else {
+        console.log('Error Creating Tag');
+      }
+    });
+  }
+
+  //Delete an existing Tag at the API
+  deleteTag(tagName: string) {
+    this.apiService.deleteTag(tagName).subscribe(res => {
+      if (res.status === 204) {
+        this.loadTags();
+      } else {
+        console.log('Error Deleting Tag');
+      }
+    });
+  }
 }

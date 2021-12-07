@@ -5,6 +5,10 @@ html, body {
   margin: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
 
 /* Colors */
 :root {

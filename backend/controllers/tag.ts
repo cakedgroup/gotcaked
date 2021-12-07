@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 // @access  Admin
 router.post('/', isAuthorizedAdmin, validateTag, (req, res) => {
     tagService.createTag(req.body).then(tag => {
-        res.status(200).json(tag);
+        res.status(201).json(tag);
     }).catch(err => {
         errorHandler(err, req, res);
     });

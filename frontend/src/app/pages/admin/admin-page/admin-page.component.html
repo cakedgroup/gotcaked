@@ -18,31 +18,70 @@
           <input class="form-input" type="text" name="category-description-{{index}}" placeholder="Category Description"
             [(ngModel)]="category.description">
         </div>
-        <button class="delete-button" (click)="updateCategory(category)"><fa-icon [icon]="faCheckCircle"></fa-icon></button>
-        <button class="delete-button" (click)="deleteCategory(category.name)"><fa-icon [icon]="faTrash"></fa-icon></button>
+        <button class="delete-button" (click)="updateCategory(category)">
+          <fa-icon [icon]="faCheckCircle"></fa-icon>
+        </button>
+        <button class="delete-button" (click)="deleteCategory(category.name)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
       </div>
     </form>
 
     <!-- Add Category -->
-    <form (submit)="addHandler()">
+    <form (submit)="addCategoryHandler()">
       <div class="form-container">
         <div class="form-input-container">
           <label class="form-label" for="category-name--new">Name</label>
-          <input class="form-input" type="text" name="category-name" placeholder="Category Name" [(ngModel)]="tempCategory.name">
+          <input class="form-input" type="text" name="category-name" placeholder="Category Name"
+            [(ngModel)]="tempCategory.name">
         </div>
 
         <div class="form-input-container">
           <label class="form-label" for="category-description-new">Description</label>
-          <input class="form-input" type="text" name="category-description-new" placeholder="Category Description" [(ngModel)]="tempCategory.description">
+          <input class="form-input" type="text" name="category-description-new" placeholder="Category Description"
+            [(ngModel)]="tempCategory.description">
         </div>
-        <button class="delete-button" type="submit"><fa-icon [icon]="faPlus"></fa-icon></button>
+        <button class="delete-button" type="submit">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
       </div>
     </form>
 
     <!--Tags Section-->
-    <form>
-      <h2 class="section-title">Tags</h2>
-      <hr class="section-line">
+
+    <h2 class="section-title">Tags</h2>
+    <hr class="section-line">
+    <!--Add new a Tag -->
+    <form (submit)="addTagHandler()">
+      <div class="form-container">
+        <div class="form-input-container">
+          <label class="form-label" for="tag-name-new">Name</label>
+          <input class="form-input" type="text" name="tag-name" placeholder="Tag Name" [(ngModel)]="tempTag.name">
+        </div>
+
+        <div class="form-input-container">
+          <label class="form-label" for="tag-description-new">Description</label>
+          <input class="form-input" type="text" name="tag-description-new" placeholder="Tag Description"
+            [(ngModel)]="tempTag.description">
+        </div>
+        <button class="delete-button" type="submit">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+      </div>
     </form>
+
+    <!--List Current Tags -->
+    <div class="tag-container">
+      <div *ngFor="let tag of tags;let index = index;">
+        <!--Create Tag Pseudo Button -->
+        <div class="tag-pseudo-button">
+          <p class="tag-pseudo-text">{{tag.name}}
+            <button class="tag-delete-button">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

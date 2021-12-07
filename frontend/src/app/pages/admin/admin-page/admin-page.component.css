@@ -8,7 +8,7 @@
 }
 
 .empty-div {
-  max-width: 1000px;
+  max-width: 600px;
   margin-top: 20px;
 }
 
@@ -74,6 +74,36 @@
   color: #949494;
   margin-left: 1%;
   font-family: "Darker Grotesque", sans-serif;
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 10px;
+}
+
+.tag-pseudo-button {
+  background-color: var(--primary-color);
+  border-style: solid;
+  color: darkgrey;
+  border-radius: 50px;
+  padding: 3px 10px;
+  max-width: fit-content;
+  height: 30px;
+}
+
+.tag-pseudo-text {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
+  color: white;
+  margin: auto;
+}
+
+.tag-delete-button {
+  border-style: none;
+  background-color: transparent;
+  color: white;
+  height: 25px;
 }
 
 @media (max-width: 600px) {

@@ -5,6 +5,7 @@ import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { Category } from '../../models/category.model';
 import { AuthService } from './auth.service';
+import { Tag } from 'src/app/models/tag.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,18 @@ export class ApiService {
 
   deleteCategory(category: string): Observable<HttpResponse<Category>> {
     return this.http.delete<Category>(`${this.baseUrl}/categories/${category}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  getTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${this.baseUrl}/tags`);
+  }
+
+  createTag(tag: Tag): Observable<HttpResponse<Tag>> {
+    return this.http.post<Tag>(`${this.baseUrl}/tags`, tag, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteTag(tag: string): Observable<HttpResponse<Tag>> {
+    return this.http.delete<Tag>(`${this.baseUrl}/tags/${tag}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
 }
