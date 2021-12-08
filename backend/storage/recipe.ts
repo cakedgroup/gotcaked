@@ -170,24 +170,31 @@ export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
                 reject(err);
             } else {
                 let recipes: Recipe[] = [];
-                rows.forEach((row) => {
-                    let recipe: Recipe = {
-                        id: row.id,
-                        name: row.name,
-                        description: row.description,
-                        preparation: row.preparation,
-                        createdAt: row.createdAt,
-                        difficulty: row.difficulty,
-                        time: row.time,
-                        category_id: row.category_id,
-                        user_id: row.user_id,
-                        tags: [],
-                        ingredients: [],
-                        picture_uri: []
-                    };
-                    recipes.push(recipe);
+                let rowMapper = new Promise<Recipe[]>((resolve, reject) => {
+                    rows.forEach((row) => {
+                        let recipe: Recipe = {
+                            id: row.id,
+                            name: row.name,
+                            description: row.description,
+                            preparation: row.preparation,
+                            createdAt: row.createdAt,
+                            difficulty: row.difficulty,
+                            time: row.time,
+                            category_id: row.category_id,
+                            user_id: row.user_id,
+                            tags: [],
+                            ingredients: [],
+                            picture_uri: []
+                        };
+                        recipes.push(recipe);
+                    });
+                    resolve(recipes);
                 });
-                resolve(recipes);
+                rowMapper.then((allRecipes) => {
+                    resolve(allRecipes);
+                }).catch((err) => {
+                    reject(err);
+                });
             }
         });
     });

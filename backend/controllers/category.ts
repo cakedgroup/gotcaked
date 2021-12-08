@@ -1,6 +1,7 @@
 import express from 'express';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as categoryService from '../services/category';
+import * as recipeService from '../services/recipe';
 import { errorHandler } from '../util/errorHandler';
 import { validateCategory } from '../middelwares/inputValidation';
 
@@ -46,7 +47,7 @@ router.get('/:name/recipes', (req, res) => {
     let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
-    categoryService.getRecipesByCategory(req.params.name, limit, offset).then(recipes => {
+    recipeService.getRecipesByCategory(req.params.name, limit, offset).then(recipes => {
         res.status(200).json(recipes);
     }).catch(err => {
         errorHandler(err, req, res);
