@@ -1,1 +1,61 @@
-<p>admin-page works!</p>
+<div class="settings-form-container">
+  <div class="empty-div">
+    <h1 class="form-title">Admin-Settings</h1>
+
+    <!-- Category Section -->
+    <form>
+      <h2 class="section-title">Categories</h2>
+      <hr class="section-line">
+      <!--List Current Categories -->
+      <div class="form-container" *ngFor="let category of categories;let index = index;">
+        <div class="form-input-container">
+          <label class="form-label" for="category-name-{{index}}">Name</label>
+          <input class="form-input" type="text" name="category-name-{{index}}" placeholder="Category Name"
+            [(ngModel)]="category.name" disabled="input">
+        </div>
+        <div class="form-input-container">
+          <label class="form-label" for="category-description-{{index}}">Description</label>
+          <input class="form-input" type="text" name="category-description-{{index}}" placeholder="Category Description"
+            [(ngModel)]="category.description">
+        </div>
+        <div class="form-button-container">
+          <button class="delete-button" (click)="updateCategory(category)">
+            <fa-icon [icon]="faCheckCircle"></fa-icon>
+          </button>
+          <button class="delete-button" (click)="deleteCategory(category.name)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <p class="error-msg" *ngIf="this.failedCategoryRequest">{{this.failedErrorMessage}}</p>
+    </form>
+    <!-- Add Category -->
+    <form class="form-container" (submit)="addCategoryHandler()">
+      <app-form-create-field [(model)]="tempCategory" model_type="Category"></app-form-create-field>
+    </form>
+
+    <!--Tags Section-->
+    <h2 class="section-title">Tags</h2>
+    <hr class="section-line">
+    <!--Add new a Tag -->
+    <form (submit)="addTagHandler()">
+      <app-form-create-field [(model)]="tempTag" model_type="Tag"></app-form-create-field>
+    </form>
+    <p class="error-msg" *ngIf="failedTagRequest">{{this.failedErrorMessage}}</p>
+
+    <!--List Current Tags -->
+    <div class="tag-container">
+      <div *ngFor="let tag of tags;let index = index;">
+        <!--Create Tag Pseudo Button -->
+        <div class="tag-pseudo-button">
+          <p class="tag-pseudo-text">{{tag.name}}
+            <button class="tag-delete-button" (click)="deleteTag(tag.name)">
+              <!--TODO ADD FUNCTION -->
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

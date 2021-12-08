@@ -11,6 +11,7 @@ import { MenuComponent } from "./core/header/menu/menu.component";
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 import { SharedModule } from "./shared/shared.module";
 import { CategoryMenuComponent } from './core/header/category-menu/category-menu.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { CategoryMenuComponent } from './core/header/category-menu/category-menu
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
