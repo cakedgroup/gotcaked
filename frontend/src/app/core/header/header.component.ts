@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from '../../models/category.model';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -7,17 +8,24 @@ import { Category } from '../../models/category.model';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  //TODO Add Service to fetch categories
-  categories: Category[] = [{ name: "Cake", description: "Cake.." }, { name: "Muffin", description: "Muffin.." }, { name: "Cookies", description: "Cookies.." }];
+  categories: Category[];
   showUserMenu: boolean = false;
   showCategoryMenu: boolean = false;
 
-  constructor() {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit(): void {
-    console.log(this.categories);
+    this.getCategories();
   }
+
+  getCategories() {
+    this.apiService.getCategories().subscribe(
+      (data: Category[]) => {
+        this.categories = data;
+      });
+  }
+
 
   disableUserMenu() {
     this.showUserMenu = false;

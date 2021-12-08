@@ -2,6 +2,7 @@ import express from 'express';
 import { validatePicture } from '../middelwares/inputValidation';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as userService from '../services/user';
+import * as recipeService from '../services/recipe';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -130,16 +131,24 @@ router.get('/random', (req, res) => {
 // @desc    Get all recipes of user
 // @access  Public
 router.get('/:id/recipes', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    //Get All Recipes of User from Service
+    recipeService.getRecipesFromUser(req.params.id).then(recipes => {
+        res.status(200).json(recipes);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 // @route   GET api/users/:id/liked
 // @desc    Get all liked recipes of user
 // @access  Public
 router.get('/:id/liked', (req, res) => {
-    res.status(501);
-    res.send('To be implemented.');
+    //Get all liked recipes of user from Service
+    recipeService.getLikedRecipesFromUser(req.params.id).then(recipes => {
+        res.status(200).json(recipes);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
 });
 
 // @route   GET api/users/:id/list

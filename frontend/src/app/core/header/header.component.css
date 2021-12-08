@@ -17,10 +17,16 @@
   font-size: 24pt;
 }
 
+.home-link {
+  color: var(--primary-text-color);
+  text-decoration: none;
+  display: inline-flex;
+  margin-left: -15px;
+}
+
 .icon {
   width: 4em;
-  margin-top: -1.5em;
-  margin-right: 0.5em;
+  height: 4em;
 }
 
 .search-icon{

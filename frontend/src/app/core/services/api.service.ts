@@ -1,10 +1,12 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from "rxjs/operators";
+import { Category } from 'src/app/models/category.model';
+import { Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
-import { Category } from '../../models/category.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -13,6 +15,8 @@ import { AuthService } from './auth.service';
 export class ApiService {
 
   private readonly baseUrl = environment.backend;
+
+  private categories = new BehaviorSubject<Category[]>(null);
 
   constructor(private http: HttpClient, private authService: AuthService) {
   }
@@ -33,12 +37,17 @@ export class ApiService {
     return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
   }
 
+  updateCategories(categories: Category[]) {
+    this.categories.next(categories);
+  }
+
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.baseUrl}/categories`);
+    this.http.get<Category[]>(`${this.baseUrl}/categories`).subscribe(categories => this.categories.next(categories));
+    return this.categories.asObservable();
   }
 
   createCategory(category: Category): Observable<HttpResponse<Category>> {
-    return this.http.post<Category>(`${this.baseUrl}/categories`, category, {observe: 'response', headers: this.authService.createAuthorizationHeader() });
+    return this.http.post<Category>(`${this.baseUrl}/categories`, category, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
   updateCategory(category: Category): Observable<HttpResponse<Category>> {
@@ -59,6 +68,10 @@ export class ApiService {
 
   deleteTag(tag: string): Observable<HttpResponse<Tag>> {
     return this.http.delete<Tag>(`${this.baseUrl}/tags/${tag}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  getRecipesByCategory(categoryId: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/categories/${categoryId}/recipes`);
   }
 
 }

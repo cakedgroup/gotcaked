@@ -1,8 +1,9 @@
 .header-box{
   width: 95%;
-  height: 7em;
-  margin: auto;
-  margin-top: -3%;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
   border-radius: 1em;
   background-color: var(--secondary-background-color);
 }
@@ -11,5 +12,9 @@
   font-family: 'Darker Grotesque', sans-serif;
   text-align: center;
   font-size: 32pt;
-  transform: translateY(40%);
+  min-height: 100px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

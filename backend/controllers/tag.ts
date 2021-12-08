@@ -39,6 +39,20 @@ router.get('/:name', (req, res) => {
     });
 });
 
+// @route   GET api/tags/:name/recipes
+// @desc    Get all Recipes by a Tag
+// @access  Public
+router.get('/:name/recipes', (req, res) => {
+    let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
+    let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
+
+    tagService.getRecipesByTag(req.params.name, limit, offset).then(recipes => {
+        res.status(200).json(recipes);
+    }).catch(err => {
+        errorHandler(err, req, res);
+    });
+});
+
 // @route   DELETE api/tags/:name
 // @desc    Delete a tag
 // @access  Admin

@@ -71,6 +71,9 @@ export class AdminPageComponent implements OnInit {
     this.apiService.getCategories().subscribe(
       (data: Category[]) => {
         this.categories = data;
+      }, () => { },
+      () => {
+        this.apiService.updateCategories(this.categories);
       }
     );
   }
