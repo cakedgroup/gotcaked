@@ -26,6 +26,7 @@ export interface RecipeSmall {
     time: Number;
     category_id: string;
     user_id: string;
+    rating: Number;
 }
 
 export interface Ingredient {

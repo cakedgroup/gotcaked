@@ -1,5 +1,6 @@
 import { Category } from '../models/category';
 import { Recipe, RecipeSmall } from '../models/recipe';
+import * as tagDAO from '../storage/tag';
 import * as categoryDAO from '../storage/category';
 import * as recipeDAO from '../storage/recipe';
 
@@ -15,21 +16,39 @@ export function getRecipesByCategory(name: string, limit: number, offset: number
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipesByCategory(name, limit, offset).then((recipes) => {
             let allRecipes: RecipeSmall[] = [];
-            recipes.forEach(recipe => {
-                //Todo First Picture
-                let recipeSmall: RecipeSmall = {
-                    id: recipe.id,
-                    name: recipe.name,
-                    description: recipe.description,
-                    createdAt: recipe.createdAt,
-                    difficulty: recipe.difficulty,
-                    time: recipe.time,
-                    category_id: recipe.category_id,
-                    user_id: recipe.user_id
-                };
-                allRecipes.push(recipeSmall);
-            })
-            resolve(allRecipes);
+            recipes.forEach(async (recipe, index, array) => {
+                await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
+                    //If no picture return undefined
+                    let firstPicture : string = pictures[0]?.picture_id;
+                     await tagDAO.getRecipeTags(recipe.id).then(async tags => {
+                        recipe.tags = tags;
+                        //Get rating
+                        await recipeDAO.getRecipeRating(recipe.id).then(rating => {
+                            let recipeSmall: RecipeSmall = {
+                                id: recipe.id,
+                                name: recipe.name,
+                                description: recipe.description,
+                                tags: recipe.tags,
+                                picture_uri: firstPicture,
+                                createdAt: recipe.createdAt,
+                                difficulty: recipe.difficulty,
+                                time: recipe.time,
+                                category_id: recipe.category_id,
+                                user_id: recipe.user_id,
+                                rating: rating
+                            };
+                            allRecipes.push(recipeSmall);
+                            if (index === array.length -1) resolve(allRecipes);
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    }).catch(err => {
+                        reject(err);
+                    });
+                }).catch(err => {
+                    reject(err);
+                });
+            });
         }).catch((err) => {
             reject(err);
         })

@@ -398,7 +398,7 @@ export function getRecipeRating(recipeId: string): Promise<number> {
                 reject(err);
             } else {
                 if (row) {
-                    resolve(row);
+                    resolve(row.rating);
                 } else {
                     reject(new Error("Recipe not found"));
                 }
