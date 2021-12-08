@@ -12,4 +12,7 @@ export class RecipeUploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //TODO Upload recipe
+  //TODO Push Pictures
+
 }
