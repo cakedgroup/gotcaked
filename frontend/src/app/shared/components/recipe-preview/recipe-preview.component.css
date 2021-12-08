@@ -10,7 +10,7 @@
 
 .recipe-info {
   padding: 3px;
-  margin-right: 30px;
+  margin: 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -58,5 +58,9 @@
 @media (max-width: 800px) {
   .recipe-box {
     grid-template-columns: 1fr;
+  }
+  .recipe-image {
+    width: 300px;
+    height: 225px;
   }
 }
