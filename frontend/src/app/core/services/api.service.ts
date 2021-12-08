@@ -1,6 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Category } from 'src/app/models/category.model';
 import { Recipe } from 'src/app/models/recipe.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -36,5 +37,12 @@ export class ApiService {
     return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
   }
 
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.baseUrl}/categories`);
+  }
+
+  getRecipesByCategory(categoryId: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/categories/${categoryId}/recipes`);
+  }
 
 }

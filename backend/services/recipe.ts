@@ -163,6 +163,56 @@ export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmal
     });
 }
 
+export function getRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
+    return new Promise<RecipeSmall[]>((resolve, reject) => {
+        recipeDAO.getRecipesFromUser(userID).then(recipes => {
+            let allRecipes: RecipeSmall[] = [];
+            recipes.forEach(recipe => {
+                //Todo First Picture
+                let recipeSmall: RecipeSmall = {
+                    id: recipe.id,
+                    name: recipe.name,
+                    description: recipe.description,
+                    createdAt: recipe.createdAt,
+                    difficulty: recipe.difficulty,
+                    time: recipe.time,
+                    category_id: recipe.category_id,
+                    user_id: recipe.user_id
+                };
+                allRecipes.push(recipeSmall);
+            })
+            resolve(allRecipes);
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
+export function getLikedRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
+    return new Promise<RecipeSmall[]>((resolve, reject) => {
+        recipeDAO.getLikedRecipesFromUser(userID).then(recipes => {
+            let allRecipes: RecipeSmall[] = [];
+            recipes.forEach(recipe => {
+                //Todo First Picture
+                let recipeSmall: RecipeSmall = {
+                    id: recipe.id,
+                    name: recipe.name,
+                    description: recipe.description,
+                    createdAt: recipe.createdAt,
+                    difficulty: recipe.difficulty,
+                    time: recipe.time,
+                    category_id: recipe.category_id,
+                    user_id: recipe.user_id
+                };
+                allRecipes.push(recipeSmall);
+            })
+            resolve(allRecipes);
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
 export function deleteRecipe(recipeID: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Check if recipe exists

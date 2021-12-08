@@ -57,7 +57,7 @@ function createTables() {
         time NUMBER,
         category_id VARCHAR(36) NOT NULL,
         user_id VARCHAR(36) NOT NULL,
-        FOREIGN KEY (category_id) REFERENCES category(id),
+        FOREIGN KEY (category_id) REFERENCES category(name),
         FOREIGN KEY (user_id) REFERENCES user(id));`, (err) => {
         if (err) {
             console.error(err.message);

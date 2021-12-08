@@ -1,1 +1,5 @@
-<p>category-page works!</p>
+<app-content-header title={{category}}></app-content-header>
+
+<div class="recipe-content" *ngFor="let recipe of recipes">
+  <app-recipe-preview></app-recipe-preview>
+</div>
