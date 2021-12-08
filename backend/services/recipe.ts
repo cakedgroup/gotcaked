@@ -120,22 +120,43 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
 export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipes(limit, offset).then(recipes => {
+            //Create promise to get additional data for each recipe
+            let convertRecipes = new Promise<RecipeSmall[]>((resolve, reject) => {
             let allRecipes: RecipeSmall[] = [];
-            recipes.forEach(recipe => {
-                //Todo First Picture
-                let recipeSmall: RecipeSmall = {
-                    id: recipe.id,
-                    name: recipe.name,
-                    description: recipe.description,
-                    createdAt: recipe.createdAt,
-                    difficulty: recipe.difficulty,
-                    time: recipe.time,
-                    category_id: recipe.category_id,
-                    user_id: recipe.user_id
-                };
-                allRecipes.push(recipeSmall);
+                recipes.forEach(async (recipe, index, array) => {
+                    await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
+                        //If no picture return undefined
+                        let firstPicture : string = pictures[0]?.picture_id;
+                         await tagDAO.getRecipeTags(recipe.id).then(tags => {
+                            recipe.tags = tags;
+                            let recipeSmall: RecipeSmall = {
+                                id: recipe.id,
+                                name: recipe.name,
+                                description: recipe.description,
+                                tags: recipe.tags,
+                                picture_uri: firstPicture,
+                                createdAt: recipe.createdAt,
+                                difficulty: recipe.difficulty,
+                                time: recipe.time,
+                                category_id: recipe.category_id,
+                                user_id: recipe.user_id
+                            };
+                            allRecipes.push(recipeSmall);
+                            if (index === array.length -1) resolve(allRecipes);
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             });
-            resolve(allRecipes);
+            //Wait for converter promise to finish
+            convertRecipes.then((allRecipes) => {
+                resolve(allRecipes);
+            }).catch(err => {
+                reject(err);
+            });
         }).catch(error => {
             reject(error);
         });

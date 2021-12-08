@@ -19,6 +19,8 @@ export interface RecipeSmall {
     id: string;
     name: string;
     description: string;
+    tags: Tag[];
+    picture_uri: string;
     createdAt: Date;
     difficulty: string;
     time: Number;
