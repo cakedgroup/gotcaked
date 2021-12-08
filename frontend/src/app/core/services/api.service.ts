@@ -79,4 +79,8 @@ export class ApiService {
     return this.http.get<Recipe[]>(`${this.baseUrl}/categories/${categoryId}/recipes`);
   }
 
+  getRecipesByTag(tagId: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/tags/${tagId}/recipes`);
+  }
+
 }
