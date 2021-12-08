@@ -47,3 +47,7 @@ export interface Rating {
     recipe_id: string;
     vote: number;
 }
+
+export interface RatingCount {
+    rating: number;
+}
