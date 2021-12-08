@@ -8,7 +8,7 @@
         <div class="recipe-stats">
             <p class="recipe-stats-item">{{recipe.time}} Min</p>
             <p class="recipe-stats-item">{{recipe.difficulty}}</p>
-            <p class="recipe-stats-item">10 Votes</p>
+            <p class="recipe-stats-item">{{recipe.rating}} Votes</p>
         </div>
         <div class="recipe-tags">
             <p *ngFor="let tag of recipe.tags" class="recipe-tags-item">{{tag.name}}</p>  
