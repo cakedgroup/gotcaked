@@ -9,19 +9,19 @@
 }
 
 .recipe-info {
+  font-family: "Darker Grotesque", sans-serif;
   padding: 3px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  font-family: 'Darker Grotesque', sans-serif;
 }
 
-.recipe-title{
+.recipe-title {
   font-size: 32pt;
 }
 
-.recipe-text{
+.recipe-text {
   margin-top: -5px;
   margin-bottom: 5px;
   font-size: 18pt;
@@ -72,6 +72,9 @@
   }
   .recipe-info {
     margin-top: -40px;
+  }
+  .recipe-text {
+    margin-top: -10px;
   }
   .recipe-image {
     width: 300px;
