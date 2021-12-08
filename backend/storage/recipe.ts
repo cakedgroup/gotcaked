@@ -1,4 +1,4 @@
-import { Ingredient, Rating, Recipe, RecipePicture } from '../models/recipe';
+import { Ingredient, Rating, RatingCount, Recipe, RecipePicture } from '../models/recipe';
 import { sqlPager } from '../util/sql';
 import { generateUUID } from "../util/uuid";
 import { db } from './db';
@@ -391,7 +391,7 @@ export function getUserRecipeRating(userId: string, recipeId: string): Promise<R
     });
 }
 
-export function getRecipeRating(recipeId: string): Promise<number> {
+export function getRecipeRating(recipeId: string): Promise<RatingCount> {
     return new Promise((resolve, reject) => {
         db.get(`SELECT SUM(vote) AS rating FROM rating WHERE recipe_id = ?`, [recipeId], (err, row) => {
             if (err) {

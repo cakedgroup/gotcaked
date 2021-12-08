@@ -1,5 +1,5 @@
 <app-content-header title="Welcome {{userName}}"></app-content-header>
 
 <div class="recipe-content">
-  <app-recipe-preview></app-recipe-preview>
+  <app-recipe-preview *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-preview>
 </div>

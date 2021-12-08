@@ -13,4 +13,6 @@ export interface Recipe {
     difficulty: String;
     category_id: string;
     user_id: string;
+    picture_uri: string;
+    rating: Number;
 }

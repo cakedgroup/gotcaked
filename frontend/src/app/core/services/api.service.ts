@@ -9,6 +9,7 @@ import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +38,10 @@ export class ApiService {
     return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
   }
 
+  getRecipes(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
+  }
+  
   updateCategories(categories: Category[]) {
     this.categories.next(categories);
   }

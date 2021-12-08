@@ -1,5 +1,5 @@
 import fileUpload from 'express-fileupload';
-import { Rating, Recipe, RecipeSmall } from '../models/recipe';
+import { Rating, RatingCount, Recipe, RecipeSmall } from '../models/recipe';
 import * as categoryDAO from '../storage/category';
 import * as commentDAO from '../storage/comment';
 import * as recipeDAO from '../storage/recipe';
@@ -120,22 +120,50 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
 export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipes(limit, offset).then(recipes => {
+            //Create promise to get additional data for each recipe
+            let convertRecipes = new Promise<RecipeSmall[]>((resolve, reject) => {
             let allRecipes: RecipeSmall[] = [];
-            recipes.forEach(recipe => {
-                //Todo First Picture
-                let recipeSmall: RecipeSmall = {
-                    id: recipe.id,
-                    name: recipe.name,
-                    description: recipe.description,
-                    createdAt: recipe.createdAt,
-                    difficulty: recipe.difficulty,
-                    time: recipe.time,
-                    category_id: recipe.category_id,
-                    user_id: recipe.user_id
-                };
-                allRecipes.push(recipeSmall);
+                recipes.forEach(async (recipe, index, array) => {
+                    await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
+                        //If no picture return undefined
+                        let firstPicture : string = pictures[0]?.picture_id;
+                         await tagDAO.getRecipeTags(recipe.id).then(async tags => {
+                            recipe.tags = tags;
+                            //Get rating
+                            await recipeDAO.getRecipeRating(recipe.id).then(rating => {
+                                let recipeSmall: RecipeSmall = {
+                                    id: recipe.id,
+                                    name: recipe.name,
+                                    description: recipe.description,
+                                    tags: recipe.tags,
+                                    picture_uri: firstPicture,
+                                    createdAt: recipe.createdAt,
+                                    difficulty: recipe.difficulty,
+                                    time: recipe.time,
+                                    category_id: recipe.category_id,
+                                    user_id: recipe.user_id,
+                                    rating: rating.rating || 0
+                                };
+                                allRecipes.push(recipeSmall);
+                                if (index === array.length -1) resolve(allRecipes);
+                            }).catch(err => {
+                                reject(err);
+                            });
+
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    }).catch(err => {
+                        reject(err);
+                    });
+                });
             });
-            resolve(allRecipes);
+            //Wait for converter promise to finish
+            convertRecipes.then((allRecipes) => {
+                resolve(allRecipes);
+            }).catch(err => {
+                reject(err);
+            });
         }).catch(error => {
             reject(error);
         });
@@ -145,22 +173,49 @@ export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmal
 export function getRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipesFromUser(userID).then(recipes => {
-            let allRecipes: RecipeSmall[] = [];
-            recipes.forEach(recipe => {
-                //Todo First Picture
-                let recipeSmall: RecipeSmall = {
-                    id: recipe.id,
-                    name: recipe.name,
-                    description: recipe.description,
-                    createdAt: recipe.createdAt,
-                    difficulty: recipe.difficulty,
-                    time: recipe.time,
-                    category_id: recipe.category_id,
-                    user_id: recipe.user_id
-                };
-                allRecipes.push(recipeSmall);
-            })
-            resolve(allRecipes);
+            let convertRecipes = new Promise<RecipeSmall[]>((resolve, reject) => {
+                let allRecipes: RecipeSmall[] = [];
+                    recipes.forEach(async (recipe, index, array) => {
+                        await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
+                            //If no picture return undefined
+                            let firstPicture : string = pictures[0]?.picture_id;
+                             await tagDAO.getRecipeTags(recipe.id).then(async tags => {
+                                recipe.tags = tags;
+                                //Get rating
+                                await recipeDAO.getRecipeRating(recipe.id).then(rating => {
+                                    let recipeSmall: RecipeSmall = {
+                                        id: recipe.id,
+                                        name: recipe.name,
+                                        description: recipe.description,
+                                        tags: recipe.tags,
+                                        picture_uri: firstPicture,
+                                        createdAt: recipe.createdAt,
+                                        difficulty: recipe.difficulty,
+                                        time: recipe.time,
+                                        category_id: recipe.category_id,
+                                        user_id: recipe.user_id,
+                                        rating: rating.rating || 0
+                                    };
+                                    allRecipes.push(recipeSmall);
+                                    if (index === array.length -1) resolve(allRecipes);
+                                }).catch(err => {
+                                    reject(err);
+                                });
+    
+                            }).catch(err => {
+                                reject(err);
+                            });
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    });
+                });
+                //Wait for converter promise to finish
+                convertRecipes.then((allRecipes) => {
+                    resolve(allRecipes);
+                }).catch(err => {
+                    reject(err);
+                });
         }).catch(err => {
             reject(err);
         });
@@ -171,21 +226,40 @@ export function getLikedRecipesFromUser(userID: string): Promise<RecipeSmall[]> 
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getLikedRecipesFromUser(userID).then(recipes => {
             let allRecipes: RecipeSmall[] = [];
-            recipes.forEach(recipe => {
-                //Todo First Picture
-                let recipeSmall: RecipeSmall = {
-                    id: recipe.id,
-                    name: recipe.name,
-                    description: recipe.description,
-                    createdAt: recipe.createdAt,
-                    difficulty: recipe.difficulty,
-                    time: recipe.time,
-                    category_id: recipe.category_id,
-                    user_id: recipe.user_id
-                };
-                allRecipes.push(recipeSmall);
-            })
-            resolve(allRecipes);
+            recipes.forEach(async (recipe, index, array) => {
+                await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
+                    //If no picture return undefined
+                    let firstPicture : string = pictures[0]?.picture_id;
+                     await tagDAO.getRecipeTags(recipe.id).then(async tags => {
+                        recipe.tags = tags;
+                        //Get rating
+                        await recipeDAO.getRecipeRating(recipe.id).then(rating => {
+                            let recipeSmall: RecipeSmall = {
+                                id: recipe.id,
+                                name: recipe.name,
+                                description: recipe.description,
+                                tags: recipe.tags,
+                                picture_uri: firstPicture,
+                                createdAt: recipe.createdAt,
+                                difficulty: recipe.difficulty,
+                                time: recipe.time,
+                                category_id: recipe.category_id,
+                                user_id: recipe.user_id,
+                                rating: rating.rating || 0
+                            };
+                            allRecipes.push(recipeSmall);
+                            if (index === array.length -1) resolve(allRecipes);
+                        }).catch(err => {
+                            reject(err);
+                        });
+
+                    }).catch(err => {
+                        reject(err);
+                    });
+                }).catch(err => {
+                    reject(err);
+                });
+            });
         }).catch(err => {
             reject(err);
         });
@@ -398,8 +472,8 @@ export function getRatingFromUser(user_id: string, recipe_id: string): Promise<R
     });
 }
 
-export function getRecipeRating(recipe_id: string): Promise<number> {
-    return new Promise<number>((resolve, reject) => {
+export function getRecipeRating(recipe_id: string): Promise<RatingCount> {
+    return new Promise<RatingCount>((resolve, reject) => {
         recipeDAO.getRecipe(recipe_id).then((recipe) => {
             if (recipe) {
                 recipeDAO.getRecipeRating(recipe_id).then((rating) => {
