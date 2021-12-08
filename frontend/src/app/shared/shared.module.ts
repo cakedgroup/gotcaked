@@ -4,24 +4,29 @@ import { FormsModule } from "@angular/forms";
 import { RecipePreviewComponent } from './components/recipe-preview/recipe-preview.component';
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
 import { ContentHeaderComponent } from './components/content-header/content-header.component';
+import { FormCreateFieldComponent } from './components/form-create-field/form-create-field.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
   declarations: [
     RecipePreviewComponent,
     UserPreviewComponent,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    FormCreateFieldComponent
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     RecipePreviewComponent,
     UserPreviewComponent,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    FormCreateFieldComponent
   ]
 })
 export class SharedModule {
