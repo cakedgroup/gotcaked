@@ -10,11 +10,21 @@
 
 .recipe-info {
   padding: 3px;
-  margin: 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  font-family: 'Darker Grotesque', sans-serif;
+}
+
+.recipe-title{
+  font-size: 32pt;
+}
+
+.recipe-text{
+  margin-top: -5px;
+  margin-bottom: 5px;
+  font-size: 18pt;
 }
 
 .recipe-image-box {
@@ -40,6 +50,7 @@
   padding: 5px;
   background-color: var(--secondary-color);
   border-radius: 1em;
+  font-size: 14pt;
 }
 
 .recipe-tags {
@@ -58,6 +69,9 @@
 @media (max-width: 800px) {
   .recipe-box {
     grid-template-columns: 1fr;
+  }
+  .recipe-info {
+    margin-top: -40px;
   }
   .recipe-image {
     width: 300px;

@@ -13,24 +13,28 @@ export class WelcomePageComponent implements OnInit {
   recipes: Recipe[] = [];
 
   constructor(private authService: AuthService, private apiService: ApiService) {
-
   }
 
   ngOnInit(): void {
-    console.log("WelcomePage");
+    this.getUserName();
+    this.getRecipes();
+  }
+
+  getUserName() {
     this.authService.getUser().subscribe(user => {
       if (user !== null) {
         this.userName = user.name;
       }
     });
+  }
 
+  getRecipes() {
     this.apiService.getRecipes().subscribe((recipes) => {
       if (recipes !== null) {
         this.recipes = recipes;
+        console.log(this.recipes);
       }
-    }
-    );
-
+    });
   }
 }
 
