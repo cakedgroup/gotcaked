@@ -16,3 +16,16 @@ export interface Recipe {
     picture_uri: string;
     rating: Number;
 }
+
+export interface RecipeCreate {
+  name: string;
+  description: string;
+  ingredients: Ingredients[];
+  tags: Tag[];
+  preparation: string;
+  time: Number;
+  difficulty: String;
+  category_id: string;
+  picture_uri: string;
+}
+

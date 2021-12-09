@@ -6,6 +6,9 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
 import { ContentHeaderComponent } from './components/content-header/content-header.component';
 import { FormCreateFieldComponent } from './components/form-create-field/form-create-field.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormInputContainerComponent } from './components/form-input-container/form-input-container.component';
+import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
+import { IngredientsTableInputComponent } from './components/ingredients-table-input/ingredients-table-input.component';
 
 
 @NgModule({
@@ -13,7 +16,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     RecipePreviewComponent,
     UserPreviewComponent,
     ContentHeaderComponent,
-    FormCreateFieldComponent
+    FormCreateFieldComponent,
+    FormInputContainerComponent,
+    CategorySelectorComponent,
+    IngredientsTableInputComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +32,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     RecipePreviewComponent,
     UserPreviewComponent,
     ContentHeaderComponent,
-    FormCreateFieldComponent
+    FormCreateFieldComponent,
+    FormInputContainerComponent,
+    CategorySelectorComponent,
+    IngredientsTableInputComponent
   ]
 })
 export class SharedModule {

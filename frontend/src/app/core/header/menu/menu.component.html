@@ -15,10 +15,10 @@
 </div>
 
 <div class="menu-container" *ngIf="isLoggedIn()" ng-if>
-  <a routerLink="/admin">Profile</a> <br>
-  <a routerLink="/admin">Upload Recipe</a> <br>
-  <a routerLink="/admin">Liked Recipes</a> <br>
-  <a routerLink="/admin">Settings</a> <br>
+  <a [routerLink]="['/user', userName]">Profile</a> <br>
+  <a routerLink="/recipe/upload">Upload Recipe</a> <br>
+  <a routerLink="/recipe/liked">Liked Recipes</a> <br>
+  <a routerLink="/settings">Settings</a> <br>
   <a routerLink="/auth/logout">Logout</a> <br>
   <a routerLink="/about">About</a>
 </div>

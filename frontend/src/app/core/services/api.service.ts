@@ -8,6 +8,7 @@ import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
+import { RecipeCreate } from '../../models/recipe.model';
 
 
 @Injectable({
@@ -95,7 +96,7 @@ export class ApiService {
     return this.http.get<Recipe>(`${this.baseUrl}/recipes/${id}`);
   }
 
-  createRecipe(recipe: Recipe): Observable<HttpResponse<Recipe>> {
+  createRecipe(recipe: RecipeCreate): Observable<HttpResponse<Recipe>> {
     return this.http.post<Recipe>(`${this.baseUrl}/recipes`, recipe, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 

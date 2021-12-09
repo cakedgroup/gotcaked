@@ -1,1 +1,28 @@
-<p>recipe-upload works!</p>
+<div class="upload-form-container">
+  <div class="empty-div">
+    <h1 class="form-title">Upload Recipe</h1>
+
+    <!-- Recipe Section -->
+    <form>
+      <!--- Title, Description, Ingredients, etc --->
+      <h2 class="section-title">Basic Information</h2>
+      <hr class="section-line">
+      <div class="input-container">
+        <app-form-input-container class="test" fieldName="Name" fieldPlaceholder="Recipe Name" [(fieldInput)]="tempRecipe.name" ></app-form-input-container>
+        <app-form-input-container class="test" fieldName="Description" fieldPlaceholder="Recipe Description" [(fieldInput)]="tempRecipe.description" ></app-form-input-container>
+        <app-form-input-container class="test" fieldName="Preparation" fieldPlaceholder="Recipe Preparation" [(fieldInput)]="tempRecipe.preparation" ></app-form-input-container>
+        <app-form-input-container class="test" fieldName="Difficulty" fieldPlaceholder="Recipe Difficulty" [(fieldInput)]="tempRecipe.difficulty" ></app-form-input-container>
+        <app-form-input-container class="test" fieldName="Time" fieldPlaceholder="Recipe Time" [(fieldInput)]="tempRecipe.time" ></app-form-input-container>
+        <app-category-selector class="test" [categories]="categories" [(category_id)]="tempRecipe.category_id"></app-category-selector>
+        <app-ingredients-table-input class="test" [(ingredients)]="tempRecipe.ingredients"></app-ingredients-table-input>
+      </div>
+
+
+
+      <!--- Tags and Pictures --->
+      <h2 class="section-title">Optional Information</h2>
+      <hr class="section-line">
+
+    </form>
+  </div>
+</div>
