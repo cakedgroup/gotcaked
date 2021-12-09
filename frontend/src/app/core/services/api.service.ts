@@ -26,6 +26,9 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/status`);
   }
 
+  //
+  // User Services
+  //
   getUser(id: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
@@ -35,13 +38,12 @@ export class ApiService {
   }
 
   updateUser(user: User): Observable<HttpResponse<User>> {
-    return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
+    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
   }
 
-  getRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
-  }
-  
+  //
+  // Category Services
+  //
   updateCategories(categories: Category[]) {
     this.categories.next(categories);
   }
@@ -63,6 +65,9 @@ export class ApiService {
     return this.http.delete<Category>(`${this.baseUrl}/categories/${category}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
+  //
+  // Tag Services
+  //
   getTags(): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${this.baseUrl}/tags`);
   }
@@ -75,8 +80,55 @@ export class ApiService {
     return this.http.delete<Tag>(`${this.baseUrl}/tags/${tag}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
+  //
+  // Recipe Services
+  //
+  getRecipes(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
+  }
+
   getRecipesByCategory(categoryId: string): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${this.baseUrl}/categories/${categoryId}/recipes`);
+  }
+
+  getRecipe(id: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/${id}`);
+  }
+
+  createRecipe(recipe: Recipe): Observable<HttpResponse<Recipe>> {
+    return this.http.post<Recipe>(`${this.baseUrl}/recipes`, recipe, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  updateRecipe(recipe: Recipe): Observable<HttpResponse<Recipe>> {
+    return this.http.patch<Recipe>(`${this.baseUrl}/recipes/${recipe.id}`, recipe, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteRecipe(id: string): Observable<HttpResponse<Recipe>> {
+    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${id}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  //
+  // Picture "Services"
+  //
+  uploadRecipePicture(recipeID: string, file: File): Observable<HttpResponse<Recipe>> {
+    const formData = new FormData();
+    formData.append('picture', file);
+    return this.http.patch<Recipe>(`${this.baseUrl}/recipes/${recipeID}/pictures`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  uploadUserPicture(userID: string, file: File): Observable<HttpResponse<User>> {
+    const formData = new FormData();
+    formData.append('picture', file);
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/pictures`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteUserPicture(userID: string): Observable<HttpResponse<User>> {
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/pictures`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteRecipePicture(recipeID: string, pictureURI: string): Observable<HttpResponse<Recipe>> {
+    let pictureDeleteBody = { picture_uri: pictureURI };
+    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/pictures`, { observe: 'response', headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
   }
 
 }
