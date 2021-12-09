@@ -19,7 +19,9 @@
         <input class="form-input" type="text" [(ngModel)]="ingredient.unit" />
       </td>
       <td>
-        <button class="action-button" (click)="deleteIngredient(i)">Remove</button>
+        <button class="action-button" (click)="deleteIngredient(i)" type="button">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
       </td>
     </tr>
     <tr>
@@ -33,7 +35,9 @@
         <input class="form-input" type="text" [(ngModel)]="tempIngredient.unit" />
       </td>
       <td>
-        <button class="action-button" (click)="addIngredient(ingredients.length)">Add</button>
+        <button class="action-button" (click)="addIngredient()" type="button">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
       </td>
     </tr>
   </tbody>

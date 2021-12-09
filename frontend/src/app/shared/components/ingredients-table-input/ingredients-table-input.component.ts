@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Ingredients } from 'src/app/models/ingredients.model';
 
 @Component({
@@ -6,7 +7,7 @@ import { Ingredients } from 'src/app/models/ingredients.model';
   templateUrl: './ingredients-table-input.component.html',
   styleUrls: ['./ingredients-table-input.component.css']
 })
-export class IngredientsTableInputComponent implements OnInit {
+export class IngredientsTableInputComponent {
   @Input() ingredients: Ingredients[];
   @Output() ingredientsChange = new EventEmitter<Ingredients[]>();
 
@@ -17,19 +18,17 @@ export class IngredientsTableInputComponent implements OnInit {
     unit: '',
   };
 
+  //FA-Icons
+  faTrash = faTrash;
+  faPlus = faPlus;
+
   constructor() { }
 
-  ngOnInit(): void {
-    console.log('ingredients-table-input.component.ts');
-  }
-
-  addIngredient(index: number) {
+  addIngredient() {
     //Cloning Object, to prevent using the reference
     let ingredientToStore = Object.assign({}, this.tempIngredient);
     this.clearInput();
-    //Store new ingredient
     this.ingredients.push(ingredientToStore);
-
   }
 
   deleteIngredient(index: number) {
