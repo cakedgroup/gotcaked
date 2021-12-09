@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Recipe, RecipeCreate } from '../../../models/recipe.model';
+import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
 import { Category } from '../../../models/category.model';
+import { Recipe, RecipeCreate } from '../../../models/recipe.model';
 
 @Component({
   selector: 'app-recipe-upload',
@@ -10,7 +11,10 @@ import { Category } from '../../../models/category.model';
 })
 export class RecipeUploadComponent implements OnInit {
   categories: Category[];
+  tags: Tag[];
   createdRecipe: Recipe;
+
+  //Temp Objects
   tempRecipe: RecipeCreate = {
     name: '',
     description: '',
@@ -21,6 +25,11 @@ export class RecipeUploadComponent implements OnInit {
     tags: [],
     difficulty: null,
     time: null,
+  };
+
+  tempTag: Tag = {
+    name: '',
+    description: '',
   };
 
   constructor(private apiService: ApiService) { }
@@ -40,6 +49,22 @@ export class RecipeUploadComponent implements OnInit {
     });
   }
 
+  deleteTag(tagName: string) {
+    this.tempRecipe.tags = this.tempRecipe.tags.filter(tag => tag.name !== tagName);
+  }
+
+  addTag(tag: Tag) {
+    //Cloning Object, to prevent using the reference
+    let tagToStore = Object.assign({}, tag);
+    this.clearInput();
+    this.tempRecipe.tags.push(tagToStore);
+  }
+
+  getAllTags() {
+    this.apiService.getTags().subscribe(tags => {
+      this.tags = tags;
+    });
+  }
 
   createRecipe(recipe: RecipeCreate) {
     this.apiService.createRecipe(recipe).subscribe(res => {
@@ -60,5 +85,10 @@ export class RecipeUploadComponent implements OnInit {
         console.log('Error');
       }
     });
+  }
+
+  clearInput(){
+    this.tempTag.name = '';
+    this.tempTag.description = '';
   }
 }

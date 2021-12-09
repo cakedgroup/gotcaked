@@ -9,6 +9,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormInputContainerComponent } from './components/form-input-container/form-input-container.component';
 import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
 import { IngredientsTableInputComponent } from './components/ingredients-table-input/ingredients-table-input.component';
+import { FormTextareaContainerComponent } from './components/form-textarea-container/form-textarea-container.component';
+import { TagListComponent } from './components/tag-list/tag-list.component';
+import { TagSearchComponent } from './components/tag-search/tag-search.component';
 
 
 @NgModule({
@@ -19,7 +22,10 @@ import { IngredientsTableInputComponent } from './components/ingredients-table-i
     FormCreateFieldComponent,
     FormInputContainerComponent,
     CategorySelectorComponent,
-    IngredientsTableInputComponent
+    IngredientsTableInputComponent,
+    FormTextareaContainerComponent,
+    TagListComponent,
+    TagSearchComponent
   ],
   imports: [
     CommonModule,
@@ -34,8 +40,11 @@ import { IngredientsTableInputComponent } from './components/ingredients-table-i
     ContentHeaderComponent,
     FormCreateFieldComponent,
     FormInputContainerComponent,
+    FormTextareaContainerComponent,
     CategorySelectorComponent,
-    IngredientsTableInputComponent
+    IngredientsTableInputComponent,
+    TagListComponent,
+    TagSearchComponent
   ]
 })
 export class SharedModule {

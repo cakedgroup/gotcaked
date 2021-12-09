@@ -62,7 +62,6 @@ export class AdminPageComponent implements OnInit {
     this.addTag(this.tempTag);
   }
 
-
   //
   // Category-API-Calls
   //

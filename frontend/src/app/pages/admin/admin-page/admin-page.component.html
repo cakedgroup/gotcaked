@@ -44,18 +44,6 @@
     <p class="error-msg" *ngIf="failedTagRequest">{{this.failedErrorMessage}}</p>
 
     <!--List Current Tags -->
-    <div class="tag-container">
-      <div *ngFor="let tag of tags;let index = index;">
-        <!--Create Tag Pseudo Button -->
-        <div class="tag-pseudo-button">
-          <p class="tag-pseudo-text">{{tag.name}}
-            <button class="tag-delete-button" (click)="deleteTag(tag.name)">
-              <!--TODO ADD FUNCTION -->
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
+    <app-tag-list [(tags)]="tags" (delete)="deleteTag($event.name)"></app-tag-list>
   </div>
 </div>
