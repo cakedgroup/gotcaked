@@ -9,6 +9,9 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+  errorMessage: string = '';
+  error: boolean = false;
+
   userLogin: UserLogin = {
     email: '',
     password: ''
@@ -27,15 +30,13 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginHandler(): void {
-    console.log(this.userLogin);
-    this.authService.userLogin(this.userLogin).subscribe(res => {
-      if (res.status === 200) {
-        this.authService.setJWTToken(res.body.token);
-        this.router.navigate(['/']);
-      } else {
-        console.log(res.status);
-        //TODO Implement Error Message in HTML
-      }
+    this.authService.userLogin(this.userLogin).subscribe(jwt => {
+      this.authService.setJWTToken(jwt.token);
+      this.router.navigate(['/']);
+      this.error = false;
+    }, error => {
+      this.error = true;
+      this.errorMessage = error.error.message;
     });
   }
 }

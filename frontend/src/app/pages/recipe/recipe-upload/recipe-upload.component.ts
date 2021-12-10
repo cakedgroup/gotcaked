@@ -55,18 +55,12 @@ export class RecipeUploadComponent {
   // Recipe Stuff
   //
   createRecipe(recipe: RecipeCreate) {
-    this.apiService.createRecipe(recipe).subscribe(res => {
-      if (res.status === 201) {
-        console.log('Recipe created');
-        this.createdRecipe = res.body;
-        if (this.pictureFiles.length > 0) {
-          this.addPictureHandler();
-        } else {
-          this.success = true;
-        }
+    this.apiService.createRecipe(recipe).subscribe(recipe => {
+      this.createdRecipe = recipe;
+      if (this.pictureFiles.length > 0) {
+        this.addPictureHandler();
       } else {
-        this.errorMessage = 'Failed to create recipe';
-        this.error = true;
+        this.success = true;
       }
     }, err => {
       this.errorMessage = 'Failed to create recipe: ' + err.error.message;
@@ -75,13 +69,11 @@ export class RecipeUploadComponent {
   }
 
   addPicture(file: File) {
-    this.apiService.uploadRecipePicture(this.createdRecipe.id, file).subscribe(res => {
-      if (res.status === 200) {
-        this.success = true;
-      } else {
-        this.errorMessage = 'Failed to upload picture';
-        this.error = true;
-      }
+    this.apiService.uploadRecipePicture(this.createdRecipe.id, file).subscribe(recipe => {
+      this.success = true;
+    }, err => {
+      this.errorMessage = 'Failed to upload picture';
+      this.error = true;
     });
   }
 

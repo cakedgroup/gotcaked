@@ -81,15 +81,16 @@ export class RecipeEditComponent implements OnInit {
 
   updateRecipe() {
     this.recipeCreateToRecipe(this.recipeSmall);
-    this.apiService.updateRecipe(this.recipe).subscribe(res => {
-      if (res.status === 200) {
-        if (this.pictureFiles.length > 0 || this.pictureToDelete.length > 0) {
-          this.deletePictures(this.pictureToDelete);
-          this.updatePictureHandler();
-        } else {
-          this.success = true;
-        }
+    this.apiService.updateRecipe(this.recipe).subscribe(recipe => {
+      if (this.pictureFiles.length > 0 || this.pictureToDelete.length > 0) {
+        this.deletePictures(this.pictureToDelete);
+        this.updatePictureHandler();
+      } else {
+        this.success = true;
       }
+    }, err => {
+      this.errorMessage = 'Error updating recipe ' + err.error.message;
+      this.error = true;
     });
   }
 
@@ -97,10 +98,11 @@ export class RecipeEditComponent implements OnInit {
   // Picture Stuff
   //
   addPicture(file: File) {
-    this.apiService.uploadRecipePicture(this.recipe.id, file).subscribe(res => {
-      if (res.status === 200) {
-        this.success = true;
-      }
+    this.apiService.uploadRecipePicture(this.recipe.id, file).subscribe(recipe => {
+      this.success = true;
+    }, err => {
+      this.errorMessage = 'Error uploading picture ' + err.error.message;
+      this.error = true;
     });
   }
 
@@ -110,10 +112,11 @@ export class RecipeEditComponent implements OnInit {
 
   deletePictures(pictureURIs: string[]) {
     pictureURIs.forEach(pictureURI => {
-      this.apiService.deleteRecipePicture(this.recipe.id, pictureURI).subscribe(res => {
-        if (res.status === 204) {
-          this.success = true;
-        }
+      this.apiService.deleteRecipePicture(this.recipe.id, pictureURI).subscribe(recipe => {
+        this.success = true;
+      }, err => {
+        this.errorMessage = 'Error deleting picture ' + err.error.message;
+        this.error = true;
       });
     });
   }

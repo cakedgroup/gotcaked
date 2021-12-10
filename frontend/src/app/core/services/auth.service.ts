@@ -86,12 +86,12 @@ export class AuthService {
 
   //Backend-API Calls
   //Login User to get JWT Token
-  userLogin(user: UserLogin): Observable<HttpResponse<JWT>> {
-    return this.http.post<JWT>(this.baseUrl + '/auth/login', user, { observe: 'response' });
+  userLogin(user: UserLogin): Observable<JWT> {
+    return this.http.post<JWT>(this.baseUrl + '/auth/login', user);
   }
 
   //Logout User to delete JWT Token
-  userLogout(): Observable<HttpResponse<any>> {
-    return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader(), observe: 'response' });
+  userLogout(): Observable<any> {
+    return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader() });
   }
 }

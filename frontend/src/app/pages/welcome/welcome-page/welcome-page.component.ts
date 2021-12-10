@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/core/services/api.service';
   styleUrls: ['./welcome-page.component.css']
 })
 export class WelcomePageComponent implements OnInit {
-  userName: String = 'TestUser';
+  userName: String = 'Guest';
   recipes: Recipe[] = [];
 
   constructor(private authService: AuthService, private apiService: ApiService) {
@@ -32,7 +32,6 @@ export class WelcomePageComponent implements OnInit {
     this.apiService.getRecipes().subscribe((recipes) => {
       if (recipes !== null) {
         this.recipes = recipes;
-        console.log(this.recipes);
       }
     });
   }
