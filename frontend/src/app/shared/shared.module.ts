@@ -14,6 +14,7 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
 import { PictureUploaderComponent } from './components/picture-uploader/picture-uploader.component';
 import { SuccessMessageComponent } from './components/success-message/success-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ErrorMessageComponent } from './components/error-message/error-message.
   imports: [
     CommonModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
