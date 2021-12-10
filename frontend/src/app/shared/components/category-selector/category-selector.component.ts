@@ -25,4 +25,8 @@ export class CategorySelectorComponent implements OnInit {
     });
   }
 
+  changeCategory(){
+    this.category_idChange.emit(this.category_id);
+  }
+
 }

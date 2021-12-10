@@ -1,6 +1,6 @@
 <div class="form-input-container">
   <label class="form-label" for="categorie">Category</label>
-  <select class="form-input" name="category" [(ngModel)]="category_id">
+  <select class="form-input" name="category" [(ngModel)]="category_id" (change)="changeCategory()">
     <option [ngValue]="null" selected disabled hidden>Select a Category...</option>
     <option class="list-text" *ngFor="let category of categories" [value]="category.name">{{category.name}}</option>
   </select>

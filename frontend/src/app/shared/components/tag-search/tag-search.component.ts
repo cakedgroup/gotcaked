@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tag-search',

@@ -10,9 +10,9 @@ import { Recipe, RecipeCreate } from '../../../models/recipe.model';
   styleUrls: ['./recipe-upload.component.css']
 })
 export class RecipeUploadComponent implements OnInit {
-  categories: Category[];
   tags: Tag[];
   createdRecipe: Recipe;
+  pictureFiles: File[] = [];
 
   //Temp Objects
   tempRecipe: RecipeCreate = {
@@ -34,8 +34,9 @@ export class RecipeUploadComponent implements OnInit {
 
   constructor(private apiService: ApiService) { }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {
-    this.getCategories();
+
   }
 
   //
@@ -43,16 +44,11 @@ export class RecipeUploadComponent implements OnInit {
   //
   createRecipeHandler() {
     this.createRecipe(this.tempRecipe);
-    console.log(this.tempRecipe);
   }
 
-  test(){
-    console.log(this.tempRecipe);
-  }
-  getCategories() {
-    this.apiService.getCategories().subscribe(categories => {
-      this.categories = categories;
-      console.log(this.categories);
+  addPictureHandler() {
+    this.pictureFiles.forEach(file => {
+      this.addPicture(file);
     });
   }
 
@@ -63,6 +59,8 @@ export class RecipeUploadComponent implements OnInit {
     this.apiService.createRecipe(recipe).subscribe(res => {
       if (res.status === 201) {
         console.log('Recipe created');
+        this.createdRecipe = res.body;
+        this.addPictureHandler();
       } else {
         console.log('Error');
       }
@@ -103,7 +101,7 @@ export class RecipeUploadComponent implements OnInit {
   //
   // Helper Functions
   //
-  clearInput(){
+  clearInput() {
     this.tempTag.name = '';
     this.tempTag.description = '';
   }

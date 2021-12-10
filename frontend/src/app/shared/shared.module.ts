@@ -11,6 +11,7 @@ import { RecipePreviewComponent } from './components/recipe-preview/recipe-previ
 import { TagListComponent } from './components/tag-list/tag-list.component';
 import { TagSearchComponent } from './components/tag-search/tag-search.component';
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
+import { PictureUploaderComponent } from './components/picture-uploader/picture-uploader.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
     IngredientsTableInputComponent,
     TagListComponent,
     TagSearchComponent,
-    RecipeInformationComponent
+    RecipeInformationComponent,
+    PictureUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
     IngredientsTableInputComponent,
     TagListComponent,
     TagSearchComponent,
-    RecipeInformationComponent
+    RecipeInformationComponent,
+    PictureUploaderComponent
   ]
 })
 export class SharedModule {

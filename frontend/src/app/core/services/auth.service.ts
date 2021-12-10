@@ -26,6 +26,12 @@ export class AuthService {
     });
   }
 
+  createAuthorizationHeaderForm(): HttpHeaders {
+    return new HttpHeaders({
+      'jwt': this.jwtToken.value
+    });
+  }
+
   //BehaviorSubject to get JWTToken
   getJWTToken(): BehaviorSubject<string> {
     return this.jwtToken;

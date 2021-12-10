@@ -114,22 +114,22 @@ export class ApiService {
   uploadRecipePicture(recipeID: string, file: File): Observable<HttpResponse<Recipe>> {
     const formData = new FormData();
     formData.append('picture', file);
-    return this.http.patch<Recipe>(`${this.baseUrl}/recipes/${recipeID}/pictures`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+    return this.http.patch<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeaderForm() });
   }
 
   uploadUserPicture(userID: string, file: File): Observable<HttpResponse<User>> {
     const formData = new FormData();
     formData.append('picture', file);
-    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/pictures`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/picture`, formData, { observe: 'response', headers: this.authService.createAuthorizationHeaderForm() });
   }
 
   deleteUserPicture(userID: string): Observable<HttpResponse<User>> {
-    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/pictures`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/picture`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
   }
 
   deleteRecipePicture(recipeID: string, pictureURI: string): Observable<HttpResponse<Recipe>> {
     let pictureDeleteBody = { picture_uri: pictureURI };
-    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/pictures`, { observe: 'response', headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
+    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, { observe: 'response', headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
   }
 
 }
