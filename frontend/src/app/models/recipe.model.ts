@@ -13,7 +13,7 @@ export interface Recipe {
     difficulty: string;
     category_id: string;
     user_id: string;
-    picture_uri: string;
+    picture_uri: string[];
     rating: Number;
 }
 
@@ -26,6 +26,6 @@ export interface RecipeCreate {
   time: Number;
   difficulty: string;
   category_id: string;
-  picture_uri: string;
+  picture_uri: string[];
 }
 

@@ -86,12 +86,6 @@ export class RecipeUploadComponent {
     this.tempRecipe.tags.push(tagToStore);
   }
 
-  getAllTags() {
-    this.apiService.getTags().subscribe(tags => {
-      this.tags = tags;
-    });
-  }
-
   //
   // Helper Functions
   //
