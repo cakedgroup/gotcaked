@@ -12,6 +12,8 @@ import { TagListComponent } from './components/tag-list/tag-list.component';
 import { TagSearchComponent } from './components/tag-search/tag-search.component';
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
 import { PictureUploaderComponent } from './components/picture-uploader/picture-uploader.component';
+import { SuccessMessageComponent } from './components/success-message/success-message.component';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { PictureUploaderComponent } from './components/picture-uploader/picture-
     TagListComponent,
     TagSearchComponent,
     RecipeInformationComponent,
-    PictureUploaderComponent
+    PictureUploaderComponent,
+    SuccessMessageComponent,
+    ErrorMessageComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +48,9 @@ import { PictureUploaderComponent } from './components/picture-uploader/picture-
     TagListComponent,
     TagSearchComponent,
     RecipeInformationComponent,
-    PictureUploaderComponent
+    PictureUploaderComponent,
+    SuccessMessageComponent,
+    ErrorMessageComponent
   ]
 })
 export class SharedModule {

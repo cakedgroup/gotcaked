@@ -21,7 +21,7 @@
       <!--- Upload Pictures -->
       <app-picture-uploader *ngIf="recipe" [(pictures)]="pictureFiles" [recipeID]="recipe.id" (pictureDeleted)="deletePictureQueue($event)"></app-picture-uploader>
 
-      <button class="submit-button" type="button" (click)="updateRecipeHandler()">Create Recipe</button>
+      <button class="submit-button" type="button" (click)="updateRecipeHandler()">Update Recipe</button>
     </form>
   </div>
 </div>

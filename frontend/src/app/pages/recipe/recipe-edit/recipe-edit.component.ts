@@ -23,6 +23,7 @@ export class RecipeEditComponent implements OnInit {
     picture_uri: [],
     difficulty: '',
   };
+
   tags: Tag[];
   pictureFiles: File[] = [];
   pictureToDelete: string[] = [];
