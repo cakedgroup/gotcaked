@@ -7,6 +7,7 @@
   margin-bottom: 60px;
   border-radius: 1em;
   background-color: var(--secondary-background-color);
+  text-align: center;
 }
 
 .user-image {
@@ -23,16 +24,28 @@
   font-family: "Darker Grotesque", sans-serif;
   font-size: 32pt;
   min-height: 100px;
-  width: 80%;
   height: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  margin-top: 15px;
+  margin-bottom: -20px;
+  margin-left: -100px;
 }
 
 @media (max-width: 700px) {
   .header-box {
     display: flex;
     justify-content: center;
+  }
+  .user-image {
+    margin: 20px;
+    float: left;
+  }
+
+  .header-title {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
   }
 }
