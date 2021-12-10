@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRoute, CanActivate, Router } from '@angular/router';
 import * as JWTUtils from '../utils/jwt-utils';
 import { AuthService } from './auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 export class isLoggedIn implements CanActivate {
   private isLoggedIn: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
     this.getAuthStatus();
   }
 
@@ -23,6 +23,7 @@ export class isLoggedIn implements CanActivate {
       if (token !== null && token !== undefined && token !== "" && token !== "null") {
         this.isLoggedIn = true;
       } else {
+        this.router.navigate(['/auth/login']);
         this.isLoggedIn = false;
       }
     });
