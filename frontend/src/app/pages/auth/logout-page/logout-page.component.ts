@@ -16,11 +16,11 @@ export class LogoutPageComponent implements OnInit {
   }
 
   logout() {
-    this.authService.userLogout().subscribe(response => {
-      if (response.status === 200) {
-        this.authService.setJWTToken(null);
-        this.router.navigate(['/']);
-      }
+    this.authService.userLogout().subscribe(res => {
+      this.authService.setJWTToken(null);
+      this.router.navigate(['/']);
+    }, err => {
+      this.router.navigate(['/']);
     });
   }
 }
