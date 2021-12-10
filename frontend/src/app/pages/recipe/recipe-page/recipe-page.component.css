@@ -53,6 +53,7 @@ h1 {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .recipe-description-item {
@@ -94,6 +95,7 @@ h1 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .recipe-tags-item {
