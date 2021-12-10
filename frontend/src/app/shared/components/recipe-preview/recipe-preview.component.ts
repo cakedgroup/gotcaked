@@ -7,14 +7,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './recipe-preview.component.html',
   styleUrls: ['./recipe-preview.component.css']
 })
-export class RecipePreviewComponent implements OnInit {
+export class RecipePreviewComponent{
   @Input() recipe : Recipe;
   public readonly baseUrl = environment.baseServer;
 
   constructor() { }
-
-  ngOnInit(): void {
-    console.log(this.recipe);
-  }
-
 }

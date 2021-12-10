@@ -17,12 +17,9 @@ export class LogoutPageComponent implements OnInit {
 
   logout() {
     this.authService.userLogout().subscribe(response => {
-      console.log(response.status);
       if (response.status === 200) {
         this.authService.setJWTToken(null);
         this.router.navigate(['/']);
-      } else {
-        console.log(response.status);
       }
     });
   }

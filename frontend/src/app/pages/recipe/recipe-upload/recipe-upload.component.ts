@@ -57,7 +57,6 @@ export class RecipeUploadComponent {
   createRecipe(recipe: RecipeCreate) {
     this.apiService.createRecipe(recipe).subscribe(res => {
       if (res.status === 201) {
-        console.log('Recipe created');
         this.createdRecipe = res.body;
         if (this.pictureFiles.length > 0) {
           this.addPictureHandler();
