@@ -15,6 +15,7 @@ import { PictureUploaderComponent } from './components/picture-uploader/picture-
 import { SuccessMessageComponent } from './components/success-message/success-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import {RouterModule} from '@angular/router';
+import { RecipeCommentsComponent } from './components/recipe-comments/recipe-comments.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {RouterModule} from '@angular/router';
     RecipeInformationComponent,
     PictureUploaderComponent,
     SuccessMessageComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    RecipeCommentsComponent
   ],
   imports: [
     CommonModule,

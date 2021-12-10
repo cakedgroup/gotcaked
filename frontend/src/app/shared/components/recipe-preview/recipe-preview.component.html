@@ -1,11 +1,7 @@
 <div class="recipe-box">
   <div class="recipe-image-box">
-    <img
-      class="recipe-image"
-      *ngIf="recipe.picture_uri; else noImage"
-      src="{{ this.baseUrl + recipe.picture_uri }}"
-      alt="Image"
-    />
+    <img class="recipe-image" *ngIf="recipe.picture_uri; else noImage" src="{{ this.baseUrl + recipe.picture_uri }}"
+      alt="Image" />
   </div>
   <div class="recipe-info">
     <h1 class="recipe-title" [routerLink]="['/recipe/view', recipe.id]">
@@ -18,11 +14,7 @@
       <p class="recipe-stats-item">{{ recipe.rating }} Votes</p>
     </div>
     <div class="recipe-tags">
-      <p
-        *ngFor="let tag of recipe.tags"
-        class="recipe-tags-item"
-        [routerLink]="['/tag', tag.name]"
-      >
+      <p *ngFor="let tag of recipe.tags" class="recipe-tags-item" [routerLink]="['/tag', tag.name]">
         {{ tag.name }}
       </p>
     </div>
@@ -30,9 +22,7 @@
 </div>
 
 <ng-template #noImage>
-  <img
-    class="recipe-image"
+  <img class="recipe-image"
     src="https://1.bp.blogspot.com/-Y9HKYoyAQg0/U6PMxAZaJOI/AAAAAAAACwY/12TZjUXl8sY/s1600/mama%2527s+picture+1.jpg"
-    alt="Image"
-  />
+    alt="Image" />
 </ng-template>

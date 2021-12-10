@@ -2,12 +2,8 @@
   <h1 class="recipe-name">{{ recipe.name }}</h1>
   <div class="recipe-box">
     <div class="recipe-image-box">
-      <img
-        class="recipe-image"
-        *ngIf="recipe.picture_uri[0]; else noImage"
-        src="{{ this.baseUrl + recipe.picture_uri }}"
-        alt="Image"
-      />
+      <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
+        src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
     </div>
 
     <div class="recipe-description">
@@ -15,19 +11,12 @@
       <hr class="line" />
       <p>{{ recipe.description }}</p>
       <div class="recipe-description-tags">
-        <p
-          *ngIf="user"
-          class="recipe-description-item"
-          [routerLink]="['/user', recipe.user_id]"
-        >
+        <p *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
           {{ user.name }}
         </p>
         <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
         <p class="recipe-description-item">{{ recipe.difficulty }}</p>
-        <p
-          class="recipe-description-item"
-          [routerLink]="['/category', recipe.category_id]"
-        >
+        <p class="recipe-description-item" [routerLink]="['/category', recipe.category_id]">
           {{ recipe.category_id }}
         </p>
         <p class="recipe-description-item">{{ recipe.rating }}10 Votes</p>
@@ -56,11 +45,7 @@
       <h1>Tags</h1>
       <hr class="line" />
       <div class="recipe-tags-list">
-        <p
-          class="recipe-tags-item"
-          *ngFor="let tag of recipe.tags"
-          [routerLink]="['/tag', tag.name]"
-        >
+        <p class="recipe-tags-item" *ngFor="let tag of recipe.tags" [routerLink]="['/tag', tag.name]">
           {{ tag.name }}
         </p>
       </div>
@@ -84,9 +69,7 @@
 </div>
 
 <ng-template #noImage>
-  <img
-    class="recipe-image"
+  <img class="recipe-image"
     src="https://1.bp.blogspot.com/-Y9HKYoyAQg0/U6PMxAZaJOI/AAAAAAAACwY/12TZjUXl8sY/s1600/mama%2527s+picture+1.jpg"
-    alt="Image"
-  />
+    alt="Image" />
 </ng-template>
