@@ -116,6 +116,10 @@ export class ApiService {
     return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${id}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
+  getCommentsByRecipe(recipeID: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.baseUrl}/recipes/${recipeID}/comments`);
+  }
+
   //
   // Picture "Services"
   //
