@@ -135,12 +135,12 @@ export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmal
 export function getRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipesFromUser(userID).then(recipes => {
-                //Wait for converter promise to finish
-                convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
-                    resolve(allRecipes);
-                }).catch(err => {
-                    reject(err);
-                });
+            //Wait for converter promise to finish
+            convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
+                resolve(allRecipes);
+            }).catch(err => {
+                reject(err);
+            });
         }).catch(err => {
             reject(err);
         });
@@ -242,8 +242,13 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                                         //Dont catch error (tag already exists)
                                     }).finally(() => {
                                         //Add tag to recipe
-                                        tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
-                                            reject(err);
+                                        tagDAO.getRecipeTag(tag.name, recipe.id).then(recipeTag => {
+                                            if (!recipeTag) {
+                                                tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
+                                                    reject(err);
+                                                });
+
+                                            }
                                         });
                                     });
                                 });
@@ -435,7 +440,7 @@ function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
         for await (const recipe of recipes) {
             await recipeDAO.getPicturesFromRecipe(recipe.id).then(async pictures => {
                 //If no picture return undefined
-                let firstPicture : string = pictures[0]?.picture_id;
+                let firstPicture: string = pictures[0]?.picture_id;
                 await tagDAO.getRecipeTags(recipe.id).then(async tags => {
                     recipe.tags = tags;
                     //Get rating
