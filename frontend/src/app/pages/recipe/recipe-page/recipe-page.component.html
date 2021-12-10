@@ -1,12 +1,14 @@
 <div *ngIf="recipe" class="recipe-container">
   <h1 class="recipe-name">{{ recipe.name }}</h1>
   <div class="recipe-box">
-    <img
-      class="recipe-image"
-      *ngIf="recipe.picture_uri[0]; else noImage"
-      src="{{ this.baseUrl + recipe.picture_uri }}"
-      alt="Image"
-    />
+    <div class="recipe-image-box">
+      <img
+        class="recipe-image"
+        *ngIf="recipe.picture_uri[0]; else noImage"
+        src="{{ this.baseUrl + recipe.picture_uri }}"
+        alt="Image"
+      />
+    </div>
 
     <div class="recipe-description">
       <h1>Description</h1>
@@ -22,21 +24,19 @@
     <div class="recipe-ingredients">
       <h1>Ingredients</h1>
       <hr class="line" />
-      <div class="recipe-ingredients-list">
-        <table>
-          <tr>
-            <th>Amount</th>
-            <th>Ingredient</th>
-          </tr>
-          <tr *ngFor="let ingredient of recipe.ingredients">
-            <td>{{ ingredient.amount }} {{ ingredient.unit }}</td>
-            <td>{{ ingredient.name }}</td>
-          </tr>
-        </table>
-      </div>
+      <table class="recipe-ingredients-list">
+        <tr>
+          <th>Amount</th>
+          <th>Ingredient</th>
+        </tr>
+        <tr *ngFor="let ingredient of recipe.ingredients">
+          <td>{{ ingredient.amount }} {{ ingredient.unit }}</td>
+          <td>{{ ingredient.name }}</td>
+        </tr>
+      </table>
     </div>
-    <div class="recipe-preperation">
-      <h1>Preperation</h1>
+    <div class="recipe-preparation">
+      <h1>Preparation</h1>
       <hr class="line" />
       <p>{{ recipe.preparation }}</p>
     </div>

@@ -63,6 +63,16 @@ export class RecipePageComponent implements OnInit {
     this.apiService.getCommentsByRecipe(this.recipeId).subscribe(
       data => {
         this.comments = data;
+        this.comments.forEach(comment => {
+          this.apiService.getUser(comment.user_id).subscribe(
+            data => {
+              comment.user_id = data.name;
+            },
+            error => {
+              comment.user_id = 'User not found';
+            }
+          );
+        });
       },
       error => {
         this.comments = [];
