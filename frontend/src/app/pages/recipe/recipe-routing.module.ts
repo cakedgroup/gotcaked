@@ -5,7 +5,7 @@ import { isLoggedIn } from '../../core/services/authGuard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'view/:recipeID',
     component: RecipePageComponent
   },
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
     loadChildren: () => import('./recipe-upload/recipe-upload.module').then(m => m.RecipeUploadModule)
   },
   {
-    path: 'edit',
+    path: 'edit/:recipeID',
     canActivate: [isLoggedIn],
     loadChildren: () => import('./recipe-edit/recipe-edit.module').then(m => m.RecipeEditModule)
   }

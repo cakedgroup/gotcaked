@@ -26,6 +26,12 @@ export class AuthService {
     });
   }
 
+  createAuthorizationHeaderForm(): HttpHeaders {
+    return new HttpHeaders({
+      'jwt': this.jwtToken.value
+    });
+  }
+
   //BehaviorSubject to get JWTToken
   getJWTToken(): BehaviorSubject<string> {
     return this.jwtToken;
@@ -53,6 +59,9 @@ export class AuthService {
         if (user !== null) {
           this.userInformation.next(user);
         }
+      }, error => {
+        this.setJWTToken(null);
+        this.userInformation.next(null);
       });
     } else {
       //Setting User-Information to null

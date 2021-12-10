@@ -26,7 +26,6 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-
   disableUserMenu() {
     this.showUserMenu = false;
   }

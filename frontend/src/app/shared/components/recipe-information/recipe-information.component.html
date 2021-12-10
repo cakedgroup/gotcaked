@@ -1,0 +1,44 @@
+<div class="recipe-information-container">
+  <div class="flex-item-container">
+    <div class="form-input-container">
+      <label class="form-label" for="recipe-name">Name</label>
+      <input class="form-input" type="text" name="recipe-name" placeholder="Recipe Name" [(ngModel)]="recipe.name">
+    </div>
+  </div>
+
+  <div class="flex-item-container">
+    <div class="form-input-container">
+      <label class="form-label" for="recipe-description">Description</label>
+      <input class="form-input" type="text" name="recipe-description" placeholder="Recipe Description"
+        [(ngModel)]="recipe.description">
+    </div>
+  </div>
+
+  <div class="flex-item-container">
+    <div class="form-input-container">
+      <label class="form-label" for="recipe-preparation">Preparation</label>
+      <textarea class="text-input" type="text" name="recipe-preparation" placeholder="Recipe Preparation"
+        [(ngModel)]="recipe.preparation"></textarea>
+    </div>
+  </div>
+
+  <div class="flex-item-container">
+    <div class="form-input-container">
+      <label class="form-label" for="recipe-difficulty">Difficulty</label>
+      <input class="form-input" type="text" name="recipe-difficulty" placeholder="Recipe Difficulty"
+        [(ngModel)]="recipe.difficulty">
+    </div>
+  </div>
+
+  <div class="flex-item-container">
+    <div class="form-input-container">
+      <label class="form-label" for="recipe-time">Time</label>
+      <input class="form-input" type="number" name="recipe-time" placeholder="Recipe Time" [(ngModel)]="recipe.time">
+    </div>
+  </div>
+
+  <app-category-selector class="flex-item-container" [(category_id)]="recipe.category_id">
+  </app-category-selector>
+  <app-ingredients-table-input class="flex-item-container ingredients" [(ingredients)]="recipe.ingredients">
+  </app-ingredients-table-input>
+</div>

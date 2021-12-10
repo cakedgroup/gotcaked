@@ -10,9 +10,22 @@ export interface Recipe {
     preparation: string;
     createdAt: Date;
     time: Number;
-    difficulty: String;
+    difficulty: string;
     category_id: string;
     user_id: string;
-    picture_uri: string;
+    picture_uri: string[];
     rating: Number;
 }
+
+export interface RecipeCreate {
+  name: string;
+  description: string;
+  ingredients: Ingredients[];
+  tags: Tag[];
+  preparation: string;
+  time: Number;
+  difficulty: string;
+  category_id: string;
+  picture_uri: string[];
+}
+

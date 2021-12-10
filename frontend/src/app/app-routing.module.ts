@@ -44,6 +44,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [isAdmin],
     loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule)
   },
   {

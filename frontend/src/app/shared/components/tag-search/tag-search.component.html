@@ -1,0 +1,7 @@
+<div class="search-container">
+  <input class="form-input" type="text" list="tag-search-list" id="tag-search" name="tag-name"
+    placeholder="Search for tags..." [(ngModel)]='tempTag.name' (keyup.enter)="addTag(tempTag)">
+  <datalist id="tag-search-list">
+    <option *ngFor="let tag of tags" [value]="tag.name">
+  </datalist>
+</div>
