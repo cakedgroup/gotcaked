@@ -15,9 +15,21 @@
       <hr class="line" />
       <p>{{ recipe.description }}</p>
       <div class="recipe-description-tags">
-        <p *ngIf="user" class="recipe-description-item">{{ user.name }}</p>
+        <p
+          *ngIf="user"
+          class="recipe-description-item"
+          [routerLink]="['/user', recipe.user_id]"
+        >
+          {{ user.name }}
+        </p>
         <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
         <p class="recipe-description-item">{{ recipe.difficulty }}</p>
+        <p
+          class="recipe-description-item"
+          [routerLink]="['/category', recipe.category_id]"
+        >
+          {{ recipe.category_id }}
+        </p>
         <p class="recipe-description-item">{{ recipe.rating }}10 Votes</p>
       </div>
     </div>
@@ -44,7 +56,11 @@
       <h1>Tags</h1>
       <hr class="line" />
       <div class="recipe-tags-list">
-        <p class="recipe-tags-item" *ngFor="let tag of recipe.tags">
+        <p
+          class="recipe-tags-item"
+          *ngFor="let tag of recipe.tags"
+          [routerLink]="['/tag', tag.name]"
+        >
           {{ tag.name }}
         </p>
       </div>
@@ -56,7 +72,9 @@
       <div class="recipe-comments-list">
         <hr class="line" />
         <div class="recipe-comment" *ngFor="let comment of comments">
-          <p>{{ comment.user_id }} on {{ comment.time | date }}</p>
+          <p [routerLink]="['/user', comment.user_id]">
+            {{ comment.user_id }} on {{ comment.time | date }}
+          </p>
           <pre class="comment-text">{{ comment.text }}</pre>
           <hr class="line" />
         </div>
