@@ -1,4 +1,4 @@
-.recipe-information-container{
+.recipe-information-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -13,7 +13,6 @@
 .flex-item-container {
   flex: 49%;
 }
-
 
 .form-label {
   font-family: "Darker Grotesque", sans-serif;
@@ -44,4 +43,14 @@
   resize: vertical;
 }
 
-
+@media (max-width: 600px) {
+  .form-input {
+    width: 105%;
+  }
+  .text-input {
+    width: 105%;
+  }
+  .ingredients {
+    margin-left: -10px;
+  }
+}

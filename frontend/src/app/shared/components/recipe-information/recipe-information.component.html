@@ -33,12 +33,12 @@
   <div class="flex-item-container">
     <div class="form-input-container">
       <label class="form-label" for="recipe-time">Time</label>
-      <input class="form-input" type="text" name="recipe-time" placeholder="Recipe Time" [(ngModel)]="recipe.time">
+      <input class="form-input" type="number" name="recipe-time" placeholder="Recipe Time" [(ngModel)]="recipe.time">
     </div>
   </div>
 
   <app-category-selector class="flex-item-container" [(category_id)]="recipe.category_id">
   </app-category-selector>
-  <app-ingredients-table-input class="flex-item-container" [(ingredients)]="recipe.ingredients">
+  <app-ingredients-table-input class="flex-item-container ingredients" [(ingredients)]="recipe.ingredients">
   </app-ingredients-table-input>
 </div>

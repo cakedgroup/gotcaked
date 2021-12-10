@@ -4,9 +4,8 @@
   margin: 0 auto;
   padding: 3em;
   padding-bottom: 5em;
-  width: fit-content;
+  max-width: fit-content;
 }
-
 .empty-div {
   max-width: 1000px;
   margin-top: 20px;
@@ -30,4 +29,17 @@
   width: 100%;
   border: 0.5px solid;
   color: teal;
+}
+
+.submit-button{
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  background-color: var(--primary-color);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 5px 20px;
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: -40px;
 }

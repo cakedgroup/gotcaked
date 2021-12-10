@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-picture-uploader',
@@ -11,6 +11,7 @@ export class PictureUploaderComponent {
   @Output() picturesChange = new EventEmitter<File[]>();
 
   //Icons
+  faUpload = faUpload;
   faPlus = faPlus;
   faTrash = faTrash;
 

@@ -2,7 +2,7 @@
   <div class="empty-div">
     <h1 class="form-title">Upload Recipe</h1>
     <!-- Recipe Section -->
-    <form (submit)="createRecipeHandler()">
+    <form class="form-container">
       <!--- Title, Description, Ingredients, etc --->
       <h2 class="section-title">Basic Information</h2>
       <hr class="section-line">
@@ -18,9 +18,10 @@
 
       <h2 class="section-title">Pictures</h2>
       <hr class="section-line">
-      <!--- TODO Upload Pictures -->
+      <!--- Upload Pictures -->
       <app-picture-uploader [(pictures)]="pictureFiles"></app-picture-uploader>
-      <button class="submit-button" type="submit">Submit</button>
+
+      <button class="submit-button" type="button" (click)="createRecipeHandler()">Create Recipe</button>
     </form>
   </div>
 </div>

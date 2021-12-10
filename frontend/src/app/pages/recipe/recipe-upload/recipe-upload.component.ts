@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
-import { Category } from '../../../models/category.model';
 import { Recipe, RecipeCreate } from '../../../models/recipe.model';
 
 @Component({
@@ -9,7 +8,7 @@ import { Recipe, RecipeCreate } from '../../../models/recipe.model';
   templateUrl: './recipe-upload.component.html',
   styleUrls: ['./recipe-upload.component.css']
 })
-export class RecipeUploadComponent implements OnInit {
+export class RecipeUploadComponent {
   tags: Tag[];
   createdRecipe: Recipe;
   pictureFiles: File[] = [];
@@ -33,11 +32,6 @@ export class RecipeUploadComponent implements OnInit {
   };
 
   constructor(private apiService: ApiService) { }
-
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void {
-
-  }
 
   //
   // Handler Stuff
@@ -88,7 +82,7 @@ export class RecipeUploadComponent implements OnInit {
   addTag(tag: Tag) {
     //Cloning Object, to prevent using the reference
     let tagToStore = Object.assign({}, tag);
-    this.clearInput();
+    this.clearInputTag();
     this.tempRecipe.tags.push(tagToStore);
   }
 
@@ -101,8 +95,19 @@ export class RecipeUploadComponent implements OnInit {
   //
   // Helper Functions
   //
-  clearInput() {
+  clearInputTag() {
     this.tempTag.name = '';
     this.tempTag.description = '';
+  }
+  clearInputRecipe() {
+    this.tempRecipe.name = '';
+    this.tempRecipe.description = '';
+    this.tempRecipe.category_id = null;
+    this.tempRecipe.ingredients = [];
+    this.tempRecipe.preparation = '';
+    this.tempRecipe.picture_uri = null;
+    this.tempRecipe.tags = [];
+    this.tempRecipe.difficulty = null;
+    this.tempRecipe.time = null;
   }
 }
