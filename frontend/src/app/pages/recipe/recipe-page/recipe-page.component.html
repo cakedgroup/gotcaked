@@ -1,48 +1,74 @@
-<div class="recipe-container">
-    <div class="recipe-image">
-        <img src="{{recipe.picture_uri}}" alt="Picture">
-    </div>
+<div *ngIf="recipe" class="recipe-container">
+  <h1 class="recipe-name">{{ recipe.name }}</h1>
+  <div class="recipe-box">
+    <img
+      class="recipe-image"
+      *ngIf="recipe.picture_uri[0]; else noImage"
+      src="{{ this.baseUrl + recipe.picture_uri }}"
+      alt="Image"
+    />
+
     <div class="recipe-description">
-        <h1>Description</h1>
-        <p>{{recipe.description}}</p>
-        <div>
-            <p>{{recipe.user_id}}</p>
-            <p>{{recipe.createdAt | date}}</p>
-            <p>{{recipe.difficulty}}</p>
-            <p>{{recipe.rating}}</p>
-        </div>
+      <h1>Description</h1>
+      <hr class="line" />
+      <p>{{ recipe.description }}</p>
+      <div class="recipe-description-tags">
+        <p *ngIf="user" class="recipe-description-item">{{ user.name }}</p>
+        <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
+        <p class="recipe-description-item">{{ recipe.difficulty }}</p>
+        <p class="recipe-description-item">{{ recipe.rating }}10 Votes</p>
+      </div>
     </div>
     <div class="recipe-ingredients">
-        <h1>Ingredients</h1>
-        <div class="recipe-ingredients-list">
-            <div class="recipe-ingredient" *ngFor="let ingredient of recipe.ingredients">
-                <p>{{ingredient.name}}</p>
-                <p>{{ingredient.amount}}</p>
-                <p>{{ingredient.unit}}</p>
-            </div>
-        </div>
+      <h1>Ingredients</h1>
+      <hr class="line" />
+      <div class="recipe-ingredients-list">
+        <table>
+          <tr>
+            <th>Amount</th>
+            <th>Ingredient</th>
+          </tr>
+          <tr *ngFor="let ingredient of recipe.ingredients">
+            <td>{{ ingredient.amount }} {{ ingredient.unit }}</td>
+            <td>{{ ingredient.name }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
     <div class="recipe-preperation">
-        <p>{{recipe.preparation}}</p>
+      <h1>Preperation</h1>
+      <hr class="line" />
+      <p>{{ recipe.preparation }}</p>
     </div>
     <div class="recipe-tags">
-        <h1>Tags</h1>
-        <div class="recipe-tags-list">
-            <div class="recipe-tag" *ngFor="let tag of recipe.tags">
-                <p>{{tag.name}}</p>
-            </div>
-        </div>
+      <h1>Tags</h1>
+      <hr class="line" />
+      <div class="recipe-tags-list">
+        <p class="recipe-tags-item" *ngFor="let tag of recipe.tags">
+          {{ tag.name }}
+        </p>
+      </div>
     </div>
     <div class="recipe-comments">
-        <h1>Comments</h1>
-        <div class="recipe-comments-list">
-            <div class="recipe-comment" *ngFor="let comment of comments">
-                <p>{{comment.userId}}</p>
-                <p>{{comment.time | date}}</p>
-                <p>{{comment.text}}</p>
-            </div>
+      <h1>Comments</h1>
+      <hr class="line" />
+      <div>TODO Submit comment</div>
+      <div class="recipe-comments-list">
+        <hr class="line" />
+        <div class="recipe-comment" *ngFor="let comment of comments">
+          <p>{{ comment.user_id }} on {{ comment.time | date }}</p>
+          <pre class="comment-text">{{ comment.text }}</pre>
+          <hr class="line" />
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
+<ng-template #noImage>
+  <img
+    class="recipe-image"
+    src="https://1.bp.blogspot.com/-Y9HKYoyAQg0/U6PMxAZaJOI/AAAAAAAACwY/12TZjUXl8sY/s1600/mama%2527s+picture+1.jpg"
+    alt="Image"
+  />
+</ng-template>

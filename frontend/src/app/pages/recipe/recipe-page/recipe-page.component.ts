@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { Comment } from 'src/app/models/comment.model';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -12,32 +13,14 @@ import { Comment } from 'src/app/models/comment.model';
   styleUrls: ['./recipe-page.component.css']
 })
 export class RecipePageComponent implements OnInit {
-  recipe: Recipe = {
-    id: '',
-    name: '',
-    description: '',
-    ingredients: [],
-    tags: [],
-    preparation: '',
-    createdAt: undefined,
-    time: undefined,
-    difficulty: undefined,
-    category_id: '',
-    user_id: '',
-    picture_uri: '',
-    rating: undefined
-  };
-  user: User = {
-    id: '',
-    name: '',
-    description: '',
-    picture_uri: '',
-    email: ''
-  }
+  recipe: Recipe | null;
+  user: User | null;
 
   recipeId: string;
   comments: Comment[];
 
+  public readonly baseUrl = environment.baseServer;
+  
   constructor(private apiService: ApiService, private router : Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -56,6 +39,8 @@ export class RecipePageComponent implements OnInit {
     this.apiService.getRecipe(this.recipeId).subscribe(
       data => {
         this.recipe = data;
+        this.getUser();
+        this.getComments();
       },
       error => {
         this.router.navigate(['/404'], { skipLocationChange: true });
