@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Category } from '../../../models/category.model';
 
 @Component({
@@ -7,14 +8,21 @@ import { Category } from '../../../models/category.model';
   styleUrls: ['./category-selector.component.css']
 })
 export class CategorySelectorComponent implements OnInit {
-  @Input() categories: Category[];
   @Input() category_id: string;
   @Output() category_idChange = new EventEmitter<string>();
 
-  constructor() { }
+  categories: Category[];
+
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    console.log(this.categories);
+    this.getCategories();
+  }
+
+  getCategories() {
+    this.apiService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
   }
 
 }

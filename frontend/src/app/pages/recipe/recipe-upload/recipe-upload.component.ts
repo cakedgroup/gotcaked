@@ -38,10 +38,17 @@ export class RecipeUploadComponent implements OnInit {
     this.getCategories();
   }
 
+  //
+  // Handler Stuff
+  //
   createRecipeHandler() {
     this.createRecipe(this.tempRecipe);
+    console.log(this.tempRecipe);
   }
 
+  test(){
+    console.log(this.tempRecipe);
+  }
   getCategories() {
     this.apiService.getCategories().subscribe(categories => {
       this.categories = categories;
@@ -49,23 +56,9 @@ export class RecipeUploadComponent implements OnInit {
     });
   }
 
-  deleteTag(tagName: string) {
-    this.tempRecipe.tags = this.tempRecipe.tags.filter(tag => tag.name !== tagName);
-  }
-
-  addTag(tag: Tag) {
-    //Cloning Object, to prevent using the reference
-    let tagToStore = Object.assign({}, tag);
-    this.clearInput();
-    this.tempRecipe.tags.push(tagToStore);
-  }
-
-  getAllTags() {
-    this.apiService.getTags().subscribe(tags => {
-      this.tags = tags;
-    });
-  }
-
+  //
+  // Recipe Stuff
+  //
   createRecipe(recipe: RecipeCreate) {
     this.apiService.createRecipe(recipe).subscribe(res => {
       if (res.status === 201) {
@@ -87,6 +80,29 @@ export class RecipeUploadComponent implements OnInit {
     });
   }
 
+  //
+  // Tag Stuff
+  //
+  deleteTag(tagName: string) {
+    this.tempRecipe.tags = this.tempRecipe.tags.filter(tag => tag.name !== tagName);
+  }
+
+  addTag(tag: Tag) {
+    //Cloning Object, to prevent using the reference
+    let tagToStore = Object.assign({}, tag);
+    this.clearInput();
+    this.tempRecipe.tags.push(tagToStore);
+  }
+
+  getAllTags() {
+    this.apiService.getTags().subscribe(tags => {
+      this.tags = tags;
+    });
+  }
+
+  //
+  // Helper Functions
+  //
   clearInput(){
     this.tempTag.name = '';
     this.tempTag.description = '';

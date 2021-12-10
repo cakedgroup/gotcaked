@@ -10,7 +10,7 @@ export interface Recipe {
     preparation: string;
     createdAt: Date;
     time: Number;
-    difficulty: String;
+    difficulty: string;
     category_id: string;
     user_id: string;
     picture_uri: string;
@@ -24,7 +24,7 @@ export interface RecipeCreate {
   tags: Tag[];
   preparation: string;
   time: Number;
-  difficulty: String;
+  difficulty: string;
   category_id: string;
   picture_uri: string;
 }
