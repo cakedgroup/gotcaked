@@ -33,12 +33,12 @@ export class ApiService {
     return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
-  createUser(user: UserRegister): Observable<HttpResponse<User>> {
-    return this.http.post<any>(`${this.baseUrl}/users`, user, { observe: 'response' });
+  createUser(user: UserRegister): Observable<User> {
+    return this.http.post<any>(`${this.baseUrl}/users`, user);
   }
 
-  updateUser(user: User): Observable<HttpResponse<User>> {
-    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
+  updateUser(user: User): Observable<User> {
+    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user);
   }
 
   //
