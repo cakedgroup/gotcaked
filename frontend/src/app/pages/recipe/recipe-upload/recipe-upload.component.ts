@@ -12,6 +12,10 @@ export class RecipeUploadComponent {
   tags: Tag[];
   createdRecipe: Recipe;
   pictureFiles: File[] = [];
+  successMessage: string = 'Successfully created recipe';
+  errorMessage: string = '';
+  success: boolean = false;
+  error: boolean = false;
 
   //Temp Objects
   tempRecipe: RecipeCreate = {
@@ -37,6 +41,7 @@ export class RecipeUploadComponent {
   // Handler Stuff
   //
   createRecipeHandler() {
+    this.resetStatus();
     this.createRecipe(this.tempRecipe);
   }
 
@@ -54,20 +59,28 @@ export class RecipeUploadComponent {
       if (res.status === 201) {
         console.log('Recipe created');
         this.createdRecipe = res.body;
-        this.addPictureHandler();
+        if (this.pictureFiles.length > 0) {
+          this.addPictureHandler();
+        } else {
+          this.success = true;
+        }
       } else {
-        console.log('Error');
+        this.errorMessage = 'Failed to create recipe';
+        this.error = true;
       }
     }, err => {
+      this.errorMessage = 'Failed to create recipe: ' + err.error.message;
+      this.error = true;
     });
   }
 
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.createdRecipe.id, file).subscribe(res => {
       if (res.status === 200) {
-        console.log('Picture uploaded');
+        this.success = true;
       } else {
-        console.log('Error');
+        this.errorMessage = 'Failed to upload picture';
+        this.error = true;
       }
     });
   }
@@ -103,5 +116,9 @@ export class RecipeUploadComponent {
     this.tempRecipe.tags = [];
     this.tempRecipe.difficulty = null;
     this.tempRecipe.time = null;
+  }
+  resetStatus() {
+    this.success = false;
+    this.error = false;
   }
 }

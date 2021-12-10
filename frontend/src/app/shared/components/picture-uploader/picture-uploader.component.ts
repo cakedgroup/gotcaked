@@ -31,13 +31,13 @@ export class PictureUploaderComponent implements OnInit {
   }
 
   getPicturesFromRecipe(recipeID: string) {
-    this.apiService.getRecipe(recipeID).subscribe(recipe => {
-      if (recipe !== null || recipe.picture_uri !== undefined) {
+    if (recipeID !== null && recipeID !== undefined && recipeID !== "undefined") {
+      this.apiService.getRecipe(recipeID).subscribe(recipe => {
         recipe.picture_uri.forEach(picture => {
           this.tempUploadedPictures.push(this.baseUrl + picture);
         });
-      }
-    });
+      });
+    }
   }
 
   addPicture(image: any) {

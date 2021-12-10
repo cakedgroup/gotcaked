@@ -20,7 +20,8 @@
       <hr class="section-line">
       <!--- Upload Pictures -->
       <app-picture-uploader [(pictures)]="pictureFiles"></app-picture-uploader>
-
+      <app-error-message class="message" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
+      <app-success-message class="message" *ngIf="success" [message]="this.successMessage"></app-success-message>
       <button class="submit-button" type="button" (click)="createRecipeHandler()">Create Recipe</button>
     </form>
   </div>

@@ -1,4 +1,4 @@
-.upload-form-container{
+.upload-form-container {
   background-color: var(--secondary-background-color);
   border-radius: 1em;
   margin: 0 auto;
@@ -31,7 +31,7 @@
   color: teal;
 }
 
-.submit-button{
+.submit-button {
   font-family: "Darker Grotesque", sans-serif;
   font-size: 16pt;
   background-color: var(--primary-color);
@@ -42,4 +42,8 @@
   margin: auto;
   margin-top: 20px;
   margin-bottom: -40px;
+}
+
+.message {
+  text-align: center;
 }

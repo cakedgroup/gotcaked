@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
@@ -27,13 +27,17 @@ export class RecipeEditComponent implements OnInit {
   tags: Tag[];
   pictureFiles: File[] = [];
   pictureToDelete: string[] = [];
+  successMessage: string = 'Successfully updated recipe';
+  errorMessage: string = '';
+  success: boolean = false;
+  error: boolean = false;
 
   tempTag: Tag = {
     name: '',
     description: '',
   };
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.getParams();
@@ -44,10 +48,12 @@ export class RecipeEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       let recipeID = params.recipeID;
       this.getRecipe(recipeID);
+      this.resetStatus();
     });
   }
 
   updateRecipeHandler() {
+    this.resetStatus();
     this.updateRecipe();
   }
 
@@ -65,7 +71,10 @@ export class RecipeEditComponent implements OnInit {
       (recipe: Recipe) => {
         this.recipe = recipe;
         this.recipeToRecipeCreate(recipe);
-        console.log(this.recipeSmall);
+      }, (error) => {
+        this.router.navigate(['/404']);
+        this.errorMessage = 'Error getting recipe';
+        this.error = true;
       }
     );
   }
@@ -74,9 +83,12 @@ export class RecipeEditComponent implements OnInit {
     this.recipeCreateToRecipe(this.recipeSmall);
     this.apiService.updateRecipe(this.recipe).subscribe(res => {
       if (res.status === 200) {
-        console.log('Recipe Updated');
-        this.deletePictures(this.pictureToDelete);
-        this.updatePictureHandler();
+        if (this.pictureFiles.length > 0 || this.pictureToDelete.length > 0) {
+          this.deletePictures(this.pictureToDelete);
+          this.updatePictureHandler();
+        } else {
+          this.success = true;
+        }
       }
     });
   }
@@ -87,9 +99,7 @@ export class RecipeEditComponent implements OnInit {
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.recipe.id, file).subscribe(res => {
       if (res.status === 200) {
-        console.log('Picture uploaded');
-      } else {
-        console.log('Error');
+        this.success = true;
       }
     });
   }
@@ -102,9 +112,7 @@ export class RecipeEditComponent implements OnInit {
     pictureURIs.forEach(pictureURI => {
       this.apiService.deleteRecipePicture(this.recipe.id, pictureURI).subscribe(res => {
         if (res.status === 204) {
-          console.log('Picture deleted');
-        } else {
-          console.log('Error');
+          this.success = true;
         }
       });
     });
@@ -152,5 +160,10 @@ export class RecipeEditComponent implements OnInit {
   clearInputTag() {
     this.tempTag.name = '';
     this.tempTag.description = '';
+  }
+
+  resetStatus() {
+    this.success = false;
+    this.error = false;
   }
 }
