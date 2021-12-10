@@ -27,13 +27,16 @@
           </button>
         </div>
       </div>
-      <app-error-message *ngIf="this.failedCategoryRequest" [errorMessage]="this.failedErrorMessage">
-      </app-error-message>
     </form>
     <!-- Add Category -->
     <form class="form-container" (submit)="addCategoryHandler()">
       <app-form-create-field [(model)]="tempCategory" model_type="Category"></app-form-create-field>
     </form>
+
+    <!-- Messages -->
+    <app-error-message class="center-text" *ngIf="this.failedCategoryRequest" [errorMessage]="this.failedErrorMessage">
+    </app-error-message>
+    <app-success-message class="center-text" *ngIf="success" [message]="this.successMessage"></app-success-message>
 
     <!--Tags Section-->
     <h2 class="section-title">Tags</h2>
@@ -42,7 +45,7 @@
     <form (submit)="addTagHandler()">
       <app-form-create-field [(model)]="tempTag" model_type="Tag"></app-form-create-field>
     </form>
-    <app-error-message *ngIf="this.failedTagRequest" [errorMessage]="this.failedErrorMessage"></app-error-message>
+    <app-error-message class="center-text" *ngIf="this.failedTagRequest" [errorMessage]="this.failedErrorMessage"></app-error-message>
     <!--List Current Tags -->
     <app-tag-list [(tags)]="tags" (delete)="deleteTag($event.name)"></app-tag-list>
   </div>

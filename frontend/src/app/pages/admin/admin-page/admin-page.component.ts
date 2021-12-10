@@ -20,6 +20,9 @@ export class AdminPageComponent implements OnInit {
   failedCategoryRequest: boolean = false;
   failedTagRequest: boolean = false;
   failedErrorMessage: string = "";
+  success: boolean = false;
+  successMessage: string = 'Successfully updated Category';
+
 
   //Temp-Objects to Create A New Object
   tempCategory: Category = {
@@ -76,9 +79,10 @@ export class AdminPageComponent implements OnInit {
       this.loadCategories();
       this.resetErrorMessages();
       this.clearCategory();
+      this.success = false;
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Creating Category: ", error.error.message;
+      this.failedErrorMessage = "Error Creating Category " + error.error.message;;
     });
   }
 
@@ -87,9 +91,10 @@ export class AdminPageComponent implements OnInit {
     this.apiService.updateCategory(category).subscribe(category => {
       this.loadCategories();
       this.resetErrorMessages();
+      this.success = true;
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Updating Category: ", error.error.message;
+      this.failedErrorMessage = "Error Updating Category " + error.error.message;;
     });
   }
 
@@ -100,7 +105,7 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Deleting Category: ", error.error.message;
+      this.failedErrorMessage = "Error Deleting Category " + error.error.message;;
     });
   }
 
@@ -124,7 +129,7 @@ export class AdminPageComponent implements OnInit {
       this.clearTag();
     }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Creating Tag: ", error.error.message;
+      this.failedErrorMessage = "Error Creating Tag " + error.error.message;
     });
   }
 
@@ -135,7 +140,7 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Deleting Tag: ", error.error.message;
+      this.failedErrorMessage = "Error Deleting Tag " + error.error.message;;
     });
   }
 
