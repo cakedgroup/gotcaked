@@ -8,7 +8,7 @@ import { isAdmin, isLoggedIn, isLoggedOut } from '../../services/authGuard';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  userName: string;
+  userID: string;
 
   constructor(private authService: AuthService,
     private _isLoggedIn: isLoggedIn,
@@ -23,7 +23,7 @@ export class MenuComponent implements OnInit {
   getUserName() {
     this.authService.getUser().subscribe(user => {
       if (user !== null) {
-        this.userName = user.name;
+        this.userID = user.id;
       }
     });
   }

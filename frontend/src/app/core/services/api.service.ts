@@ -41,6 +41,10 @@ export class ApiService {
     return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
   }
 
+  getLikedRecipesFromUser(userID: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/users/${userID}/liked/`);
+  }
+
   //
   // Category Services
   //
