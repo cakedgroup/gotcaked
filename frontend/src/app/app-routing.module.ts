@@ -25,6 +25,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/category/category.module').then(m => m.CategoryModule)
   },
   {
+    path: 'tag',
+    loadChildren: () => import('./pages/tag/tag.module').then(m => m.TagModule)
+  },
+  {
     path: 'settings',
     canActivate: [isLoggedIn],
     loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule)

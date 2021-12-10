@@ -8,6 +8,7 @@ services:
     restart: always
     expose:
       - 3000
+    env_file: ./config.env
     volumes:
       - ../gotcaked-storage:/opt/gotcaked/backend/databases
       - ../gotcaked-static-storage:/opt/gotcaked/backend/static

@@ -4,8 +4,11 @@ echo "Cloning Server Repo from GitHub.com..."
 git clone git@github.com:cakedgroup/gotcaked.git
 echo "Repo Cloned"
 
-echo "Starting Docker-Compose"
+echo "Swiching to Dir"
 cd ./gotcaked
+
+echo "Copy Env-File from Server"
+cp ../config.env ./config.env
 
 echo "Getting current tag"
 tag=$(git describe --tags `git rev-list --tags --max-count=1`)
