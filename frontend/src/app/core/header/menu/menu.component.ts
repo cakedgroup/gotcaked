@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { isAdmin, isLoggedIn, isLoggedOut } from '../../services/authGuard';
-import { CanActivate } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -9,6 +8,7 @@ import { CanActivate } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  userID: string;
 
   constructor(private authService: AuthService,
     private _isLoggedIn: isLoggedIn,
@@ -17,7 +17,15 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("hello");
+    this.getUserName();
+  }
+
+  getUserName() {
+    this.authService.getUser().subscribe(user => {
+      if (user !== null) {
+        this.userID = user.id;
+      }
+    });
   }
 
   isLoggedIn() {

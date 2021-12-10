@@ -9,7 +9,8 @@
       <input class="form-input" [(ngModel)]="userLogin.password" name="password" type="password" placeholder="Password"
         required>
 
-      <button class="login-button left" routerLink="/register">Register</button>
+      <app-error-message class="center-text" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
+      <button class="login-button left" routerLink="/register" type="button">Register</button>
       <button class="login-button right" type="submit">Login</button>
     </div>
   </form>

@@ -5,13 +5,20 @@
 </div>
 
 <div class="menu-container" *ngIf="isAdmin()">
+  <a [routerLink]="['/user', userID]">Profile</a> <br>
+  <a routerLink="/recipe/upload">Upload Recipe</a> <br>
+  <a routerLink="/user/liked">Liked Recipes</a> <br>
+  <a routerLink="/settings">Settings</a> <br>
+  <a routerLink="/admin">AdminPanel</a> <br>
   <a routerLink="/auth/logout">Logout</a> <br>
-  <a routerLink="/admin">Admin</a> <br>
   <a routerLink="/about">About</a>
 </div>
 
 <div class="menu-container" *ngIf="isLoggedIn()" ng-if>
+  <a [routerLink]="['/user', userID]">Profile</a> <br>
+  <a routerLink="/recipe/upload">Upload Recipe</a> <br>
+  <a routerLink="/user/liked">Liked Recipes</a> <br>
+  <a routerLink="/settings">Settings</a> <br>
   <a routerLink="/auth/logout">Logout</a> <br>
   <a routerLink="/about">About</a>
 </div>
-

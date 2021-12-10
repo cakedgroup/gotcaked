@@ -11,17 +11,14 @@ export class AboutPageComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    console.log('about page');
     this.getStatus();
   }
 
   getStatus() {
     this.apiService.getStatus().subscribe(
       (data) => {
-        console.log(data);
       },
       (error) => {
-        console.log(error);
       }
     );
   }

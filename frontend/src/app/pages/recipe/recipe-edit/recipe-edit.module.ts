@@ -1,8 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { RecipeEditRoutingModule } from './recipe-edit-routing.module';
 import { RecipeEditComponent } from './recipe-edit.component';
+
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { RecipeEditComponent } from './recipe-edit.component';
   ],
   imports: [
     CommonModule,
-    RecipeEditRoutingModule
+    RecipeEditRoutingModule,
+    FormsModule,
+    SharedModule
   ]
 })
 export class RecipeEditModule { }

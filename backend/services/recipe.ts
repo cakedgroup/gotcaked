@@ -388,31 +388,43 @@ export function getRecipeRating(recipe_id: string): Promise<RatingCount> {
 
 export function getRecipesByCategory(name: string, limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
-        recipeDAO.getRecipesByCategory(name, limit, offset).then((recipes) => {
-            //Wait for converter promise to finish
-            convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
-                resolve(allRecipes);
-            }).catch(err => {
-                reject(err);
-            });
-        }).catch((err) => {
-            reject(err);
-        })
+        categoryDAO.getCategory(name).then(category => {
+            if (category) {
+                recipeDAO.getRecipesByCategory(name, limit, offset).then((recipes) => {
+                    //Wait for converter promise to finish
+                    convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
+                        resolve(allRecipes);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                }).catch((err) => {
+                    reject(err);
+                })
+            } else {
+                reject(new Error('Category not found'));
+            }
+        }).catch(() => reject(new Error('Category not found')));
     });
 }
 
 export function getRecipesByTag(name: string, limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
-        recipeDAO.getRecipesByTag(name, limit, offset).then((recipes) => {
-            //Wait for converter promise to finish
-            convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
-                resolve(allRecipes);
-            }).catch(err => {
-                reject(err);
-            });
-        }).catch((err) => {
-            reject(err);
-        })
+        tagDAO.getTag(name).then((tag) => {
+            if (tag) {
+                recipeDAO.getRecipesByTag(name, limit, offset).then((recipes) => {
+                    //Wait for converter promise to finish
+                    convertRecipeToRecipeSmall(recipes).then((allRecipes) => {
+                        resolve(allRecipes);
+                    }).catch(err => {
+                        reject(err);
+                    });
+                }).catch((err) => {
+                    reject(err);
+                })
+            } else {
+                reject(new Error('Tag not found'));
+            }
+        }).catch(() => reject(new Error('Tag not found')));
     });
 }
 

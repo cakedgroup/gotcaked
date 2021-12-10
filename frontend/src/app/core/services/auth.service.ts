@@ -26,6 +26,12 @@ export class AuthService {
     });
   }
 
+  createAuthorizationHeaderForm(): HttpHeaders {
+    return new HttpHeaders({
+      'jwt': this.jwtToken.value
+    });
+  }
+
   //BehaviorSubject to get JWTToken
   getJWTToken(): BehaviorSubject<string> {
     return this.jwtToken;
@@ -53,6 +59,9 @@ export class AuthService {
         if (user !== null) {
           this.userInformation.next(user);
         }
+      }, error => {
+        this.setJWTToken(null);
+        this.userInformation.next(null);
       });
     } else {
       //Setting User-Information to null
@@ -77,12 +86,12 @@ export class AuthService {
 
   //Backend-API Calls
   //Login User to get JWT Token
-  userLogin(user: UserLogin): Observable<HttpResponse<JWT>> {
-    return this.http.post<JWT>(this.baseUrl + '/auth/login', user, { observe: 'response' });
+  userLogin(user: UserLogin): Observable<JWT> {
+    return this.http.post<JWT>(this.baseUrl + '/auth/login', user);
   }
 
   //Logout User to delete JWT Token
-  userLogout(): Observable<HttpResponse<any>> {
-    return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader(), observe: 'response' });
+  userLogout(): Observable<any> {
+    return this.http.post<any>(this.baseUrl + '/auth/logout', null, { headers: this.createAuthorizationHeader() });
   }
 }

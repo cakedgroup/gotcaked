@@ -1,0 +1,44 @@
+<table class="form-table">
+  <thead>
+    <tr>
+      <th class="form-label">Ingredient</th>
+      <th class="form-label">Quantity</th>
+      <th class="form-label">Unit</th>
+      <th class="form-label">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ingredient of ingredients; let i = index">
+      <td>
+        <input class="form-input" type="text" [(ngModel)]="ingredient.name" />
+      </td>
+      <td>
+        <input class="form-input" type="number" [(ngModel)]="ingredient.amount" />
+      </td>
+      <td>
+        <input class="form-input" type="text" [(ngModel)]="ingredient.unit" />
+      </td>
+      <td>
+        <button class="action-button" (click)="deleteIngredient(i)" type="button">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input class="form-input" type="text" [(ngModel)]="tempIngredient.name" />
+      </td>
+      <td>
+        <input class="form-input" type="number" [(ngModel)]="tempIngredient.amount" />
+      </td>
+      <td>
+        <input class="form-input" type="text" [(ngModel)]="tempIngredient.unit" />
+      </td>
+      <td>
+        <button class="action-button" (click)="addIngredient()" type="button">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
