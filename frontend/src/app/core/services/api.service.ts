@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
 import { Recipe } from 'src/app/models/recipe.model';
-import { Comment} from 'src/app/models/comment.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { RecipeCreate } from '../../models/recipe.model';
 import { AuthService } from './auth.service';
+import { RecipeComment } from '../../models/comment.model';
 
 
 @Injectable({
@@ -116,8 +116,8 @@ export class ApiService {
     return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${id}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
-  getCommentsByRecipe(recipeID: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.baseUrl}/recipes/${recipeID}/comments`);
+  getCommentsByRecipe(recipeID: string): Observable<RecipeComment[]> {
+    return this.http.get<RecipeComment[]>(`${this.baseUrl}/recipes/${recipeID}/comments`);
   }
 
   //

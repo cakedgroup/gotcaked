@@ -1,4 +1,4 @@
-export interface Comment {
+export interface RecipeComment {
     id: string;
     text: string;
     user_id: string;

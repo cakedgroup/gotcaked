@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
-import { Comment } from 'src/app/models/comment.model';
+import { RecipeComment } from 'src/app/models/comment.model';
 import { environment } from 'src/environments/environment';
 
 
@@ -17,11 +17,11 @@ export class RecipePageComponent implements OnInit {
   user: User | null;
 
   recipeId: string;
-  comments: Comment[];
+  comments: RecipeComment[];
 
   public readonly baseUrl = environment.baseServer;
-  
-  constructor(private apiService: ApiService, private router : Router, private route: ActivatedRoute) { }
+
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getParams();
@@ -36,50 +36,31 @@ export class RecipePageComponent implements OnInit {
   }
 
   getRecipe() {
-    this.apiService.getRecipe(this.recipeId).subscribe(
-      data => {
-        this.recipe = data;
-        this.getUser();
-        this.getComments();
-      },
-      error => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
-      }
+    this.apiService.getRecipe(this.recipeId).subscribe(data => {
+      this.recipe = data;
+      this.getUser();
+      this.getComments();
+    }, error => {
+      this.router.navigate(['/404'], { skipLocationChange: true });
+    }
     );
   }
 
   getUser() {
-    this.apiService.getUser(this.recipe.user_id).subscribe(
-      data => {
-        this.user= data;
-      },
-      error => {
-        this.user.name= 'User not found';
-      }
+    this.apiService.getUser(this.recipe.user_id).subscribe(data => {
+      this.user = data;
+    }, error => {
+      this.user.name = 'User not found';
+    }
     );
   }
 
   getComments() {
-    this.apiService.getCommentsByRecipe(this.recipeId).subscribe(
-      data => {
-        this.comments = data;
-        this.comments.forEach(comment => {
-          this.apiService.getUser(comment.user_id).subscribe(
-            data => {
-              comment.user_id = data.name;
-            },
-            error => {
-              comment.user_id = 'User not found';
-            }
-          );
-        });
-      },
-      error => {
-        this.comments = [];
-      }
+    this.apiService.getCommentsByRecipe(this.recipeId).subscribe(data => {
+      this.comments = data;
+    }, error => {
+      this.comments = [];
+    }
     );
   }
-
-
-
 }

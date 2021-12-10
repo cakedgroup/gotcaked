@@ -1,0 +1,10 @@
+<table class="recipe-ingredients-list">
+  <tr>
+    <th>Amount</th>
+    <th>Ingredient</th>
+  </tr>
+  <tr *ngFor="let ingredient of ingredients">
+    <td>{{ ingredient.amount }} {{ ingredient.unit }}</td>
+    <td>{{ ingredient.name }}</td>
+  </tr>
+</table>
