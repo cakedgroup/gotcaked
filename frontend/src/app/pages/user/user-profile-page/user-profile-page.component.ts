@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/core/services/api.service';
+import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -13,6 +14,7 @@ export class UserProfilePageComponent implements OnInit {
 
   userID: string;
   user: User;
+  recipes: Recipe[];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
 
@@ -32,8 +34,18 @@ export class UserProfilePageComponent implements OnInit {
     this.apiService.getUser(this.userID).subscribe(
       (data: User) => {
         this.user = data;
+        this.getRecipes();
       }, error => {
         this.router.navigate(['/404']);
       });
   }
+
+  getRecipes() {
+    this.apiService.getRecipesByUser(this.user.id).subscribe(
+      (data: Recipe[]) => {
+        this.recipes = data;
+      }
+    );
+  }
+
 }

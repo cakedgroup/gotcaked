@@ -1,0 +1,35 @@
+.header-box {
+  width: 95%;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+  margin-bottom: 10px;
+  border-radius: 1em;
+  background-color: var(--secondary-background-color);
+  display: flex;
+  justify-content: center;
+}
+
+.content-header {
+  margin-top: 10px;
+}
+.user-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: auto;
+  margin-left: 20px;
+}
+
+.header-title {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 32pt;
+  min-height: 100px;
+  width: 80%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
