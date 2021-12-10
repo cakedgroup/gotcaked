@@ -53,16 +53,16 @@ export class ApiService {
     return this.categories.asObservable();
   }
 
-  createCategory(category: Category): Observable<HttpResponse<Category>> {
-    return this.http.post<Category>(`${this.baseUrl}/categories`, category, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  createCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.baseUrl}/categories`, category, { headers: this.authService.createAuthorizationHeader() });
   }
 
-  updateCategory(category: Category): Observable<HttpResponse<Category>> {
-    return this.http.put<Category>(`${this.baseUrl}/categories/${category.name}`, category, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  updateCategory(category: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.baseUrl}/categories/${category.name}`, category, { headers: this.authService.createAuthorizationHeader() });
   }
 
-  deleteCategory(category: string): Observable<HttpResponse<Category>> {
-    return this.http.delete<Category>(`${this.baseUrl}/categories/${category}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  deleteCategory(category: string): Observable<Category> {
+    return this.http.delete<Category>(`${this.baseUrl}/categories/${category}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   //
@@ -72,12 +72,12 @@ export class ApiService {
     return this.http.get<Tag[]>(`${this.baseUrl}/tags`);
   }
 
-  createTag(tag: Tag): Observable<HttpResponse<Tag>> {
-    return this.http.post<Tag>(`${this.baseUrl}/tags`, tag, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  createTag(tag: Tag): Observable<Tag> {
+    return this.http.post<Tag>(`${this.baseUrl}/tags`, tag, { headers: this.authService.createAuthorizationHeader() });
   }
 
-  deleteTag(tag: string): Observable<HttpResponse<Tag>> {
-    return this.http.delete<Tag>(`${this.baseUrl}/tags/${tag}`, { observe: 'response', headers: this.authService.createAuthorizationHeader() });
+  deleteTag(tag: string): Observable<Tag> {
+    return this.http.delete<Tag>(`${this.baseUrl}/tags/${tag}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   //

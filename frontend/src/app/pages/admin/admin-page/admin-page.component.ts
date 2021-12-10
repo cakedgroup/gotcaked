@@ -40,16 +40,9 @@ export class AdminPageComponent implements OnInit {
     this.loadTags();
   }
 
-  resetErrorMessages() {
-    this.failedCategoryRequest = false;
-    this.failedTagRequest = false;
-    this.failedErrorMessage = "";
-  }
-
   //
   //Form-Handler
   //
-
   //Add new Category Handler
   addCategoryHandler() {
     this.resetErrorMessages();
@@ -79,57 +72,40 @@ export class AdminPageComponent implements OnInit {
 
   //Add a new Category at the API
   addCategory(category: Category) {
-    this.apiService.createCategory(category).subscribe(res => {
-      if (res.status === 201) {
-        this.loadCategories();
-        this.resetErrorMessages();
-        this.tempCategory.name = '';
-        this.tempCategory.description = '';
-      } else if (res.status === 409) {
-        this.failedCategoryRequest = true;
-        this.failedErrorMessage = "Category already exists!";
-      }
-    }, () => {
+    this.apiService.createCategory(category).subscribe(category => {
+      this.loadCategories();
+      this.resetErrorMessages();
+      this.clearCategory();
+    }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Creating Category";
+      this.failedErrorMessage = "Error Creating Category: ", error.error.message;
     });
   }
 
   //Update an existing Category at the API
   updateCategory(category: Category) {
-    this.apiService.updateCategory(category).subscribe(res => {
-      if (res.status === 200) {
-        this.loadCategories();
-        this.resetErrorMessages();
-      } else {
-        this.failedCategoryRequest = true;
-        this.failedErrorMessage = "Error Updating Category";
-      }
-    }, () => {
+    this.apiService.updateCategory(category).subscribe(category => {
+      this.loadCategories();
+      this.resetErrorMessages();
+    }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Updating Category";
+      this.failedErrorMessage = "Error Updating Category: ", error.error.message;
     });
   }
 
   //Delete an existing Category at the API
   deleteCategory(categoryName: string) {
-    this.apiService.deleteCategory(categoryName).subscribe(res => {
-      if (res.status === 204) {
-        this.loadCategories();
-        this.resetErrorMessages();
-      } else {
-        this.failedCategoryRequest = true;
-        this.failedErrorMessage = "Error Deleting Category";
-      }
-    },
-      () => {
-        this.failedCategoryRequest = true;
-        this.failedErrorMessage = "Error Deleting Category";
-      });
+    this.apiService.deleteCategory(categoryName).subscribe(category => {
+      this.loadCategories();
+      this.resetErrorMessages();
+    }, error => {
+      this.failedCategoryRequest = true;
+      this.failedErrorMessage = "Error Deleting Category: ", error.error.message;
+    });
   }
 
   //
-  // Category-API-Calls
+  // Tag-API-Calls
   //
   //Fetch all Tags from API
   loadTags() {
@@ -142,35 +118,43 @@ export class AdminPageComponent implements OnInit {
 
   //Add a new Tag at the API
   addTag(tag: Tag) {
-    this.apiService.createTag(tag).subscribe(res => {
-      if (res.status === 201) {
-        this.loadTags();
-        this.resetErrorMessages();
-        this.tempTag.name = '';
-        this.tempTag.description = '';
-      } else if (res.status === 409) {
-        this.failedTagRequest = true;
-        this.failedErrorMessage = "Category already exists!";
-      }
-    }, () => {
+    this.apiService.createTag(tag).subscribe(tag => {
+      this.loadTags();
+      this.resetErrorMessages();
+      this.clearTag();
+    }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Creating Tag";
+      this.failedErrorMessage = "Error Creating Tag: ", error.error.message;
     });
   }
 
   //Delete an existing Tag at the API
   deleteTag(tagName: string) {
-    this.apiService.deleteTag(tagName).subscribe(res => {
-      if (res.status === 204) {
-        this.loadTags();
-        this.resetErrorMessages();
-      } else {
-        this.failedTagRequest = true;
-        this.failedErrorMessage = "Error Deleting Tag";
-      }
-    }, () => {
+    this.apiService.deleteTag(tagName).subscribe(tag => {
+      this.loadTags();
+      this.resetErrorMessages();
+    }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Deleting Tag";
+      this.failedErrorMessage = "Error Deleting Tag: ", error.error.message;
     });
+  }
+
+  //
+  // Utils
+  //
+  clearCategory() {
+    this.tempCategory.name = '';
+    this.tempCategory.description = '';
+  }
+
+  clearTag() {
+    this.tempTag.name = '';
+    this.tempTag.description = '';
+  }
+
+  resetErrorMessages() {
+    this.failedCategoryRequest = false;
+    this.failedTagRequest = false;
+    this.failedErrorMessage = "";
   }
 }
