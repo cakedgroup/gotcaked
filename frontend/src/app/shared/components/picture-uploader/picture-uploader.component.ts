@@ -1,14 +1,18 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { ApiService } from 'src/app/core/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-picture-uploader',
   templateUrl: './picture-uploader.component.html',
   styleUrls: ['./picture-uploader.component.css']
 })
-export class PictureUploaderComponent {
+export class PictureUploaderComponent implements OnInit {
+  @Input() recipeID: string;
   @Input() pictures: File[] = [];
   @Output() picturesChange = new EventEmitter<File[]>();
+  @Output() pictureDeleted = new EventEmitter<string>();
 
   //Icons
   faUpload = faUpload;
@@ -16,8 +20,25 @@ export class PictureUploaderComponent {
   faTrash = faTrash;
 
   tempUploadedPictures: any[] = [];
+  public readonly baseUrl = environment.baseServer;
 
-  constructor() { }
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    if (this.recipeID !== null || this.recipeID !== undefined) {
+      this.getPicturesFromRecipe(this.recipeID);
+    }
+  }
+
+  getPicturesFromRecipe(recipeID: string) {
+    this.apiService.getRecipe(recipeID).subscribe(recipe => {
+      if (recipe !== null || recipe.picture_uri !== undefined) {
+        recipe.picture_uri.forEach(picture => {
+          this.tempUploadedPictures.push(this.baseUrl + picture);
+        });
+      }
+    });
+  }
 
   addPicture(image: any) {
     const file = image.files[0];
@@ -32,6 +53,9 @@ export class PictureUploaderComponent {
   }
 
   removePicture(index: number) {
+    if (this.tempUploadedPictures[index].includes(this.baseUrl)) {
+      this.pictureDeleted.emit(this.tempUploadedPictures[index].substring(this.baseUrl.length));
+    }
     this.pictures.splice(index, 1);
     this.tempUploadedPictures.splice(index, 1);
     this.picturesChange.emit(this.pictures);
