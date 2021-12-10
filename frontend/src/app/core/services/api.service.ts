@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from "rxjs/operators";
 import { Category } from 'src/app/models/category.model';
 import { Recipe } from 'src/app/models/recipe.model';
+import { Comment} from 'src/app/models/comment.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -36,6 +37,10 @@ export class ApiService {
 
   updateUser(user: User): Observable<HttpResponse<User>> {
     return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user, { observe: 'response' });
+  }
+
+  getRecipe(recipeId: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/${recipeId}`);
   }
 
   getRecipes(): Observable<Recipe[]> {
@@ -77,6 +82,10 @@ export class ApiService {
 
   getRecipesByCategory(categoryId: string): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${this.baseUrl}/categories/${categoryId}/recipes`);
+  }
+
+  getCommentsByRecipe(recipeId: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.baseUrl}/recipes/${recipeId}/comments`);
   }
 
 }

@@ -1,1 +1,48 @@
-<p>recipe-page works!</p>
+<div class="recipe-container">
+    <div class="recipe-image">
+        <img src="{{recipe.picture_uri}}" alt="Picture">
+    </div>
+    <div class="recipe-description">
+        <h1>Description</h1>
+        <p>{{recipe.description}}</p>
+        <div>
+            <p>{{recipe.user_id}}</p>
+            <p>{{recipe.createdAt | date}}</p>
+            <p>{{recipe.difficulty}}</p>
+            <p>{{recipe.rating}}</p>
+        </div>
+    </div>
+    <div class="recipe-ingredients">
+        <h1>Ingredients</h1>
+        <div class="recipe-ingredients-list">
+            <div class="recipe-ingredient" *ngFor="let ingredient of recipe.ingredients">
+                <p>{{ingredient.name}}</p>
+                <p>{{ingredient.amount}}</p>
+                <p>{{ingredient.unit}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="recipe-preperation">
+        <p>{{recipe.preparation}}</p>
+    </div>
+    <div class="recipe-tags">
+        <h1>Tags</h1>
+        <div class="recipe-tags-list">
+            <div class="recipe-tag" *ngFor="let tag of recipe.tags">
+                <p>{{tag.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="recipe-comments">
+        <h1>Comments</h1>
+        <div class="recipe-comments-list">
+            <div class="recipe-comment" *ngFor="let comment of comments">
+                <p>{{comment.userId}}</p>
+                <p>{{comment.time | date}}</p>
+                <p>{{comment.text}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
