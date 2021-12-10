@@ -17,6 +17,7 @@ import { ErrorMessageComponent } from './components/error-message/error-message.
 import {RouterModule} from '@angular/router';
 import { RecipeCommentsComponent } from './components/recipe-comments/recipe-comments.component';
 import { IngredientsTableOutputComponent } from './components/ingredients-table-output/ingredients-table-output.component';
+import { RecipeCommentInputComponent } from './components/recipe-comment-input/recipe-comment-input.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { IngredientsTableOutputComponent } from './components/ingredients-table-
     SuccessMessageComponent,
     ErrorMessageComponent,
     RecipeCommentsComponent,
-    IngredientsTableOutputComponent
+    IngredientsTableOutputComponent,
+    RecipeCommentInputComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,8 @@ import { IngredientsTableOutputComponent } from './components/ingredients-table-
     SuccessMessageComponent,
     ErrorMessageComponent,
     RecipeCommentsComponent,
-    IngredientsTableOutputComponent
+    IngredientsTableOutputComponent,
+    RecipeCommentInputComponent
   ]
 })
 export class SharedModule {

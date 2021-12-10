@@ -3,8 +3,8 @@
     <th>Amount</th>
     <th>Ingredient</th>
   </tr>
-  <tr *ngFor="let ingredient of ingredients">
-    <td>{{ ingredient.amount }} {{ ingredient.unit }}</td>
-    <td>{{ ingredient.name }}</td>
+  <tr class="row" *ngFor="let ingredient of ingredients">
+    <td class="item">{{ ingredient.amount }} {{ ingredient.unit }}</td>
+    <td class="item">{{ ingredient.name }}</td>
   </tr>
 </table>

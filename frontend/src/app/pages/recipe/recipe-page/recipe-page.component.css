@@ -26,10 +26,10 @@
 }
 
 .recipe-image-box {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .recipe-image {
@@ -61,6 +61,13 @@
   flex-wrap: wrap;
 }
 
+.recipe-tags-item {
+  margin: 10px;
+  padding: 5px;
+  background-color: var(--primary-color);
+  border-radius: 1em;
+  font-size: 14pt;
+}
 
 .comment-text {
   font-size: 18px;
@@ -81,10 +88,6 @@
 }
 
 @media (max-width: 800px) {
-  .recipe-box {
-    display: flex;
-    flex-direction: column;
-  }
   .recipe-image {
     width: 250px;
     height: auto;

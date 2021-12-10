@@ -2,10 +2,16 @@
   <h1 class="recipe-name">{{ recipe.name }}</h1>
 
   <div class="recipe-information-container">
+
     <!--- Recipe Image --->
-    <div class="flex-item-container">
-      <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
-        src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
+    <div class="flex-item-container ">
+      <h1>Picture</h1>
+      <hr class="line" />
+      <div class="recipe-image-box">
+        <!--TOOD SLIDESHOW-->
+        <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
+          src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
+      </div>
     </div>
 
     <!--- Basic Information Section --->
@@ -25,8 +31,8 @@
         </p>
         <p class="recipe-description-item">{{ recipe.rating }}10 Votes</p>
       </div>
+      <!-- Recipe Interactions (Voting, Edit, Delete) -->
     </div>
-
 
     <!--- Ingredients Section -->
     <div class="flex-item-container">
@@ -36,14 +42,12 @@
       </app-ingredients-table-output>
     </div>
 
-
     <!-- Preparation Section -->
     <div class="flex-item-container">
       <h1>Preparation</h1>
       <hr class="line" />
       <p class="recipe-text">{{ recipe.preparation }}</p>
     </div>
-
 
     <!-- Tags Section -->
     <div class="flex-item-container">
@@ -61,13 +65,14 @@
   <div class="recipe-comments">
     <h1>Comments</h1>
     <hr class="line" />
-    <div>TODO Submit comment</div>
-    <app-recipe-comments class="comment-text" *ngFor="let comment of comments" [comment]="comment"></app-recipe-comments>
+    <app-recipe-comment-input></app-recipe-comment-input>
+    <app-recipe-comments class="comment-text" *ngFor="let comment of comments" [comment]="comment">
+    </app-recipe-comments>
   </div>
 </div>
 
 <ng-template #noImage>
   <img class="recipe-image"
-    src="https://1.bp.blogspot.com/-Y9HKYoyAQg0/U6PMxAZaJOI/AAAAAAAACwY/12TZjUXl8sY/s1600/mama%2527s+picture+1.jpg"
+    src="/assets/icons/recipe_picture_placeholder.svg"
     alt="Image" />
 </ng-template>
