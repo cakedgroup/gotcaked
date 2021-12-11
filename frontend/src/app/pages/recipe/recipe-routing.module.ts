@@ -5,7 +5,7 @@ import { isLoggedIn } from '../../core/services/authGuard';
 
 const routes: Routes = [
   {
-    path: 'view/:recipeID',
+    path: 'view/:recipeId',
     component: RecipePageComponent
   },
   {

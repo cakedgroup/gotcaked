@@ -34,7 +34,7 @@ function createTables() {
     //User
     db.run(`CREATE TABLE IF NOT EXISTS user (
         id VARCHAR(36) PRIMARY KEY,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
         description TEXT,
         picture_uri TEXT,
         email TEXT,

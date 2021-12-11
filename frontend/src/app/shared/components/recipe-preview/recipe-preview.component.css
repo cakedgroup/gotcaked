@@ -39,6 +39,7 @@
   display: block;
   margin: auto;
 }
+
 .recipe-stats {
   display: flex;
   justify-content: space-right;

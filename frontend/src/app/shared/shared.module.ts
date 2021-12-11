@@ -16,6 +16,10 @@ import { SuccessMessageComponent } from './components/success-message/success-me
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { UserPictureUploaderComponent } from './components/user-picture-uploader/user-picture-uploader.component';
+import {RouterModule} from '@angular/router';
+import { RecipeCommentsComponent } from './components/recipe-comments/recipe-comments.component';
+import { IngredientsTableOutputComponent } from './components/ingredients-table-output/ingredients-table-output.component';
+import { RecipeCommentInputComponent } from './components/recipe-comment-input/recipe-comment-input.component';
 
 
 @NgModule({
@@ -33,12 +37,16 @@ import { UserPictureUploaderComponent } from './components/user-picture-uploader
     SuccessMessageComponent,
     ErrorMessageComponent,
     FormInputComponent,
-    UserPictureUploaderComponent
+    UserPictureUploaderComponent,
+    RecipeCommentsComponent,
+    IngredientsTableOutputComponent,
+    RecipeCommentInputComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
@@ -56,7 +64,10 @@ import { UserPictureUploaderComponent } from './components/user-picture-uploader
     SuccessMessageComponent,
     ErrorMessageComponent,
     FormInputComponent,
-    UserPictureUploaderComponent
+    UserPictureUploaderComponent,
+    RecipeCommentsComponent,
+    IngredientsTableOutputComponent,
+    RecipeCommentInputComponent
   ]
 })
 export class SharedModule {
