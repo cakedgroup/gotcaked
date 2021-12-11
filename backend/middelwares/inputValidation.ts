@@ -51,13 +51,13 @@ export const ratingValidationChain = [
 export const userValidationChain = [
     body("email").isEmail().withMessage("Email must be a valid email").isLength({ min: 1 }).withMessage("Email is required"),
     body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
-    body("password").isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter"),
+    body("password").isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter").isLength({ max: 50 }).withMessage("Password must be at most 50 characters long"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
 export const userUpdateValidationChain = [
     body("email").optional().isEmail().withMessage("Email must be a valid email").isLength({ min: 1 }).withMessage("Email is required"),
     body("name").optional().isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
-    body("password").optional().isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter"),
+    body("password").optional().isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter").isLength({ max: 50 }).withMessage("Password must be at most 50 characters long"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
 

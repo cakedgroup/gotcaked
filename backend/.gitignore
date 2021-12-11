@@ -8,7 +8,7 @@
 /bazel-out
 /databases/db.sqlite
 /static/img/recipes/*
-/static/img/user/*
+/static/img/users/*
 
 # dependencies
 /node_modules
