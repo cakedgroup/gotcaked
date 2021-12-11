@@ -5,12 +5,6 @@
 }
 
 @media (max-width: 600px) {
-  .form-input {
-    width: 105%;
-  }
-  .text-input {
-    width: 105%;
-  }
   .ingredients {
     margin-left: -10px;
   }

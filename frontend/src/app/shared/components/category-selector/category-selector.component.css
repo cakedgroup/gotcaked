@@ -7,3 +7,10 @@
   width: 102%;
   height: 36px;
 }
+
+@media (max-width: 600px) {
+  .form-input{
+    width: 109%;
+  }
+}
+
