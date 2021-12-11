@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -7,13 +7,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './user-profile-header.component.html',
   styleUrls: ['./user-profile-header.component.css']
 })
-export class UserProfileHeaderComponent implements OnInit {
+export class UserProfileHeaderComponent {
   @Input() user: User;
   public readonly baseUrl = environment.baseServer;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

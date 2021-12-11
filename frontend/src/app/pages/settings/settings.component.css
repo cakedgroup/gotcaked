@@ -1,63 +1,15 @@
-.settings-form-container {
-  background-color: var(--secondary-background-color);
-  border-radius: 1em;
-  margin: 0 auto;
-  padding: 3em;
-  padding-bottom: 5em;
-  max-width: fit-content;
-}
-.empty-div {
-  max-width: 1000px;
-  margin-top: 20px;
-}
-
-.form-title {
-  font-family: "Darker Grotesque", sans-serif;
-  text-align: center;
-  font-size: 32pt;
-  margin-top: -60px;
-}
-
-.section-title {
-  font-family: "Darker Grotesque", sans-serif;
-  text-align: left;
-  font-size: 24pt;
-}
-
-.section-line {
-  margin-top: -25px;
-  width: 100%;
-  border: 0.5px solid;
-  color: teal;
-}
-
-.submit-button {
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 16pt;
-  background-color: var(--primary-color);
-  border-style: solid;
-  border-radius: 50px;
-  padding: 5px 20px;
-  display: flex;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: -40px;
-}
-
-.message {
-  text-align: center;
-}
-
-
-.flex-item-container {
-  flex: 49%;
-}
-
-.recipe-information-container {
+.information-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   flex: 49%;
+}
+
+.action-button {
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: -40px;
 }
 
 .picture-upload{

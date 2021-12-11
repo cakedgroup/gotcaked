@@ -15,10 +15,6 @@
   flex: 49%;
 }
 
-.flex-item-container {
-  flex: 49%;
-}
-
 .recipe-name {
   padding: 10px;
   text-align: center;
@@ -69,13 +65,16 @@
   font-size: 14pt;
 }
 
-.recipe-interaction-button{
+.recipe-interaction-button {
   margin: 10px;
   padding: 10px 20px;
   background-color: var(--secondary-color);
   border-radius: 1em;
   font-size: 14pt;
   border: none;
+}
+.recipe-interaction-button-selected {
+  border: 2px solid black;
 }
 
 .comment-text {
@@ -85,14 +84,8 @@
   word-break: break-all;
 }
 
-.recipe-text{
+.recipe-text {
   font-size: 16pt;
-}
-
-.line {
-  width: 100%;
-  border: 0.5px solid;
-  color: teal;
 }
 
 @media (max-width: 800px) {

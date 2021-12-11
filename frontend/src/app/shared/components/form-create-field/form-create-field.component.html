@@ -1,15 +1,8 @@
-<div class="form-container">
-  <div class="form-input-container">
-    <label class="form-label" for="{{model_type}}-name-new">Name</label>
-    <input class="form-input" type="text" name="{{model_type}}-name" placeholder="{{model_type}} Name" [(ngModel)]="model.name">
-  </div>
+<div class="form-container-create-field">
+  <app-form-input label="Name" type="text" placeholder="{{model_type}} Name" [(value)]="model.name"></app-form-input>
+  <app-form-input label="Description" type="text" placeholder="{{model_type}} Description" [(value)]="model.description"></app-form-input>
 
-  <div class="form-input-container">
-    <label class="form-label" for="{{model_type}}-description-new">Description</label>
-    <input class="form-input" type="text" name="{{model_type}}-description-new" placeholder="{{model_type}} Description"
-      [(ngModel)]="model.description">
-  </div>
-  <button class="delete-button" type="submit">
+  <button class="action-button" type="submit">
     <fa-icon [icon]="faPlus"></fa-icon>
   </button>
 </div>

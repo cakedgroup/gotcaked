@@ -1,4 +1,4 @@
-<div class="settings-form-container">
+<div class="form-container">
   <div class="empty-div">
     <h1 class="form-title">Admin-Settings</h1>
 
@@ -7,29 +7,24 @@
       <h2 class="section-title">Categories</h2>
       <hr class="section-line">
       <!--List Current Categories -->
-      <div class="form-container" *ngFor="let category of categories;let index = index;">
-        <div class="form-input-container">
-          <label class="form-label" for="category-name-{{index}}">Name</label>
-          <input class="form-input" type="text" name="category-name-{{index}}" placeholder="Category Name"
-            [(ngModel)]="category.name" disabled="input">
-        </div>
-        <div class="form-input-container">
-          <label class="form-label" for="category-description-{{index}}">Description</label>
-          <input class="form-input" type="text" name="category-description-{{index}}" placeholder="Category Description"
-            [(ngModel)]="category.description">
-        </div>
+      <div class="settings-container" *ngFor="let category of categories;let index = index;">
+        <app-form-input label="Name" type="text" placeholder="Name" [disabled]="true" [(value)]="category.name">
+        </app-form-input>
+        <app-form-input label="Description" type="text" placeholder="Description" [(value)]="category.description">
+        </app-form-input>
+
         <div class="form-button-container">
-          <button class="delete-button" (click)="updateCategory(category)">
+          <button class="action-button" (click)="updateCategory(category)">
             <fa-icon [icon]="faCheckCircle"></fa-icon>
           </button>
-          <button class="delete-button" (click)="deleteCategory(category.name)">
+          <button class="action-button" (click)="deleteCategory(category.name)">
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
         </div>
       </div>
     </form>
     <!-- Add Category -->
-    <form class="form-container" (submit)="addCategoryHandler()">
+    <form class="settings-container" (submit)="addCategoryHandler()">
       <app-form-create-field [(model)]="tempCategory" model_type="Category"></app-form-create-field>
     </form>
 
@@ -42,10 +37,11 @@
     <h2 class="section-title">Tags</h2>
     <hr class="section-line">
     <!--Add new a Tag -->
-    <form (submit)="addTagHandler()">
+    <form class="settings-container" (submit)="addTagHandler()">
       <app-form-create-field [(model)]="tempTag" model_type="Tag"></app-form-create-field>
     </form>
-    <app-error-message class="center-text" *ngIf="this.failedTagRequest" [errorMessage]="this.failedErrorMessage"></app-error-message>
+    <app-error-message class="center-text" *ngIf="this.failedTagRequest" [errorMessage]="this.failedErrorMessage">
+    </app-error-message>
     <!--List Current Tags -->
     <app-tag-list [(tags)]="tags" (delete)="deleteTag($event.name)"></app-tag-list>
   </div>

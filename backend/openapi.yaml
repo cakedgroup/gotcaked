@@ -42,9 +42,12 @@ paths:
                     type: string
                   version:
                     type: string
+                  status:
+                    type: string
                 example:
                   message: Welcome to our backend!
                   version: v0.0.1
+                  status: /status
   /status:
     get:
       description: Returns a Basic Informations.
@@ -91,6 +94,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recipe'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - recipes
@@ -110,8 +119,18 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Recipe' 
-        '400':
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}:
     get:
       tags:
@@ -136,6 +155,10 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - recipes
@@ -159,10 +182,22 @@ paths:
       responses:
         '200':
           description: Recipe updated
-        '400':
-          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - recipes
@@ -182,6 +217,16 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}/comments:
     get:
       tags:
@@ -197,6 +242,22 @@ paths:
           schema:
             type: string
             format: uuid
+        - in: query
+          name: limit
+          required: false
+          description: Limit
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: offset
+          required: false
+          description: Offset
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
       responses:
         '200':
           description: Get Comments
@@ -204,6 +265,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+        '404':
+          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - recipes
@@ -231,8 +298,274 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Comment' 
-        '400':
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '404':
+          description: ID not found
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes/{id}/comments/{commentId}:
+    get:
+      tags:
+        - recipes
+      summary: Get a single Comment from a recipe
+      description: |
+        Simply returns one comment.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+        - in: path
+          name: commentId
+          required: true
+          description: Id of one specific comment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get Comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: ID not found
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - recipes
+      summary: Delete a single Comment from a recipe
+      description: |
+        Simply delete one comment.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+        - in: path
+          name: commentId
+          required: true
+          description: Id of one specific comment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes/{id}/picture:
+    patch:
+      tags:
+        - recipes
+      summary: Update a single recipe picture
+      description: |
+        Simply update one recipe picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+                  description: Picture to update
+      responses:
+        '200':
+          description: Recipe picture updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recipe ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - recipes
+      summary: Delete a single recipe picture
+      description: |
+        Simply delete one recipe picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+                schema:
+                  type: object
+                  properties:
+                    picture_uri:
+                      type: string
+                      format: uri
+                      description: Picture to delete
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: Recipe ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes/{id}/rating:
+    get:
+      tags:
+        - recipes
+      summary: Get a single recipe rating
+      description: |
+        Simply returns one recipe rating.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get recipe rating
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeRating'
+        '404':
+          description: Recipe ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - recipes
+      summary: Creates a new rating for a recipe
+      description: |
+        Creates new rating
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingCreate'
+      responses:
+        '204':
+          description: Recipe rating created
+        '422':
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '404':
+          description: Recipe ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes/{id}/ratingStatus:
+    get:
+      tags:
+        - recipes
+      summary: Get rating status of user on recipe
+      description: |
+        Simply returns rating status of user on recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get rating status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingStatus'
+        '404':
+          description: Recipe ID or Rating not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/random:
     get:
       tags:
@@ -240,6 +573,21 @@ paths:
       summary: Get a random recipe
       description: |
         Simply returns random recipe.
+      parameters:
+        - in: query
+          name: tag
+          required: false
+          description: Tag to filter
+          schema:
+            type: string
+            format: tag name
+        - in: query
+          name: category
+          required: false
+          description: Category to filter
+          schema:
+            type: string
+            format: category name
       responses:
         '200':
           description: Get recipe
@@ -249,6 +597,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /categories:
     get:
       tags:
@@ -265,6 +619,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - categories
@@ -284,9 +644,19 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Category' 
-        '400':
+        '422':
           description: 'invalid input, object invalid'
-  /categories/{id}:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /categories/{name}:
     get:
       tags:
         - categories
@@ -295,12 +665,11 @@ paths:
         Simply returns a specifc category.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific category
+          description: Name of one specific category
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: Get category
@@ -310,7 +679,11 @@ paths:
                 $ref: '#/components/schemas/Category'
         '404':
           description: ID not found
-    patch:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
       tags:
         - categories
       summary: Update a single category
@@ -333,10 +706,22 @@ paths:
       responses:
         '200':
           description: Category updated
-        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - categories
@@ -347,7 +732,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: Id of one specific category to update
+          description: Id of one specific category to delete
           schema:
             type: string
             format: uuid
@@ -355,21 +740,46 @@ paths:
         '204':
           description: Successfully deleted
         '404':
-          description: ID not found    
-  /categories/random:
-    get:
-      tags:
-        - categories
-      summary: Get a random category
-      description: |
-        Simply returns a random category.
-      responses:
-        '200':
-          description: Get random category
+          description: ID not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Category'  
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /categories/{name}/recipes:
+    get:
+      tags:
+       - categories
+      summary: Get all recipes from a specific category
+      description: |
+        Simply returns all recipes from a specific category.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: Name of one specific category
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /tags:
     get:
       tags:
@@ -386,6 +796,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tag'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - tags
@@ -405,9 +821,19 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Tag' 
-        '400':
-          description: 'invalid input, object invalid'    
-  /tags/{id}:
+        '422':
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tags/{name}:
     get:
       tags:
         - tags
@@ -416,12 +842,12 @@ paths:
         Simply returns a specifc tag.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific tag
+          description: Name of one specific tag
           schema:
             type: string
-            format: uuid
+            format: name
       responses:
         '200':
           description: Get tag
@@ -431,33 +857,10 @@ paths:
                 $ref: '#/components/schemas/Tag'
         '404':
           description: ID not found
-    patch:
-      tags:
-        - tags
-      summary: Update a single tag
-      description: |
-        Simply update a specific tag.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: Id of one specific tag to update
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Tag'
-        description: Tag to update (id must match id in path)
-      responses:
-        '200':
-          description: Tag updated
-        '400':
-          description: 'invalid input, object invalid'
-        '404':
-          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - tags
@@ -466,39 +869,56 @@ paths:
         Simply delete a specific tag.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific tag to update
+          description: Name of one specific tag to update
           schema:
             type: string
-            format: uuid
+            format: name
       responses:
         '204':
           description: Successfully deleted
         '404':
-          description: ID not found        
-  /tags/{id}/random:
-    get:
-      tags:
-        - tags
-      summary: Get a random tag
-      description: |
-        Simply returns a random tag.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: Id of one specific tag
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Get random tag
+          description: ID not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tag'
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tags/{name}/recipes:
+    get:
+      tags:
+        - tags
+      summary: Get all recipes from a specific tag
+      description: |
+        Simply returns all recipes from a specific tag.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: Name of one specific tag
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Tag not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users:
     get:
       description: |
@@ -515,6 +935,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - users
@@ -534,8 +960,18 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/User'  
-        '400':
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}:
     get:
       description: |
@@ -559,6 +995,12 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - users
@@ -582,10 +1024,22 @@ paths:
       responses:
         '200':
           description: User updated
-        '400':
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - users
@@ -605,6 +1059,16 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}/recipes:
     get:
       tags:
@@ -630,7 +1094,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Recipe' 
         '404':
-          description: ID of user not found               
+          description: ID of user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}/liked:
     get:
       tags:
@@ -656,33 +1124,86 @@ paths:
                 items:
                   $ref: '#/components/schemas/Recipe' 
         '404':
-          description: ID of user not found   
-  /users/{id}/list:
-    get:
+          description: ID of user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{id}/picture:
+    patch:
       tags:
-        - recipes
-      summary: Retrieves list of all saved recipes of a user.
+        - users
+      summary: Update a single user's picture
       description: |
-        Simply returns every saved recipe of a user.
+        Simply update one user's picture.
       parameters:
         - in: path
           name: id
           required: true
-          description: Id of user to get recipes from.
+          description: Id of one specific user to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+                  description: Picture
+              required:
+                - picture
+      responses:
+        '200':
+          description: User Picture updated
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - users
+      summary: Delete a single user's picture
+      description: |
+        Simply delete one user's picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to delete
           schema:
             type: string
             format: uuid
       responses:
-        '200':
-          description: List of all saved recipes
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Recipe' 
-        '404':
-          description: ID of user not found   
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /auth/login:
     post:
       summary: Returns a JWT Key
@@ -705,7 +1226,7 @@ paths:
                   $ref: '#/components/schemas/LoginJWT'   
         '404':
           description: 'User does not exist'
-        '400':
+        '422':
           description: 'invalid input, object invalid'
   /auth/logout:
     post:
@@ -728,7 +1249,7 @@ paths:
               schema:
                   $ref: '#/components/schemas/LogoutStatus'   
         '400':
-          description: 'invalid input, object invalid'
+          description: 'No JWT Key'
 components:
   schemas:
     Status:
@@ -738,6 +1259,8 @@ components:
         - userCount
         - recipeCount
         - commentsCount
+        - tagsCount
+        - categoriesCount
       properties:
         version:
           type: string
@@ -751,6 +1274,12 @@ components:
         commentsCount:
           type: integer
           example: 2
+        tagsCount:
+          type: integer
+          example: 5
+        categoriesCount:
+          type: integer
+          example: 3
     User:
       type: object
       required:
@@ -866,8 +1395,8 @@ components:
         preparation:
           type: string
           example: Go to the Kitchen...
-        raiting:
-          type: object
+        rating:
+          type: number
           properties:
             up:
               type: number
@@ -1003,3 +1532,68 @@ components:
         description:
           type: string
           example: Just cake
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: 'Resource not found'
+        status:
+          type: string
+          example: 'error'
+    InputError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                example: ''
+              msg:
+                type: string
+                example: 'Name is required'
+              param:
+                type: string
+                example: 'name'
+              location:
+                type: string
+                example: 'body'
+    RecipeRating:
+      type: object
+      required:
+        - rating
+      properties:
+        rating:
+          type: integer
+          format: int32
+          example: 23
+    RatingCreate:
+      type: object
+      required:
+        - vote
+      properties:
+        vote:
+          type: integer
+          format: int32
+          example: -1
+    RatingStatus:
+      type: object
+      required:
+        - status
+      properties:
+        user_id:
+          type: string
+          description: User 
+        recipe_id:
+          type: string
+          description: Recipe ID
+        rating:
+          type: number
+          description: Rating

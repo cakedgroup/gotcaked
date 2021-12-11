@@ -124,7 +124,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}Gh!\")\r",
 									"pm.globals.set(\"randomAdminPassword\", userPassword);"
 								],
 								"type": "text/javascript"
@@ -322,7 +322,7 @@
 							"script": {
 								"exec": [
 									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}Gh!\")\r",
 									"pm.globals.set(\"randomUser\", userName);\r",
 									"pm.globals.set(\"randomPassword\", userPassword);"
 								],
@@ -386,7 +386,7 @@
 							"script": {
 								"exec": [
 									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}Gh!\")\r",
 									"pm.globals.set(\"randomUser3\", userName);\r",
 									"pm.globals.set(\"randomPassword3\", userPassword);"
 								],
@@ -822,9 +822,9 @@
 									"var data = JSON.parse(responseBody);\r",
 									"\r",
 									"pm.test(\"Recieving Correct User\", function () {\r",
-									"    pm.expect(data.id).equal(pm.globals.get(\"userID\"));\r",
-									"    pm.expect(data.name).equal(pm.globals.get(\"randomUser\"));\r",
-									"    pm.expect(data.email).equal(pm.globals.get(\"randomUser\")+\"@gotcaked.eu\");\r",
+									"    pm.expect(data.id).equal(pm.globals.get(\"userID-3\"));\r",
+									"    pm.expect(data.name).equal(pm.globals.get(\"randomUser3\"));\r",
+									"    pm.expect(data.email).equal(pm.globals.get(\"randomUser3\")+\"@gotcaked.eu\");\r",
 									"}); "
 								],
 								"type": "text/javascript"
@@ -833,15 +833,22 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "jwt",
+								"value": "{{jwtToken-3}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "{{apiURL}}/users/{{userID}}",
+							"raw": "{{apiURL}}/users/{{userID-3}}",
 							"host": [
 								"{{apiURL}}"
 							],
 							"path": [
 								"users",
-								"{{userID}}"
+								"{{userID-3}}"
 							]
 						}
 					},

@@ -1,24 +1,24 @@
 <div class="menu-container" *ngIf="isLoggedOut()">
-  <a routerLink="/auth/login">Login</a> <br>
-  <a routerLink="/register">Register</a> <br>
-  <a routerLink="/about">About</a>
+  <a routerLink="/auth/login" class="menu-item">Login</a> <br>
+  <a routerLink="/register" class="menu-item">Register</a> <br>
+  <a routerLink="/about" class="menu-item">About</a>
 </div>
 
 <div class="menu-container" *ngIf="isAdmin()">
-  <a [routerLink]="['/user', userID]">Profile</a> <br>
-  <a routerLink="/recipe/upload">Upload Recipe</a> <br>
-  <a routerLink="/user/liked">Liked Recipes</a> <br>
-  <a routerLink="/settings">Settings</a> <br>
-  <a routerLink="/admin">AdminPanel</a> <br>
-  <a routerLink="/auth/logout">Logout</a> <br>
-  <a routerLink="/about">About</a>
+  <a [routerLink]="['/user', userID]" class="menu-item">Profile</a> <br>
+  <a routerLink="/recipe/upload" class="menu-item">Upload Recipe</a> <br>
+  <a routerLink="/user/liked" class="menu-item">Liked Recipes</a> <br>
+  <a routerLink="/settings" class="menu-item">Settings</a> <br>
+  <a routerLink="/admin" class="menu-item">AdminPanel</a> <br>
+  <a routerLink="/auth/logout" class="menu-item">Logout</a> <br>
+  <a routerLink="/about" class="menu-item">About</a>
 </div>
 
 <div class="menu-container" *ngIf="isLoggedIn()" ng-if>
-  <a [routerLink]="['/user', userID]">Profile</a> <br>
-  <a routerLink="/recipe/upload">Upload Recipe</a> <br>
-  <a routerLink="/user/liked">Liked Recipes</a> <br>
-  <a routerLink="/settings">Settings</a> <br>
-  <a routerLink="/auth/logout">Logout</a> <br>
-  <a routerLink="/about">About</a>
+  <a [routerLink]="['/user', userID]" class="menu-item">Profile</a> <br>
+  <a routerLink="/recipe/upload" class="menu-item">Upload Recipe</a> <br>
+  <a routerLink="/user/liked" class="menu-item">Liked Recipes</a> <br>
+  <a routerLink="/settings" class="menu-item">Settings</a> <br>
+  <a routerLink="/auth/logout" class="menu-item">Logout</a> <br>
+  <a routerLink="/about" class="menu-item">About</a>
 </div>

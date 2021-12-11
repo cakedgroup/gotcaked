@@ -1,6 +1,7 @@
 .header-box {
   width: 95%;
-  height: 110px;
+  min-height: 110px;
+  height: fit-content;
   margin-left: auto;
   margin-right: auto;
   margin-top: -10px;
@@ -11,13 +12,13 @@
 }
 
 .user-image {
-  width: 100px;
-  height: 100px;
+  width: 95px;
+  height: 95px;
   object-fit: cover;
   border-radius: 50%;
   margin: auto;
-  margin-left: 20px;
-  margin-top: 5px;
+  margin-left: 10px;
+  margin-top: 8px;
   float: left;
 }
 
@@ -27,22 +28,17 @@
   min-height: 100px;
   height: fit-content;
   display: inline-block;
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: -20px;
   margin-left: -100px;
 }
 
 @media (max-width: 700px) {
   .user-image {
-    margin: 20px;
-    margin-top: 5px;
     float: left;
   }
-
-  .header-title {
-    height: fit-content;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
+  .header-title{
+    margin-left: 2px;
   }
+
 }
