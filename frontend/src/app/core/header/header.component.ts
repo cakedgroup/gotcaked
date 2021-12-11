@@ -60,10 +60,8 @@ export class HeaderComponent implements OnInit {
           this.routeName = this.currentRoute.split('/tag/')[1];
         } else {
           this.routeType = 'recipe';
+          this.routeName = '';
         }
-
-        console.log(this.routeType);
-        console.log(this.routeName);
       }
     });
   }
