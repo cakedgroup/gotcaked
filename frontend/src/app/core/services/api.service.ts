@@ -100,6 +100,10 @@ export class ApiService {
     return this.http.get<Recipe[]>(`${this.baseUrl}/tags/${tagId}/recipes`);
   }
 
+  getRecipesByUser(userID: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/users/${userID}/recipes`);
+  }
+
   getRecipe(id: string): Observable<Recipe> {
     return this.http.get<Recipe>(`${this.baseUrl}/recipes/${id}`);
   }
