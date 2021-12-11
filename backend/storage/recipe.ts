@@ -1,3 +1,5 @@
+import { rejects } from 'assert';
+import { sqlite3 } from 'sqlite3';
 import { Ingredient, Rating, RatingCount, Recipe, RecipePicture } from '../models/recipe';
 import { sqlPager } from '../util/sql';
 import { generateUUID } from "../util/uuid";
@@ -28,21 +30,9 @@ export function getRecipe(id: string): Promise<Recipe> {
                 reject(err);
             } else {
                 if (row) {
-                    let recipe: Recipe = {
-                        id: row.id,
-                        name: row.name,
-                        description: row.description,
-                        preparation: row.preparation,
-                        createdAt: row.createdAt,
-                        difficulty: row.difficulty,
-                        time: row.time,
-                        category_name: row.category_name,
-                        user_id: row.user_id,
-                        tags: [],
-                        ingredients: [],
-                        picture_uri: []
-                    };
-                    resolve(recipe);
+                    convertRowToRecipe(row).then((recipe) => {
+                        resolve(recipe);
+                    });
                 } else {
                     reject(new Error("Recipe not found"));
                 }
@@ -69,21 +59,9 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
                 reject(err);
             } else {
                 if (row) {
-                    let recipe: Recipe = {
-                        id: row.id,
-                        name: row.name,
-                        description: row.description,
-                        preparation: row.preparation,
-                        createdAt: row.createdAt,
-                        difficulty: row.difficulty,
-                        time: row.time,
-                        category_name: row.category_name,
-                        user_id: row.user_id,
-                        tags: [],
-                        ingredients: [],
-                        picture_uri: []
-                    };
-                    resolve(recipe);
+                    convertRowToRecipe(row).then((recipe) => {
+                        resolve(recipe);
+                    });
                 } else {
                     reject(new Error("Recipe not found"));
                 }
@@ -99,25 +77,9 @@ export function getRecipesFromUser(userId: string): Promise<Recipe[]> {
                 reject(err);
             } else {
                 if (rows) {
-                    let recipes: Recipe[] = [];
-                    rows.forEach((row) => {
-                        let recipe: Recipe = {
-                            id: row.id,
-                            name: row.name,
-                            description: row.description,
-                            preparation: row.preparation,
-                            createdAt: row.createdAt,
-                            difficulty: row.difficulty,
-                            time: row.time,
-                            category_name: row.category_name,
-                            user_id: row.user_id,
-                            tags: [],
-                            ingredients: [],
-                            picture_uri: []
-                        };
-                        recipes.push(recipe);
+                    convertRowsToRecipes(rows).then((recipes) => {
+                        resolve(recipes);
                     });
-                    resolve(recipes);
                 } else {
                     reject(new Error("Recipe not found"));
                 }
@@ -133,25 +95,9 @@ export function getLikedRecipesFromUser(userId: string): Promise<Recipe[]> {
                 reject(err);
             } else {
                 if (rows) {
-                    let recipes: Recipe[] = [];
-                    rows.forEach((row) => {
-                        let recipe: Recipe = {
-                            id: row.id,
-                            name: row.name,
-                            description: row.description,
-                            preparation: row.preparation,
-                            createdAt: row.createdAt,
-                            difficulty: row.difficulty,
-                            time: row.time,
-                            category_name: row.category_name,
-                            user_id: row.user_id,
-                            tags: [],
-                            ingredients: [],
-                            picture_uri: []
-                        };
-                        recipes.push(recipe);
+                    convertRowsToRecipes(rows).then(recipes => {
+                        resolve(recipes);
                     });
-                    resolve(recipes);
                 } else {
                     reject(new Error("Recipe not found"));
                 }
@@ -169,31 +115,8 @@ export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
             if (err) {
                 reject(err);
             } else {
-                let recipes: Recipe[] = [];
-                let rowMapper = new Promise<Recipe[]>((resolve, reject) => {
-                    rows.forEach((row) => {
-                        let recipe: Recipe = {
-                            id: row.id,
-                            name: row.name,
-                            description: row.description,
-                            preparation: row.preparation,
-                            createdAt: row.createdAt,
-                            difficulty: row.difficulty,
-                            time: row.time,
-                            category_name: row.category_name,
-                            user_id: row.user_id,
-                            tags: [],
-                            ingredients: [],
-                            picture_uri: []
-                        };
-                        recipes.push(recipe);
-                    });
-                    resolve(recipes);
-                });
-                rowMapper.then((allRecipes) => {
+                convertRowsToRecipes(rows).then((allRecipes) => {
                     resolve(allRecipes);
-                }).catch((err) => {
-                    reject(err);
                 });
             }
         });
@@ -472,4 +395,36 @@ export function deleteAllPicturesFromRecipe(recipeId: string): Promise<void> {
             }
         });
     });
+}
+function convertRowToRecipe(row: any): Promise<Recipe> {
+    return new Promise((resolve, reject) => {
+        let recipe: Recipe = {
+            id: row.id,
+            name: row.name,
+            description: row.description,
+            preparation: row.preparation,
+            createdAt: row.createdAt,
+            difficulty: row.difficulty,
+            time: row.time,
+            category_name: row.category_name,
+            user_id: row.user_id,
+            tags: [],
+            ingredients: [],
+            picture_uri: []
+        };
+        resolve(recipe);
+    });
+}
+
+
+function convertRowsToRecipes(rows: any[]): Promise<Recipe[]> {
+    return new Promise<Recipe[]>((resolve, reject) => {
+        let recipes: Recipe[] = [];
+        rows.forEach((row) => {
+            convertRowToRecipe(row).then((recipe) => {
+                recipes.push(recipe);
+            });
+        });
+        resolve(recipes);
+    })
 }
