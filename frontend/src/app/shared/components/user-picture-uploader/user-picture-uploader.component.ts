@@ -12,7 +12,7 @@ export class UserPictureUploaderComponent implements OnInit {
   @Input() picture_uri: string;
   @Output() pictureChange = new EventEmitter<File>();
 
-  tempUploadedPicture: any = null;
+  tempUploadedPicture: string | ArrayBuffer = null;
   public readonly baseUrl = environment.baseServer;
 
   //Icons
@@ -33,6 +33,10 @@ export class UserPictureUploaderComponent implements OnInit {
     this.tempUploadedPicture = this.baseUrl + picture_uri;
   }
 
+  isPictureSet() {
+    return !this.tempUploadedPicture.toString().includes(undefined || null);
+  }
+
   setPicture(image: any) {
     const file = image.files[0];
     this.pictureChange.emit(file);
@@ -41,6 +45,7 @@ export class UserPictureUploaderComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = (event) => {
       this.tempUploadedPicture = event.target.result;
+      console.log(this.tempUploadedPicture);
     }
   }
 

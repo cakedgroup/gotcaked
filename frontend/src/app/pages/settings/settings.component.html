@@ -1,4 +1,4 @@
-<div class="settings-form-container">
+<div class="settings-form-container" *ngIf="user !== undefined">
   <div class="empty-div">
     <h1 class="form-title">User Settings</h1>
     <!-- Information Section -->
@@ -10,7 +10,7 @@
         <app-form-input class="flex-item-container" label="User-Email" [(value)]="user.email"></app-form-input>
         <app-form-input class="flex-item-container" label="User-Description" [(value)]="user.description">
         </app-form-input>
-        <app-user-picture-uploader class="flex-item-container picture-upload"></app-user-picture-uploader>
+        <app-user-picture-uploader class="flex-item-container picture-upload" [picture_uri]="user.picture_uri" (pictureChange)="pictureChangeHandler($event)"></app-user-picture-uploader>
       </div>
       <app-success-message class="message" *ngIf="success_info" [message]="this.successMessage"></app-success-message>
       <app-error-message class="message" *ngIf="error_info" [errorMessage]="this.errorMessage"></app-error-message>

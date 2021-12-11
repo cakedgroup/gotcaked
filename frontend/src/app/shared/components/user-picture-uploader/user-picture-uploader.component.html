@@ -1,9 +1,9 @@
 <div class="image-preview upload-file">
-  <img *ngIf="tempUploadedPicture === null; else noImage" [src]="tempUploadedPicture" alt="recipe" class="user-image">
+  <img *ngIf="isPictureSet() else noImage" [src]="tempUploadedPicture" alt="recipe" class="user-image">
 
   <label class="upload-button" for="file">
     <fa-icon [icon]="faUpload"></fa-icon>
-    Upload new Picture
+    Upload Picture
   </label>
   <input #file id="file" type="file" accept="image/*" (change)="setPicture(file)">
 </div>
@@ -11,5 +11,5 @@
 
 
 <ng-template #noImage>
-  <img class="user-image" src="https://avatars.githubusercontent.com/u/32310269?v=4" alt="Image">
+  <img class="user-image" src="assets/icons/user_icon.svg" alt="Image">
 </ng-template>

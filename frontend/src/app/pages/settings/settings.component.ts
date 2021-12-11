@@ -26,6 +26,8 @@ export class SettingsComponent implements OnInit {
     description: '',
     picture_uri: '',
   }
+  pictureFile: File = null;
+
   currentPassword: string = '';
   newPassword: string = '';
   repeatNewPassword: string = '';
@@ -47,7 +49,11 @@ export class SettingsComponent implements OnInit {
   //
   informationHandler() {
     this.updateUser();
+    this.updateUserPicture();
+  }
 
+  pictureChangeHandler(file: File) {
+    this.pictureFile = file;
   }
 
   passwordHandler() {
@@ -75,6 +81,18 @@ export class SettingsComponent implements OnInit {
         this.errorMessage = "Error updating User " + error.error.message;
       }
     );
+  }
+
+  updateUserPicture() {
+    if (this.pictureFile) {
+      this.apiService.uploadUserPicture(this.user.id, this.pictureFile).subscribe(user => {
+        this.successMessage = "Successfully updated Picture";
+        this.setSuccessInfo();
+      }, error => {
+        this.setErrorInfo();
+        this.errorMessage = "Error updating Picture " + error.error.message;
+      });
+    }
   }
 
   updatePassword() {
