@@ -15,6 +15,16 @@ button {
 }
 
 /*
+* Menu Styles
+*/
+.menu-item{
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  text-decoration: none;
+  color: black;
+}
+
+/*
 * Form Input Styles
 */
 .form-container{
