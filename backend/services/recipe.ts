@@ -83,7 +83,7 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
-export function getRandomRecipe(categoryId: string, tagId: string): Promise<Recipe> {
+export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
             //Get all ingredients

@@ -140,6 +140,18 @@ export class ApiService {
     return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": -1 }, { headers: this.authService.createAuthorizationHeader() });
   }
 
+  getRandomRecipe(): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`);
+  }
+
+  getRandomRecipeByCategory(categoryId: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`, { params: { category: categoryId } });
+  }
+
+  getRandomRecipeByTag(tagId: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`, { params: { tag: tagId } });
+  }
+
   //
   // Picture "Services"
   //
