@@ -1,6 +1,5 @@
 import * as bcrypt from "bcrypt";
 import fileUpload from 'express-fileupload';
-import { JWTContent } from "../models/auth";
 import { User, UserPublic } from "../models/user";
 import * as blacklistDAO from '../storage/blacklist';
 import * as statusDAO from "../storage/status";
@@ -8,7 +7,11 @@ import * as userDAO from "../storage/user";
 import * as fileHandler from '../util/fileHandler';
 import { userTransformer } from '../util/transformer';
 
-
+/**
+ * Create a new user
+ * @param user user to create
+ * @returns Promise with the created user
+ */
 export function createUser(user: User): Promise<UserPublic> {
   //Default Role
   user.role = "user";
@@ -31,6 +34,12 @@ export function createUser(user: User): Promise<UserPublic> {
   });
 }
 
+/**
+ * Get all users
+ * @param limit limit of users to get
+ * @param offset offset of users to get
+ * @returns Promise with the users
+ */
 export function getAllUsers(limit: number, offset: number): Promise<UserPublic[]> {
   return new Promise((resolve, reject) => {
     //Get All Users from DB
@@ -38,6 +47,11 @@ export function getAllUsers(limit: number, offset: number): Promise<UserPublic[]
   });
 }
 
+/**
+ * Get a user by id
+ * @param id id of the user to get
+ * @returns Promise with the user
+ */
 export function getUserById(id: string): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     //Get User from DB
@@ -45,6 +59,10 @@ export function getUserById(id: string): Promise<UserPublic> {
   });
 }
 
+/**
+ * Get a random user
+ * @returns Promise with the user
+ */
 export function getRandomUser(): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     //Get Random User from DB
@@ -52,6 +70,12 @@ export function getRandomUser(): Promise<UserPublic> {
   });
 }
 
+/**
+ * Update a user by id
+ * @param id id of the user to update
+ * @param newUser updated user
+ * @returns Promise with the updated user
+ */
 export function updateUser(id: string, newUser: User): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     userDAO.getUserById(id).then((user) => {
@@ -75,7 +99,13 @@ export function updateUser(id: string, newUser: User): Promise<UserPublic> {
   });
 }
 
-export function setPicture(userID: string, picture: fileUpload.UploadedFile): Promise<{}> {
+/**
+ * Set Profile Picture of a user
+ * @param userID user to set profile picture
+ * @param picture picture to set
+ * @returns Promise with the updated user
+ */
+export function setPicture(userID: string, picture: fileUpload.UploadedFile): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     userDAO.getUserById(userID).then((user) => {
       if (user.picture_uri !== null) {
@@ -94,7 +124,12 @@ export function setPicture(userID: string, picture: fileUpload.UploadedFile): Pr
   });
 }
 
-export function deletePicture(userID: string): Promise<{}> {
+/**
+ * Delete a profile picture of a user
+ * @param userID user to delete profile picture
+ * @returns User with no profile picture
+ */
+export function deletePicture(userID: string): Promise<UserPublic> {
   return new Promise((resolve, reject) => {
     userDAO.getUserById(userID).then((user) => {
       if (user.picture_uri !== null) {
@@ -114,8 +149,14 @@ export function deletePicture(userID: string): Promise<{}> {
   });
 }
 
-
-export function deleteUser(id: string, blockJWT: boolean, jwtToken?: string): Promise<boolean> {
+/**
+ * Delete a user by id
+ * @param id id of the user to delete
+ * @param blockJWT should the JWT be blocked
+ * @param jwtToken jwt of the user
+ * @returns empty Promise
+ */
+export function deleteUser(id: string, blockJWT: boolean, jwtToken?: string): Promise<void> {
   return new Promise((resolve, reject) => {
     //Check if User exists
     userDAO.getUserById(id).then(user => {
@@ -135,7 +176,7 @@ export function deleteUser(id: string, blockJWT: boolean, jwtToken?: string): Pr
               blacklistDAO.addJWTToBlacklist(jwtToken);
             }
 
-            resolve(true)
+            resolve()
           }).catch(() => reject(new Error("Error Deleting User")));
         }
       } else {

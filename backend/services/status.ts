@@ -2,6 +2,10 @@
 import { getCounterTable } from "../storage/status";
 import { getVersion } from "../util/version";
 
+/**
+ * Get the status of the server. (e.g. version, userCount, recipeCount etc.)
+ * @returns Promise with the status of the server
+ */
 export function getCurrentStatus(): Promise<any> {
     let tables = ["user", "recipe", "tag"];
     return new Promise((resolve, reject) => {

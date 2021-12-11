@@ -8,7 +8,11 @@ import * as tagDAO from '../storage/tag';
 import * as fileHandler from '../util/fileHandler';
 import { generateUUID } from '../util/uuid';
 
-
+/**
+ * Create new recipe
+ * @param recipe recipe to create
+ * @returns Promise with created recipe
+ */
 export function createRecipe(recipe: Recipe): Promise<Recipe> {
     recipe.id = generateUUID();
     recipe.createdAt = new Date();
@@ -33,6 +37,11 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
     });
 }
 
+/**
+ * Get recipe by id
+ * @param recipeID id of recipe
+ * @returns Promise with recipe
+ */
 export function getRecipe(recipeID: string): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         recipeDAO.getRecipe(recipeID).then(recipe => {
@@ -67,6 +76,12 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
+/**
+ * Get random recipes
+ * @param categoryId category to filter recipes
+ * @param tagId tag to filter recipes
+ * @returns Promise with random recipe
+ */
 export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<RecipeSmall> {
     return new Promise<RecipeSmall>((resolve, reject) => {
         recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
@@ -104,6 +119,13 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
     });
 }
 
+
+/**
+ * Get all recipes
+ * @param limit limit of recipes to return
+ * @param offset offset of recipes to return
+ * @returns Promise with all recipes
+ */
 export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipes(limit, offset).then(recipes => {
@@ -119,6 +141,11 @@ export function getAllRecipes(limit: number, offset: number): Promise<RecipeSmal
     });
 }
 
+/**
+ * Get all recipes from user
+ * @param userID user id of recipe author
+ * @returns Promise with all recipes from user
+ */
 export function getRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getRecipesFromUser(userID).then(recipes => {
@@ -134,6 +161,11 @@ export function getRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
     });
 }
 
+/**
+ * Get all liked recipes of user
+ * @param userID user id of user
+ * @returns Promise with all liked recipes
+ */
 export function getLikedRecipesFromUser(userID: string): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         recipeDAO.getLikedRecipesFromUser(userID).then(recipes => {
@@ -149,6 +181,11 @@ export function getLikedRecipesFromUser(userID: string): Promise<RecipeSmall[]> 
     });
 }
 
+/**
+ * Delete recipe by id
+ * @param recipeID recipe id to delete
+ * @returns empty promise
+ */
 export function deleteRecipe(recipeID: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Check if recipe exists
@@ -179,7 +216,11 @@ export function deleteRecipe(recipeID: string): Promise<void> {
     });
 }
 
-
+/**
+ * Delete all pictures from recipe
+ * @param recipeID 
+ * @returns empty promise
+ */
 function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Get all pictures and delete them on the file system and db
@@ -195,6 +236,12 @@ function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
     });
 }
 
+/**
+ * Update recipe by id
+ * @param recipeID id of recipe to update
+ * @param updatedRecipe updated recipe
+ * @returns Promise with updated recipe
+ */
 export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         //Check if category exits
@@ -240,6 +287,12 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
     });
 }
 
+/**
+ * Add picture to recipe
+ * @param recipeID recipe id to add picture to
+ * @param picture picture to add
+ * @returns empty promise
+ */
 export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): Promise<{}> {
     return new Promise<{}>((resolve, reject) => {
         //Check if recipe exists
@@ -265,6 +318,12 @@ export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): 
     );
 }
 
+/**
+ * Delete picture from recipe
+ * @param recipeID recipe id to delete picture from
+ * @param pictureID picture id to delete
+ * @returns empty promise
+ */
 export function deletePicture(recipeID: string, pictureID: string): Promise<{}> {
     return new Promise<{}>((resolve, reject) => {
         //Check if recipe exists
@@ -301,6 +360,11 @@ export function deletePicture(recipeID: string, pictureID: string): Promise<{}> 
     });
 }
 
+/**
+ * Create rating for recipe
+ * @param rating Rating with recipe id and user id
+ * @returns empty promise
+ */
 export function rateRecipe(rating: Rating): Promise<void> {
     rating.vote > 0 ? rating.vote = 1 : rating.vote = -1;
 
@@ -333,6 +397,12 @@ export function rateRecipe(rating: Rating): Promise<void> {
     });
 }
 
+/**
+ * Get rating of user for recipe
+ * @param user_id 
+ * @param recipe_id 
+ * @returns Promise with rating
+ */
 export function getRatingFromUser(user_id: string, recipe_id: string): Promise<Rating> {
     return new Promise<Rating>((resolve, reject) => {
         recipeDAO.getUserRecipeRating(user_id, recipe_id).then((rating) => {
@@ -343,6 +413,11 @@ export function getRatingFromUser(user_id: string, recipe_id: string): Promise<R
     });
 }
 
+/**
+ * Get total rating of recipe
+ * @param recipe_id 
+ * @returns Promise with total rating
+ */
 export function getRecipeRating(recipe_id: string): Promise<RatingCount> {
     return new Promise<RatingCount>((resolve, reject) => {
         recipeDAO.getRecipe(recipe_id).then((recipe) => {
@@ -361,6 +436,13 @@ export function getRecipeRating(recipe_id: string): Promise<RatingCount> {
     });
 }
 
+/**
+ * Get all recipes with category
+ * @param name category name
+ * @param limit limit of recipes
+ * @param offset offset of recipes
+ * @returns Promise with recipes
+ */
 export function getRecipesByCategory(name: string, limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         categoryDAO.getCategory(name).then(category => {
@@ -382,6 +464,13 @@ export function getRecipesByCategory(name: string, limit: number, offset: number
     });
 }
 
+/**
+ * Get all recipes with tag
+ * @param name tag name
+ * @param limit limit of recipes
+ * @param offset offset of recipes
+ * @returns Promise with recipes
+ */
 export function getRecipesByTag(name: string, limit: number, offset: number): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>((resolve, reject) => {
         tagDAO.getTag(name).then((tag) => {
@@ -403,6 +492,11 @@ export function getRecipesByTag(name: string, limit: number, offset: number): Pr
     });
 }
 
+/**
+ * Convert recipe to recipe small
+ * @param recipes Recipes to convert
+ * @returns Promise with converted recipes
+ */
 function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
     return new Promise<RecipeSmall[]>(async (resolve, reject) => {
         let allRecipes: RecipeSmall[] = [];
@@ -443,6 +537,12 @@ function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
     });
 }
 
+/**
+ * Add/Create all tags and add them to recipe
+ * @param recipeId recipe id
+ * @param tags tags to add
+ * @returns empty promise
+ */
 function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Create all tags and add them to recipe
@@ -465,6 +565,12 @@ function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
     });
 }
 
+/**
+ * Create all ingredients and add them to recipe
+ * @param recipeId recipe id
+ * @param ingredients ingredients to add
+ * @returns empty promise
+ */
 function createAllIngredients(recipeId: string, ingredients: Ingredient[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Create all ingredients
