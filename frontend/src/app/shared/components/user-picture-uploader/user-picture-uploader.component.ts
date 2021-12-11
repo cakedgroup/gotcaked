@@ -45,7 +45,6 @@ export class UserPictureUploaderComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = (event) => {
       this.tempUploadedPicture = event.target.result;
-      console.log(this.tempUploadedPicture);
     }
   }
 
