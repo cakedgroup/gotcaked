@@ -1,10 +1,6 @@
-.settings-form-container {
-  background-color: var(--secondary-background-color);
-  border-radius: 1em;
-  margin: 0 auto;
-  padding: 3em;
-  padding-bottom: 5em;
-  width: fit-content;
+.settings-container {
+  display: flex;
+  flex-wrap: row wrap;
 }
 
 .empty-div {
@@ -12,64 +8,8 @@
   margin-top: 20px;
 }
 
-.form-container {
-  display: flex;
-  flex-wrap: row wrap;
-}
-
-.form-input-container {
-  margin-right: 1em;
-  margin-bottom: 1em;
-}
-
-.form-title {
-  font-family: "Darker Grotesque", sans-serif;
-  text-align: center;
-  font-size: 32pt;
-  margin-top: -60px;
-}
-
-.section-title {
-  font-family: "Darker Grotesque", sans-serif;
-  text-align: left;
-  font-size: 24pt;
-}
-
-.section-line {
-  margin-top: -25px;
-  width: 100%;
-  border: 0.5px solid;
-  color: teal;
-}
-
-.form-label {
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 16pt;
-}
-
-.form-input {
-  background-color: var(--primary-background-color);
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 14pt;
-  border-style: solid;
-  width: 100%;
-  height: 30px;
-  border-radius: 10px;
-  margin-top: 5px;
-}
-
-.delete-button {
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 14pt;
-  background-color: var(--primary-color);
-  border-style: solid;
-  border-radius: 50px;
-  padding: 3px 20px;
-  min-width: max-content;
+.action-button {
   height: 40px;
-  margin-top: 32px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .tag-container {
@@ -113,11 +53,11 @@
   .form-input {
     width: 105%;
   }
-  .delete-button {
+  .action-button {
     max-width: min-content;
     margin: auto;
   }
-  .form-container {
+  .settings-container {
     flex-direction: column;
   }
   .tag-container {

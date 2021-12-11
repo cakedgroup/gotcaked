@@ -1,44 +1,20 @@
 <div class="recipe-information-container">
-  <div class="flex-item-container">
-    <div class="form-input-container">
-      <label class="form-label" for="recipe-name">Name</label>
-      <input class="form-input" type="text" name="recipe-name" placeholder="Recipe Name" [(ngModel)]="recipe.name">
-    </div>
-  </div>
+  <app-form-input class="flex-item-container" type="text" label="Name" placeholder="Grandmas best Cheesecake" [(value)]="recipe.name"> </app-form-input>
 
-  <div class="flex-item-container">
-    <div class="form-input-container">
-      <label class="form-label" for="recipe-description">Description</label>
-      <input class="form-input" type="text" name="recipe-description" placeholder="Recipe Description"
-        [(ngModel)]="recipe.description">
-    </div>
-  </div>
+  <app-form-input class="flex-item-container" type="text" label="Description" placeholder="My nice recipe I want to share" [(value)]="recipe.description">
+  </app-form-input>
 
-  <div class="flex-item-container">
-    <div class="form-input-container">
-      <label class="form-label" for="recipe-preparation">Preparation</label>
-      <textarea class="text-input" type="text" name="recipe-preparation" placeholder="Recipe Preparation"
-        [(ngModel)]="recipe.preparation"></textarea>
-    </div>
-  </div>
+  <app-form-input-textarea class="flex-item-container" label="Preparation" [(value)]="recipe.preparation">
+  </app-form-input-textarea>
 
-  <div class="flex-item-container">
-    <div class="form-input-container">
-      <label class="form-label" for="recipe-difficulty">Difficulty</label>
-      <input class="form-input" type="text" name="recipe-difficulty" placeholder="Recipe Difficulty"
-        [(ngModel)]="recipe.difficulty">
-    </div>
-  </div>
+  <app-form-input class="flex-item-container" type="text" label="Difficulty" placeholder="Easy" [(value)]="recipe.difficulty">
+  </app-form-input>
 
-  <div class="flex-item-container">
-    <div class="form-input-container">
-      <label class="form-label" for="recipe-time">Time</label>
-      <input class="form-input" type="number" name="recipe-time" placeholder="Recipe Time" [(ngModel)]="recipe.time">
-    </div>
-  </div>
+  <app-form-input class="flex-item-container" type="number" label="Time" placeholder="Time in minutes" [(value)]="recipe.time"> </app-form-input>
 
   <app-category-selector class="flex-item-container" [(category_id)]="recipe.category_id">
   </app-category-selector>
+
   <app-ingredients-table-input class="flex-item-container ingredients" [(ingredients)]="recipe.ingredients">
   </app-ingredients-table-input>
 </div>

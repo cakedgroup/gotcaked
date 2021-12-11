@@ -37,7 +37,7 @@ function createTables() {
         name TEXT NOT NULL,
         description TEXT,
         picture_uri TEXT,
-        email TEXT,
+        email TEXT UNIQUE NOT NULL,
         role TEXT,
         password TEXT);`, (err) => {
         if (err) {

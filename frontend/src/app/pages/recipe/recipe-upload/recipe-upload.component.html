@@ -1,8 +1,8 @@
-<div class="upload-form-container">
+<div class="form-container">
   <div class="empty-div">
     <h1 class="form-title">Upload Recipe</h1>
     <!-- Recipe Section -->
-    <form class="form-container">
+    <form>
       <!--- Title, Description, Ingredients, etc --->
       <h2 class="section-title">Basic Information</h2>
       <hr class="section-line">
@@ -20,9 +20,9 @@
       <hr class="section-line">
       <!--- Upload Pictures -->
       <app-picture-uploader [(pictures)]="pictureFiles"></app-picture-uploader>
-      <app-error-message class="message" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
-      <app-success-message class="message" *ngIf="success" [message]="this.successMessage"></app-success-message>
-      <button class="submit-button" type="button" (click)="createRecipeHandler()">Create Recipe</button>
+      <app-error-message class="center-message" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
+      <app-success-message class="center-message" *ngIf="success" [message]="this.successMessage"></app-success-message>
+      <button class="action-button" type="button" (click)="createRecipeHandler()">Create Recipe</button>
     </form>
   </div>
 </div>

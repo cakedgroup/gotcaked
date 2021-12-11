@@ -1,0 +1,5 @@
+<div class="form-input-container">
+  <label class="form-label" for="form-{{label}}">{{label}}</label>
+  <textarea class="text-input" name="form-{{label}}" placeholder="{{label}}" [(ngModel)]="value"
+    (ngModelChange)="onChange($event)"></textarea>
+</div>

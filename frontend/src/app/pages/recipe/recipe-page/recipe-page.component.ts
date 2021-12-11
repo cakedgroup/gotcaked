@@ -67,9 +67,11 @@ export class RecipePageComponent implements OnInit {
       this.isUser = true;
       this.getRatingStatus();
     }
-    this.authService.getUser().subscribe(user => {
-      this.isAuthorized = user.id === this.recipe.user_id;
-    });
+    if (this._isAdmin.canActivate() || this._isLoggedIn.canActivate()) {
+      this.authService.getUser().subscribe(user => {
+        this.isAuthorized = user.id === this.recipe.user_id;
+      });
+    }
   }
 
 

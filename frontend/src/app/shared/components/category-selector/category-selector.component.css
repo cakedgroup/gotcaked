@@ -1,31 +1,16 @@
-.form-input-container {
-  margin-right: 1em;
-  margin-bottom: 1em;
-}
-
-.form-label {
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 16pt;
-}
-
-.list-text{
+.list-text {
   font-family: "Darker Grotesque", sans-serif;
   font-size: 12pt;
 }
 
 .form-input {
-  background-color: var(--primary-background-color);
-  font-family: "Darker Grotesque", sans-serif;
-  font-size: 14pt;
-  border-style: solid;
   width: 102%;
   height: 36px;
-  border-radius: 10px;
-  margin-top: 5px;
 }
 
 @media (max-width: 600px) {
-  .form-input {
-    width: 110%;
+  .form-input{
+    width: 109%;
   }
 }
+

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../../models/category.model';
 import { ApiService } from '../services/api.service';
 import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -9,19 +11,22 @@ import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } fro
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  public readonly baseUrl = environment.baseServer;
   categories: Category[];
+  userPicture: string = null;
   currentRoute: string = null;
   routeType: string = null;
   routeName: string = null;
   showUserMenu: boolean = false;
   showCategoryMenu: boolean = false;
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private authService: AuthService, private apiService: ApiService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.getCategories();
     this.getCurrentRoute();
+    this.getUserPicture();
   }
 
   getCategories() {
@@ -29,6 +34,16 @@ export class HeaderComponent implements OnInit {
       (data: Category[]) => {
         this.categories = data;
       });
+  }
+
+  getUserPicture() {
+    this.authService.getUser().subscribe(user => {
+      if (user){
+        this.apiService.getUser(user.id).subscribe(user => {
+          this.userPicture = user.picture_uri;
+        });
+      }
+    });
   }
 
   disableUserMenu() {

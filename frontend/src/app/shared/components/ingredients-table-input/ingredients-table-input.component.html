@@ -10,13 +10,13 @@
   <tbody>
     <tr *ngFor="let ingredient of ingredients; let i = index">
       <td>
-        <input class="form-input" type="text" [(ngModel)]="ingredient.name" />
+        <input class="form-input" type="text" placeholder="Apple" [(ngModel)]="ingredient.name" />
       </td>
       <td>
-        <input class="form-input" type="number" [(ngModel)]="ingredient.amount" />
+        <input class="form-input" type="number" placeholder=2 [(ngModel)]="ingredient.amount" />
       </td>
       <td>
-        <input class="form-input" type="text" [(ngModel)]="ingredient.unit" />
+        <input class="form-input" type="text" placeholder="pcs" [(ngModel)]="ingredient.unit" />
       </td>
       <td>
         <button class="action-button" (click)="deleteIngredient(i)" type="button">
@@ -26,13 +26,13 @@
     </tr>
     <tr>
       <td>
-        <input class="form-input" type="text" [(ngModel)]="tempIngredient.name" />
+        <input class="form-input" type="text" placeholder="Apple" [(ngModel)]="tempIngredient.name" />
       </td>
       <td>
-        <input class="form-input" type="number" [(ngModel)]="tempIngredient.amount" />
+        <input class="form-input" type="number" placeholder=2  [(ngModel)]="tempIngredient.amount" />
       </td>
       <td>
-        <input class="form-input" type="text" [(ngModel)]="tempIngredient.unit" />
+        <input class="form-input" type="text" placeholder="pcs" [(ngModel)]="tempIngredient.unit" />
       </td>
       <td>
         <button class="action-button" (click)="addIngredient()" type="button">
