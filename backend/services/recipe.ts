@@ -171,17 +171,22 @@ export function deleteRecipe(recipeID: string): Promise<void> {
         recipeDAO.getRecipe(recipeID).then(recipe => {
             if (recipe) {
                 //TODO Delete all ratings
-                Promise.all([commentDAO.deleteAllComments(recipeID), recipeDAO.deleteAllIngredients(recipeID), deleteAllPicturesFromRecipe(recipeID)]).then(() => {
-                    //Delete Recipe
-                    recipeDAO.deleteRecipe(recipeID).then(() => {
-                        resolve();
+                Promise.all([
+                    commentDAO.deleteAllComments(recipeID),
+                    recipeDAO.deleteAllIngredients(recipeID),
+                    deleteAllPicturesFromRecipe(recipeID),
+                    recipeDAO.deleteAllRatingsFromRecipe(recipeID),
+                    tagDAO.deleteRecipeTagByRecipeId(recipeID)]).then(() => {
+                        //Delete Recipe
+                        recipeDAO.deleteRecipe(recipeID).then(() => {
+                            resolve();
+                        }).catch(err => {
+                            reject(err);
+                        });
+
                     }).catch(err => {
                         reject(err);
                     });
-
-                }).catch(err => {
-                    reject(err);
-                });
             } else {
                 reject(new Error('Recipe does not exist'));
             }
