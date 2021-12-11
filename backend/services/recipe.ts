@@ -1,5 +1,5 @@
 import fileUpload from 'express-fileupload';
-import { Rating, RatingCount, Recipe, RecipeSmall } from '../models/recipe';
+import { Ingredient, Rating, RatingCount, Recipe, RecipeSmall } from '../models/recipe';
 import { Tag } from '../models/tag';
 import * as categoryDAO from '../storage/category';
 import * as commentDAO from '../storage/comment';
@@ -18,16 +18,7 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
         categoryDAO.getCategory(recipe.category_id).then((category) => {
             if (category) {
                 recipeDAO.createRecipe(recipe).then(recipe => {
-                    //Create all ingredients
-                    recipe.ingredients.forEach(ingredient => {
-                        ingredient.id = generateUUID();
-                        ingredient.recipe_id = recipe.id;
-                        //Create ingredient
-                        recipeDAO.createIngredient(ingredient).catch(err => {
-                            reject(err);
-                        });
-                    });
-                    addTagsToRecipe(recipe.id, recipe.tags).then(() => {
+                    Promise.all([createAllIngredients(recipe.id, recipe.ingredients), addTagsToRecipe(recipe.id, recipe.tags)]).then(() => {
                         resolve(recipe);
                     }).catch(err => {
                         reject(err);
@@ -224,18 +215,10 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
 
                         //Update recipe
                         recipeDAO.updateRecipe(recipe).then(recipe => {
-                            //Delete all ingredients //TODO Filter for changed ingredients
+                            //Delete all ingredients
                             recipeDAO.deleteAllIngredients(recipeID).then(() => {
-                                //Create all ingredients
-                                recipe.ingredients.forEach(ingredient => {
-                                    ingredient.id = generateUUID();
-                                    ingredient.recipe_id = recipe.id;
-                                    //Create ingredient
-                                    recipeDAO.createIngredient(ingredient).catch(err => {
-                                        reject(err);
-                                    });
-                                });
-                                addTagsToRecipe(recipeID, recipe.tags).then(() => {
+                                //Create new ingredients and create Tags and add them
+                                Promise.all([createAllIngredients(recipeID, recipe.ingredients), addTagsToRecipe(recipeID, recipe.tags)]).then(() => {
                                     resolve(recipe);
                                 }).catch(err => {
                                     reject(err);
@@ -476,6 +459,21 @@ function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
                         });
                     }
                 });
+            });
+        });
+        resolve();
+    });
+}
+
+function createAllIngredients(recipeId: string, ingredients: Ingredient[]): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        //Create all ingredients
+        ingredients.forEach(ingredient => {
+            ingredient.id = generateUUID();
+            ingredient.recipe_id = recipeId;
+            //Create ingredient
+            recipeDAO.createIngredient(ingredient).catch(err => {
+                reject(err);
             });
         });
         resolve();
