@@ -12,7 +12,7 @@
     </div>
 
     <img src="/assets/icons/dice_icon.svg" alt="dice-icon" class="dice-icon" routerLink="/random/{{routeType}}/{{routeName}}">
-    <img src="/assets/icons/user_icon.svg" alt="user-icon" class="user-icon" >
+    <img *ngIf="userPicture; else noImage" src="{{this.baseUrl + userPicture}}" alt="user-icon" class="user-icon" >
   </div>
 
 </div>
@@ -24,3 +24,7 @@
 <div (mouseleave)="disableCategoryMenu()" (mouseenter)="enableCategoryMenu()" class="category-menu-hitbox">
   <app-category-menu *ngIf="showCategoryMenu" [categories]="this.categories"></app-category-menu>
 </div>
+
+<ng-template #noImage>
+  <img class="user-dummy-icon" src="/assets/icons/user_icon.svg" alt="Image">
+</ng-template>
