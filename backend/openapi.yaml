@@ -705,7 +705,7 @@ paths:
                   $ref: '#/components/schemas/LoginJWT'   
         '404':
           description: 'User does not exist'
-        '400':
+        '422':
           description: 'invalid input, object invalid'
   /auth/logout:
     post:
@@ -728,7 +728,7 @@ paths:
               schema:
                   $ref: '#/components/schemas/LogoutStatus'   
         '400':
-          description: 'invalid input, object invalid'
+          description: 'No JWT Key'
 components:
   schemas:
     Status:
