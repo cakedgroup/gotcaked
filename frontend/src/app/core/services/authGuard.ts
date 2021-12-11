@@ -23,7 +23,6 @@ export class isLoggedIn implements CanActivate {
       if (token !== null && token !== undefined && token !== "" && token !== "null") {
         this.isLoggedIn = true;
       } else {
-        this.router.navigate(['/auth/login']);
         this.isLoggedIn = false;
       }
     });

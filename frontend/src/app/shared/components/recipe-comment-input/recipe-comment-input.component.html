@@ -1,0 +1,8 @@
+<div class="comment-create-container">
+  <textarea class="text-input" type="text" name="comment" placeholder="Enter a comment..."
+    [(ngModel)]="commentMessage"></textarea>
+  <button class="delete-button" type="button" (click)="createComment()">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+</div>
+<app-error-message *ngIf="error" [errorMessage]="errorMessage"></app-error-message>
