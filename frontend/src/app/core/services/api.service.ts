@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
-import { Rating, Recipe } from 'src/app/models/recipe.model';
+import { Rating, Recipe, UserRating } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -138,6 +138,10 @@ export class ApiService {
 
   getRecipeRating(recipeID: string): Observable<Rating> {
     return this.http.get<Rating>(`${this.baseUrl}/recipes/${recipeID}/rating`);
+  }
+
+  getUserRatingStatus(recipeID: string): Observable<UserRating> {
+    return this.http.get<UserRating>(`${this.baseUrl}/recipes/${recipeID}/ratingStatus`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   upVoteRecipe(recipeID: string): Observable<Recipe> {

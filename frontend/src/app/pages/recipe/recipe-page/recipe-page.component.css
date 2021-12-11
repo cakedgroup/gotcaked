@@ -69,13 +69,16 @@
   font-size: 14pt;
 }
 
-.recipe-interaction-button{
+.recipe-interaction-button {
   margin: 10px;
   padding: 10px 20px;
   background-color: var(--secondary-color);
   border-radius: 1em;
   font-size: 14pt;
   border: none;
+}
+.recipe-interaction-button-selected {
+  border: 2px solid black;
 }
 
 .comment-text {
@@ -85,7 +88,7 @@
   word-break: break-all;
 }
 
-.recipe-text{
+.recipe-text {
   font-size: 16pt;
 }
 

@@ -32,3 +32,9 @@ export interface RecipeCreate {
 export interface Rating {
   rating: Number | null;
 }
+
+export interface UserRating {
+  user_id: string;
+  recipe_id: string;
+  vote: Number;
+}
