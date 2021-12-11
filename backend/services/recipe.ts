@@ -19,7 +19,7 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
 
     return new Promise<Recipe>((resolve, reject) => {
         //Check if category exits
-        categoryDAO.getCategory(recipe.category_id).then((category) => {
+        categoryDAO.getCategory(recipe.category_name).then((category) => {
             if (category) {
                 recipeDAO.createRecipe(recipe).then(recipe => {
                     Promise.all([createAllIngredients(recipe.id, recipe.ingredients), addTagsToRecipe(recipe.id, recipe.tags)]).then(() => {
@@ -245,7 +245,7 @@ function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
 export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         //Check if category exits
-        categoryDAO.getCategory(updatedRecipe.category_id).then((category) => {
+        categoryDAO.getCategory(updatedRecipe.category_name).then((category) => {
             if (category) {
                 //Get current Recipe
                 recipeDAO.getRecipe(recipeID).then(recipe => {
@@ -255,7 +255,7 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                         recipe.description = updatedRecipe.description || recipe.description;
                         recipe.difficulty = updatedRecipe.difficulty || recipe.difficulty;
                         recipe.time = updatedRecipe.time || recipe.time;
-                        recipe.category_id = updatedRecipe.category_id || recipe.category_id;
+                        recipe.category_name = updatedRecipe.category_name || recipe.category_name;
                         recipe.ingredients = updatedRecipe.ingredients || recipe.ingredients;
                         recipe.tags = updatedRecipe.tags || recipe.tags;
                         recipe.preparation = updatedRecipe.preparation || recipe.preparation;
@@ -518,7 +518,7 @@ function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
                             createdAt: recipe.createdAt,
                             difficulty: recipe.difficulty,
                             time: recipe.time,
-                            category_id: recipe.category_id,
+                            category_name: recipe.category_name,
                             user_id: recipe.user_id,
                             rating: rating.rating || 0
                         };

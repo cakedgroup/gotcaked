@@ -11,7 +11,7 @@ export interface Recipe {
   createdAt: Date;
   time: Number;
   difficulty: string;
-  category_id: string;
+  category_name: string;
   user_id: string;
   picture_uri: string[];
   rating: Number;
@@ -25,7 +25,7 @@ export interface RecipeCreate {
   preparation: string;
   time: Number;
   difficulty: string;
-  category_id: string;
+  category_name: string;
   picture_uri: string[];
 }
 

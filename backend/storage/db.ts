@@ -37,7 +37,7 @@ function createTables() {
         name TEXT NOT NULL,
         description TEXT,
         picture_uri TEXT,
-        email TEXT,
+        email TEXT UNIQUE NOT NULL,
         role TEXT,
         password TEXT);`, (err) => {
         if (err) {
@@ -55,9 +55,9 @@ function createTables() {
         createdAt DATE,
         difficulty TEXT,
         time NUMBER,
-        category_id VARCHAR(36) NOT NULL,
+        category_name VARCHAR(36) NOT NULL,
         user_id VARCHAR(36) NOT NULL,
-        FOREIGN KEY (category_id) REFERENCES category(name),
+        FOREIGN KEY (category_name) REFERENCES category(name),
         FOREIGN KEY (user_id) REFERENCES user(id));`, (err) => {
         if (err) {
             console.error(err.message);

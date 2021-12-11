@@ -10,7 +10,7 @@ export const recipeValidationChain = [
     body("preparation").isString().withMessage("Preparation must be a string").isLength({ min: 1 }).withMessage("Preparation is required"),
     body("difficulty").isString().withMessage("Difficulty must be a string").isLength({ min: 1 }).withMessage("Difficulty is required"),
     body("time").isNumeric().withMessage("Time must be numeric"),
-    body("category_id").isString().withMessage("Category_Id must be a string").isLength({ min: 1 }).withMessage("Category is required")
+    body("category_name").isString().withMessage("Category_name must be a string").isLength({ min: 1 }).withMessage("Category is required")
 ];
 export const recipeUpdateValidationChain = [
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long"),
@@ -19,7 +19,7 @@ export const recipeUpdateValidationChain = [
     body("preparation").optional().isString().withMessage("Preparation must be a string").isLength({ min: 1 }).withMessage("Preparation must be at least 1 character long"),
     body("difficulty").optional().isString().withMessage("Difficulty must be a string").isLength({ min: 1 }).withMessage("Difficulty must be at least 1 character long"),
     body("time").optional().isNumeric().withMessage("Time must be numeric"),
-    body("category_id").optional().isString().withMessage("Category_Id must be a string").isLength({ min: 1 }).withMessage("Category must be at least 1 character long")
+    body("category_name").optional().isString().withMessage("Category_name must be a string").isLength({ min: 1 }).withMessage("Category must be at least 1 character long")
 ];
 
 //Tag validation

@@ -19,7 +19,7 @@ export class RecipeEditComponent implements OnInit {
     ingredients: [],
     time: 0,
     tags: [],
-    category_id: '',
+    category_name: '',
     picture_uri: [],
     difficulty: '',
   };
@@ -145,7 +145,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeSmall.ingredients = recipe.ingredients;
     this.recipeSmall.time = recipe.time;
     this.recipeSmall.tags = recipe.tags;
-    this.recipeSmall.category_id = recipe.category_id;
+    this.recipeSmall.category_name = recipe.category_name;
     this.recipeSmall.picture_uri = recipe.picture_uri;
   }
 
@@ -156,7 +156,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipe.ingredients = recipeSmall.ingredients;
     this.recipe.time = recipeSmall.time;
     this.recipe.tags = recipeSmall.tags;
-    this.recipe.category_id = recipeSmall.category_id;
+    this.recipe.category_name = recipeSmall.category_name;
     this.recipe.picture_uri = recipeSmall.picture_uri;
   }
 

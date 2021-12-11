@@ -9,8 +9,8 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
     recipe.id = generateUUID();
     const createdAt: Date = new Date();
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO recipe (id, name, description, preparation, createdAt, difficulty, time, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)`,
-            [recipe.id, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id],
+        db.run(`INSERT INTO recipe (id, name, description, preparation, createdAt, difficulty, time, category_name, user_id) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)`,
+            [recipe.id, recipe.name, recipe.description, recipe.preparation, createdAt, recipe.difficulty, recipe.time, recipe.category_name, recipe.user_id],
             (err) => {
                 if (err) {
                     reject(err);
@@ -36,7 +36,7 @@ export function getRecipe(id: string): Promise<Recipe> {
                         createdAt: row.createdAt,
                         difficulty: row.difficulty,
                         time: row.time,
-                        category_id: row.category_id,
+                        category_name: row.category_name,
                         user_id: row.user_id,
                         tags: [],
                         ingredients: [],
@@ -54,11 +54,11 @@ export function getRecipe(id: string): Promise<Recipe> {
 export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
     let sql = "SELECT * FROM recipe WHERE id IN ";
     if (categoryId && tagId) {
-        sql += "((SELECT id FROM recipe WHERE category_id = '" + categoryId + "') UNION (SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "') ORDER BY RANDOM() LIMIT 1)";
+        sql += "((SELECT id FROM recipe WHERE category_name = '" + categoryId + "') UNION (SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "') ORDER BY RANDOM() LIMIT 1)";
     } else if (tagId) {
         sql += "(SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
     } else if (categoryId) {
-        sql += "(SELECT id FROM recipe WHERE category_id = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
+        sql += "(SELECT id FROM recipe WHERE category_name = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
     } else {
         sql += "(SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1)";
     }
@@ -77,7 +77,7 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
                         createdAt: row.createdAt,
                         difficulty: row.difficulty,
                         time: row.time,
-                        category_id: row.category_id,
+                        category_name: row.category_name,
                         user_id: row.user_id,
                         tags: [],
                         ingredients: [],
@@ -109,7 +109,7 @@ export function getRecipesFromUser(userId: string): Promise<Recipe[]> {
                             createdAt: row.createdAt,
                             difficulty: row.difficulty,
                             time: row.time,
-                            category_id: row.category_id,
+                            category_name: row.category_name,
                             user_id: row.user_id,
                             tags: [],
                             ingredients: [],
@@ -143,7 +143,7 @@ export function getLikedRecipesFromUser(userId: string): Promise<Recipe[]> {
                             createdAt: row.createdAt,
                             difficulty: row.difficulty,
                             time: row.time,
-                            category_id: row.category_id,
+                            category_name: row.category_name,
                             user_id: row.user_id,
                             tags: [],
                             ingredients: [],
@@ -180,7 +180,7 @@ export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
                             createdAt: row.createdAt,
                             difficulty: row.difficulty,
                             time: row.time,
-                            category_id: row.category_id,
+                            category_name: row.category_name,
                             user_id: row.user_id,
                             tags: [],
                             ingredients: [],
@@ -201,7 +201,7 @@ export function getRecipes(limit?: number, offset?: number): Promise<Recipe[]> {
 }
 
 export function getRecipesByCategory(categoryId: string, limit?: number, offset?: number): Promise<Recipe[]> {
-    let query: string = "SELECT * FROM recipe WHERE category_id = ?";
+    let query: string = "SELECT * FROM recipe WHERE category_name = ?";
     query = sqlPager(query, limit, offset);
 
     return new Promise((resolve, reject) => {
@@ -240,8 +240,8 @@ export function getRecipesByTag(tagName: string, limit?: number, offset?: number
 
 export function updateRecipe(recipe: Recipe): Promise<Recipe> {
     return new Promise((resolve, reject) => {
-        db.run(`UPDATE recipe SET name = ?, description = ?, preparation = ?, difficulty = ?, time = ?, category_id = ?, user_id = ? WHERE id = ?`,
-            [recipe.name, recipe.description, recipe.preparation, recipe.difficulty, recipe.time, recipe.category_id, recipe.user_id, recipe.id],
+        db.run(`UPDATE recipe SET name = ?, description = ?, preparation = ?, difficulty = ?, time = ?, category_name = ?, user_id = ? WHERE id = ?`,
+            [recipe.name, recipe.description, recipe.preparation, recipe.difficulty, recipe.time, recipe.category_name, recipe.user_id, recipe.id],
             (err) => {
                 if (err) {
                     reject(err);
