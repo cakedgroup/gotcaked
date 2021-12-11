@@ -42,9 +42,12 @@ paths:
                     type: string
                   version:
                     type: string
+                  status:
+                    type: string
                 example:
                   message: Welcome to our backend!
                   version: v0.0.1
+                  status: /status
   /status:
     get:
       description: Returns a Basic Informations.
@@ -284,9 +287,9 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Category' 
-        '400':
+        '422':
           description: 'invalid input, object invalid'
-  /categories/{id}:
+  /categories/{name}:
     get:
       tags:
         - categories
@@ -295,12 +298,11 @@ paths:
         Simply returns a specifc category.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific category
+          description: Name of one specific category
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: Get category
@@ -355,21 +357,32 @@ paths:
         '204':
           description: Successfully deleted
         '404':
-          description: ID not found    
-  /categories/random:
+          description: ID not found
+  /categories/{name}/recipes:
     get:
       tags:
-        - categories
-      summary: Get a random category
+       - categories
+      summary: Get all recipes from a specific category
       description: |
-        Simply returns a random category.
+        Simply returns all recipes from a specific category.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: Name of one specific category
+          schema:
+            type: string
       responses:
         '200':
-          description: Get random category
+          description: Get recipes
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Category'  
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Category not found
   /tags:
     get:
       tags:
@@ -407,7 +420,7 @@ paths:
                   $ref: '#/components/schemas/Tag' 
         '400':
           description: 'invalid input, object invalid'    
-  /tags/{id}:
+  /tags/{name}:
     get:
       tags:
         - tags
@@ -431,33 +444,6 @@ paths:
                 $ref: '#/components/schemas/Tag'
         '404':
           description: ID not found
-    patch:
-      tags:
-        - tags
-      summary: Update a single tag
-      description: |
-        Simply update a specific tag.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: Id of one specific tag to update
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Tag'
-        description: Tag to update (id must match id in path)
-      responses:
-        '200':
-          description: Tag updated
-        '400':
-          description: 'invalid input, object invalid'
-        '404':
-          description: ID not found
     delete:
       tags:
         - tags
@@ -477,28 +463,31 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found        
-  /tags/{id}/random:
+  /tags/{name}/recipes:
     get:
       tags:
         - tags
-      summary: Get a random tag
+      summary: Get all recipes from a specific tag
       description: |
-        Simply returns a random tag.
+        Simply returns all recipes from a specific tag.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific tag
+          description: Name of one specific tag
           schema:
             type: string
-            format: uuid
       responses:
         '200':
-          description: Get random tag
+          description: Get recipes
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tag'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Tag not found
   /users:
     get:
       description: |
@@ -738,6 +727,8 @@ components:
         - userCount
         - recipeCount
         - commentsCount
+        - tagsCount
+        - categoriesCount
       properties:
         version:
           type: string
@@ -751,6 +742,12 @@ components:
         commentsCount:
           type: integer
           example: 2
+        tagsCount:
+          type: integer
+          example: 5
+        categoriesCount:
+          type: integer
+          example: 3
     User:
       type: object
       required:
@@ -866,8 +863,8 @@ components:
         preparation:
           type: string
           example: Go to the Kitchen...
-        raiting:
-          type: object
+        rating:
+          type: number
           properties:
             up:
               type: number
