@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
@@ -13,7 +12,14 @@ import { User } from 'src/app/models/user.model';
 export class UserProfilePageComponent implements OnInit {
 
   userID: string;
-  user: User;
+  user: User = {
+    id: '',
+    name: '',
+    email: '',
+    description: '',
+    picture_uri: '',
+  };
+
   recipes: Recipe[];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
