@@ -5,7 +5,7 @@ const router = express.Router();
 // @route   GET api/status
 // @desc    Get status of backend
 // @access  Public
-router.get('/', (req, res) => {
+router.get('/', (req: express.Request, res: express.Response) => {
     statusService.getCurrentStatus().then(status => {
         res.status(200).json(status);
     }).catch(err => {
