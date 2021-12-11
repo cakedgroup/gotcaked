@@ -1,8 +1,8 @@
 import express from 'express';
 import { tagValidationChain, validateRequest } from '../middelwares/inputValidation';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
-import * as tagService from '../services/tag';
 import * as recipeService from '../services/recipe';
+import * as tagService from '../services/tag';
 import { errorHandler } from '../util/errorHandler';
 
 const router = express.Router();
@@ -63,11 +63,6 @@ router.delete('/:name', isAuthorizedAdmin, (req: express.Request, res: express.R
     }).catch(err => {
         errorHandler(err, req, res);
     });
-});
-
-router.get('/random', (req: express.Request, res: express.Response) => {
-    res.status(501);
-    res.send('To be implemented.');
 });
 
 export { router as tagController };

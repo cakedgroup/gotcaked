@@ -1,9 +1,9 @@
 import express from 'express';
+import { categoryValidationChain, validateRequest } from '../middelwares/inputValidation';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as categoryService from '../services/category';
 import * as recipeService from '../services/recipe';
 import { errorHandler } from '../util/errorHandler';
-import { categoryValidationChain, validateRequest } from '../middelwares/inputValidation';
 
 const router = express.Router();
 
@@ -74,14 +74,6 @@ router.delete('/:name', isAuthorizedAdmin, (req: express.Request, res: express.R
     }).catch(err => {
         errorHandler(err, req, res);
     });
-});
-
-// @route   GET api/categories/random
-// @desc    Get a random category
-// @access  Public
-router.get('/random', (req: express.Request, res: express.Response) => {
-    res.status(501);
-    res.send('To be implemented.');
 });
 
 export { router as categoryController };
