@@ -382,6 +382,18 @@ export function deleteRating(userId: string, recipeId: string): Promise<void> {
     });
 }
 
+export function deleteAllRatingsFromRecipe(recipeId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM rating WHERE recipe_id = ?`, [recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 export function getUserRecipeRating(userId: string, recipeId: string): Promise<Rating> {
     return new Promise((resolve, reject) => {
         db.get(`SELECT * FROM rating WHERE user_id = ? AND recipe_id = ?`, [userId, recipeId], (err, row) => {
