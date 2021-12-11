@@ -6,9 +6,9 @@
       <h2 class="section-title">Information</h2>
       <hr class="section-line">
       <div class="information-container">
-        <app-form-input class="flex-item-container" label="User-Name" Cheesecake="Username" [(value)]="user.name"></app-form-input>
-        <app-form-input class="flex-item-container" label="User-Email" Cheesecake="itsme@gotcaked.eu" [(value)]="user.email"></app-form-input>
-        <app-form-input class="flex-item-container" label="User-Description" Cheesecake="Hello Its Me!" [(value)]="user.description">
+        <app-form-input class="flex-item-container" label="User-Name" placeholder="Username" [(value)]="user.name"></app-form-input>
+        <app-form-input class="flex-item-container" label="User-Email" placeholder="itsme@gotcaked.eu" [(value)]="user.email"></app-form-input>
+        <app-form-input class="flex-item-container" label="User-Description" placeholder="Hello Its Me!" [(value)]="user.description">
         </app-form-input>
         <app-user-picture-uploader class="flex-item-container picture-upload" [picture_uri]="user.picture_uri" (pictureChange)="pictureChangeHandler($event)"></app-user-picture-uploader>
       </div>
@@ -22,12 +22,12 @@
       <h2 class="section-title">Security</h2>
       <hr class="section-line">
       <div class="information-container">
-        <app-form-input class="flex-item-container" label="Current Password" type="password" Cheesecake="MyCurrentSecretPassword"
+        <app-form-input class="flex-item-container" label="Current Password" type="password" placeholder="MyCurrentSecretPassword"
           [(value)]="currentPassword">
         </app-form-input>
-        <app-form-input class="flex-item-container" label="New Password" type="password" Cheesecake="MyNewSecretPassword" [(value)]="newPassword">
+        <app-form-input class="flex-item-container" label="New Password" type="password" placeholder="MyNewSecretPassword" [(value)]="newPassword">
         </app-form-input>
-        <app-form-input class="flex-item-container" label="Repeat new Password" type="password" Cheesecake="MyNewSecretPassword"
+        <app-form-input class="flex-item-container" label="Repeat new Password" type="password" placeholder="MyNewSecretPassword"
           [(value)]="repeatNewPassword">
         </app-form-input>
       </div>
