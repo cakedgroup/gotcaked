@@ -52,15 +52,15 @@ export function getRecipe(id: string): Promise<Recipe> {
 }
 
 export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
-    let sql = "SELECT * FROM recipe WHERE id IN (SELECT id FROM recipe ";
+    let sql = "SELECT * FROM recipe WHERE id IN ";
     if (categoryId && tagId) {
-        sql += "WHERE category_id = '" + categoryId + "' AND tag_id = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
+        sql += "((SELECT id FROM recipe WHERE category_id = '" + categoryId + "') UNION (SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "') ORDER BY RANDOM() LIMIT 1)";
     } else if (tagId) {
-        sql += "WHERE tag_id = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
+        sql += "(SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
     } else if (categoryId) {
-        sql += "WHERE category_id = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
+        sql += "(SELECT id FROM recipe WHERE category_id = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
     } else {
-        sql += "ORDER BY RANDOM() LIMIT 1)";
+        sql += "(SELECT id FROM recipe ORDER BY RANDOM() LIMIT 1)";
     }
 
     return new Promise((resolve, reject) => {
