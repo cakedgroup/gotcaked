@@ -56,6 +56,7 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
     if (categoryId && tagId) {
         sql += "((SELECT id FROM recipe WHERE category_id = '" + categoryId + "') UNION (SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "') ORDER BY RANDOM() LIMIT 1)";
     } else if (tagId) {
+        console.log("tagId: " + tagId);
         sql += "(SELECT recipe_id FROM recipe_tag WHERE tag_name = '" + tagId + "' ORDER BY RANDOM() LIMIT 1)";
     } else if (categoryId) {
         sql += "(SELECT id FROM recipe WHERE category_id = '" + categoryId + "' ORDER BY RANDOM() LIMIT 1)";
