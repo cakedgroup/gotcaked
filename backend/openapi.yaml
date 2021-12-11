@@ -464,6 +464,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}/rating:
     get:
       tags:
@@ -929,6 +935,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - users
@@ -948,8 +960,18 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/User'  
-        '400':
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}:
     get:
       description: |
@@ -973,6 +995,12 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - users
@@ -996,10 +1024,22 @@ paths:
       responses:
         '200':
           description: User updated
-        '400':
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - users
@@ -1019,6 +1059,16 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}/recipes:
     get:
       tags:
@@ -1044,7 +1094,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Recipe' 
         '404':
-          description: ID of user not found               
+          description: ID of user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}/liked:
     get:
       tags:
@@ -1070,7 +1124,86 @@ paths:
                 items:
                   $ref: '#/components/schemas/Recipe' 
         '404':
-          description: ID of user not found   
+          description: ID of user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{id}/picture:
+    patch:
+      tags:
+        - users
+      summary: Update a single user's picture
+      description: |
+        Simply update one user's picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+                  description: Picture
+              required:
+                - picture
+      responses:
+        '200':
+          description: User Picture updated
+          content:
+            application/json: 
+              schema:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - users
+      summary: Delete a single user's picture
+      description: |
+        Simply delete one user's picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific user to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /auth/login:
     post:
       summary: Returns a JWT Key
