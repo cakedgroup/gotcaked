@@ -1,16 +1,16 @@
 <div class="recipe-information-container">
-  <app-form-input class="flex-item-container" type="text" label="Name" Cheesecake="Grandmas best Cheesecake" [(value)]="recipe.name"> </app-form-input>
+  <app-form-input class="flex-item-container" type="text" label="Name" placeholder="Grandmas best Cheesecake" [(value)]="recipe.name"> </app-form-input>
 
-  <app-form-input class="flex-item-container" type="text" label="Description" Cheesecake="My nice recipe I want to share" [(value)]="recipe.description">
+  <app-form-input class="flex-item-container" type="text" label="Description" placeholder="My nice recipe I want to share" [(value)]="recipe.description">
   </app-form-input>
 
   <app-form-input-textarea class="flex-item-container" label="Preparation" [(value)]="recipe.preparation">
   </app-form-input-textarea>
 
-  <app-form-input class="flex-item-container" type="text" label="Difficulty" Cheesecake="Easy" [(value)]="recipe.difficulty">
+  <app-form-input class="flex-item-container" type="text" label="Difficulty" placeholder="Easy" [(value)]="recipe.difficulty">
   </app-form-input>
 
-  <app-form-input class="flex-item-container" type="number" label="Time" Cheesecake="Time in minutes" [(value)]="recipe.time"> </app-form-input>
+  <app-form-input class="flex-item-container" type="number" label="Time" placeholder="Time in minutes" [(value)]="recipe.time"> </app-form-input>
 
   <app-category-selector class="flex-item-container" [(category_id)]="recipe.category_id">
   </app-category-selector>

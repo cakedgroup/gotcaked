@@ -9,7 +9,6 @@
   }
   .action-button {
     max-width: min-content;
-    margin: auto;
   }
   .form-container {
     flex-direction: column;
