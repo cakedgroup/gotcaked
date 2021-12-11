@@ -11,5 +11,5 @@ export class RecipePreviewComponent{
   @Input() recipe : Recipe;
   public readonly baseUrl = environment.baseServer;
 
-  constructor() { }
+  constructor() {}
 }

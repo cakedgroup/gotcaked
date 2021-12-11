@@ -83,8 +83,8 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
-export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Recipe> {
-    return new Promise<Recipe>((resolve, reject) => {
+export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<RecipeSmall> {
+    return new Promise<RecipeSmall>((resolve, reject) => {
         recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
             //Get all ingredients
             recipeDAO.getIngredients(recipe.id).then(ingredients => {
@@ -101,7 +101,10 @@ export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<Re
                         pictures.forEach(picture => {
                             recipe.picture_uri.push(picture.picture_id);
                         });
-                        resolve(recipe);
+                        let test: Recipe[] = [recipe]
+                        convertRecipeToRecipeSmall(test).then(recipeSmall => {
+                            resolve(recipeSmall[0]);
+                        });
                     }).catch(err => {
                         reject(err);
                     });
