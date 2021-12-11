@@ -44,7 +44,7 @@ export const commentValidationChain = [
 
 //Rating validation
 export const ratingValidationChain = [
-    body("rating").isNumeric().withMessage("Rating must be a number").withMessage("Rating must be numeric")
+    body("vote").isNumeric().withMessage("Rating must be a number").withMessage("Rating must be numeric")
 ];
 
 //User validation

@@ -7,8 +7,7 @@
 # Only exists if Bazel was run
 /bazel-out
 /databases/db.sqlite
-/static/img/recipes
-/static/img/user
+
 
 # dependencies
 /node_modules
