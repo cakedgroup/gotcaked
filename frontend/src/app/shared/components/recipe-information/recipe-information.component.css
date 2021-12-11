@@ -2,16 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  flex: 49%;
-}
-
-.form-input-container {
-  margin-right: 1em;
-  margin-bottom: 1em;
-}
-
-.flex-item-container {
-  flex: 49%;
 }
 
 @media (max-width: 600px) {
