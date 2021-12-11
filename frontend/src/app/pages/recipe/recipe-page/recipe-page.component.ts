@@ -60,9 +60,11 @@ export class RecipePageComponent implements OnInit {
     } else if (this._isLoggedIn.canActivate()) {
       this.isUser = true;
     }
-    this.authService.getUser().subscribe(user => {
-      this.isAuthorized = user.id === this.recipe.user_id;
-    });
+    if (this._isAdmin.canActivate() || this._isLoggedIn.canActivate()) {
+      this.authService.getUser().subscribe(user => {
+        this.isAuthorized = user.id === this.recipe.user_id;
+      });
+    }
   }
 
 
