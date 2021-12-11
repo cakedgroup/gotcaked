@@ -1,5 +1,5 @@
 import express from 'express';
-import { tagValidationChain, validateTag } from '../middelwares/inputValidation';
+import { tagValidationChain, validateRequest } from '../middelwares/inputValidation';
 import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as tagService from '../services/tag';
 import * as recipeService from '../services/recipe';
@@ -21,7 +21,7 @@ router.get('/', (req: express.Request, res: express.Response) => {
 // @route   POST api/tags/
 // @desc    Create a tag
 // @access  Admin
-router.post('/', isAuthorizedAdmin, tagValidationChain, validateTag, (req: express.Request, res: express.Response) => {
+router.post('/', isAuthorizedAdmin, tagValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     tagService.createTag(req.body).then(tag => {
         res.status(201).json(tag);
     }).catch(err => {

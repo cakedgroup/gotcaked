@@ -3,7 +3,7 @@ import { isAuthorizedAdmin } from '../middelwares/jwtCheck';
 import * as categoryService from '../services/category';
 import * as recipeService from '../services/recipe';
 import { errorHandler } from '../util/errorHandler';
-import { categoryValidationChain, validateCategory } from '../middelwares/inputValidation';
+import { categoryValidationChain, validateRequest } from '../middelwares/inputValidation';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get('/', (req: express.Request, res: express.Response) => {
 // @route   POST api/categories/
 // @desc    Create a category
 // @access  Admin
-router.post('/', isAuthorizedAdmin, categoryValidationChain, validateCategory, (req: express.Request, res: express.Response) => {
+router.post('/', isAuthorizedAdmin, categoryValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     categoryService.createCategory(req.body).then(category => {
         res.status(201).json(category);
     }).catch(err => {
@@ -57,7 +57,7 @@ router.get('/:name/recipes', (req: express.Request, res: express.Response) => {
 // @route   PUT api/categories/:name
 // @desc    Update a category
 // @access  Admin
-router.put('/:name', isAuthorizedAdmin, categoryValidationChain, validateCategory, (req: express.Request, res: express.Response) => {
+router.put('/:name', isAuthorizedAdmin, categoryValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     categoryService.updateCategory(req.params.name, req.body).then(category => {
         res.status(200).json(category);
     }).catch(err => {

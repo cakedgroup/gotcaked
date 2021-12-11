@@ -1,6 +1,5 @@
 import express from "express";
 import { body, validationResult } from 'express-validator';
-import { recipeTransformer, tagTransformer, categoryTransformer, commentTransformer, ratingTransformer, userTransformer } from '../util/transformer';
 
 //Recipe validation
 export const recipeValidationChain = [
@@ -22,28 +21,12 @@ export const recipeUpdateValidationChain = [
     body("time").optional().isNumeric().withMessage("Time must be numeric"),
     body("category_id").optional().isString().withMessage("Category_Id must be a string").isLength({ min: 1 }).withMessage("Category must be at least 1 character long")
 ];
-export function validateRecipe(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = recipeTransformer(req.body);
-    next();
-}
 
 //Tag validation
 export const tagValidationChain = [
     body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
-export function validateTag(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = tagTransformer(req.body);
-    next();
-}
 
 //Category validation
 export const categoryValidationChain = [
@@ -53,40 +36,16 @@ export const categoryValidationChain = [
 export const categoryUpdateValidationChain = [
     body("description").isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
-export function validateCategory(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = categoryTransformer(req.body);
-    next();
-}
 
 //Comment validation
 export const commentValidationChain = [
     body("text").isString().withMessage("Text must be a string").isLength({ min: 1 }).withMessage("Text is required"),
 ];
-export function validateComment(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = commentTransformer(req.body);
-    next();
-}
 
 //Rating validation
 export const ratingValidationChain = [
     body("rating").isNumeric().withMessage("Rating must be a number").withMessage("Rating must be numeric")
 ];
-export function validateRating(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = ratingTransformer(req.body);
-    next();
-}
 
 //User validation
 export const userValidationChain = [
@@ -101,21 +60,15 @@ export const userUpdateValidationChain = [
     body("password").optional().isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
-export function validateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    req.body = userTransformer(req.body);
-    next();
-}
 
 //Login validation
 export const loginValidationChain = [
     body("email").isEmail().withMessage("Email must be a valid email").isLength({ min: 1 }).withMessage("Email is required"),
     body("password").isString().withMessage("Password must be a string").isLength({ min: 1 }).withMessage("Password is required")
 ];
-export function validateLogin(req: express.Request, res: express.Response, next: express.NextFunction) {
+
+
+export function validateRequest(req: express.Request, res: express.Response, next: express.NextFunction) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });

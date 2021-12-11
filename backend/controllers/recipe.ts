@@ -1,5 +1,5 @@
 import express from 'express';
-import { commentValidationChain, ratingValidationChain, recipeUpdateValidationChain, recipeValidationChain, validateComment, validatePicture, validateRating, validateRecipe } from '../middelwares/inputValidation';
+import { commentValidationChain, ratingValidationChain, recipeUpdateValidationChain, recipeValidationChain, validateRequest, validatePicture } from '../middelwares/inputValidation';
 import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as commentService from '../services/comment';
 import * as recipeService from "../services/recipe";
@@ -24,7 +24,7 @@ router.get('/', (req: express.Request, res: express.Response) => {
 // @route   POST api/recipes
 // @desc    Create a recipe
 // @access  User
-router.post('/', isAuthorized, recipeValidationChain, validateRecipe, (req: express.Request, res: express.Response) => {
+router.post('/', isAuthorized, recipeValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
@@ -62,7 +62,7 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
 // @route   PATCH api/recipes/:id
 // @desc    Update recipe with id
 // @access  Author of Recipe
-router.patch('/:id', isAuthorizedForRecipes, recipeUpdateValidationChain, validateRecipe, (req: express.Request, res: express.Response) => {
+router.patch('/:id', isAuthorizedForRecipes, recipeUpdateValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     recipeService.updateRecipe(req.params.id, req.body).then(recipe => {
         res.status(200).json(recipe);
     }).catch(err => {
@@ -131,7 +131,7 @@ router.get('/:id/comments', (req: express.Request, res: express.Response) => {
 // @route   POST api/recipes/:id/comments
 // @desc    Create comment on recipe
 // @access  User
-router.post('/:id/comments', isAuthorized, commentValidationChain, validateComment, (req: express.Request, res: express.Response) => {
+router.post('/:id/comments', isAuthorized, commentValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
@@ -173,7 +173,7 @@ router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req: express
 // @route   POST api/recipes/:id/rating
 // @desc    Create rating on recipe with id
 // @access  User
-router.post('/:id/rating', isAuthorized, ratingValidationChain, validateRating, (req: express.Request, res: express.Response) => {
+router.post('/:id/rating', isAuthorized, ratingValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;

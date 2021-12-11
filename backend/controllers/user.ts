@@ -1,5 +1,5 @@
 import express from 'express';
-import { userUpdateValidationChain, userValidationChain, validatePicture, validateUser } from '../middelwares/inputValidation';
+import { userUpdateValidationChain, userValidationChain, validatePicture, validateRequest } from '../middelwares/inputValidation';
 import { isAuthorizedUser } from '../middelwares/jwtCheck';
 import * as userService from '../services/user';
 import * as recipeService from '../services/recipe';
@@ -25,7 +25,7 @@ router.get('/', (req: express.Request, res: express.Response) => {
 // @route   POST api/users
 // @desc    Create new user
 // @access  Public
-router.post('/', userValidationChain, validateUser, (req: express.Request, res: express.Response) => {
+router.post('/', userValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Create User in Service
     userService.createUser(req.body).then(user => {
         res.status(201);
@@ -52,7 +52,7 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
 // @route   PATCH api/users/:id
 // @desc    Update user with id
 // @access  User
-router.patch('/:id', isAuthorizedUser, userUpdateValidationChain, validateUser, (req: express.Request, res: express.Response) => {
+router.patch('/:id', isAuthorizedUser, userUpdateValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     let id: string = req.params.id;
 
     //Update User in Service
