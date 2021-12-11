@@ -613,6 +613,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - categories
@@ -634,6 +640,16 @@ paths:
                   $ref: '#/components/schemas/Category' 
         '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /categories/{name}:
     get:
       tags:
@@ -657,7 +673,11 @@ paths:
                 $ref: '#/components/schemas/Category'
         '404':
           description: ID not found
-    patch:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
       tags:
         - categories
       summary: Update a single category
@@ -680,10 +700,22 @@ paths:
       responses:
         '200':
           description: Category updated
-        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '422':
           description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - categories
@@ -694,7 +726,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: Id of one specific category to update
+          description: Id of one specific category to delete
           schema:
             type: string
             format: uuid
@@ -703,6 +735,16 @@ paths:
           description: Successfully deleted
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /categories/{name}/recipes:
     get:
       tags:
@@ -728,6 +770,10 @@ paths:
                   $ref: '#/components/schemas/Recipe'
         '404':
           description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /tags:
     get:
       tags:
