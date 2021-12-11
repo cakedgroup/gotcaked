@@ -7,7 +7,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class FormInputComponent {
   @Input() type: string = "text";
+  @Input() disabled: boolean = false;
   @Input() label: string;
+  @Input() placeholder: string;
   @Input() value: any
   @Output() valueChange = new EventEmitter<any>();
 

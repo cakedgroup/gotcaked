@@ -3,15 +3,14 @@
     <div class="empty-div">
       <h1 class="form-title">Login</h1>
       <label class="form-label">Email</label>
-      <input class="form-input" [(ngModel)]="userLogin.email" name="email" type="email" placeholder="E-Mail" required>
+      <input class="form-input" [(ngModel)]="userLogin.email" name="email" type="email" placeholder="itsme@gotcaked.eu" required>
 
       <label class="form-label">Password</label>
-      <input class="form-input" [(ngModel)]="userLogin.password" name="password" type="password" placeholder="Password"
-        required>
+      <input class="form-input" [(ngModel)]="userLogin.password" name="password" type="password" placeholder="MySecretPassword" required>
 
       <app-error-message class="center-text" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
-      <button class="login-button left" routerLink="/register" type="button">Register</button>
-      <button class="login-button right" type="submit">Login</button>
+      <button class="action-button left" routerLink="/register" type="button">Register</button>
+      <button class="action-button right" type="submit">Login</button>
     </div>
   </form>
 </div>

@@ -1,6 +1,6 @@
-<div class="form-container">
-  <app-form-input label="Name" type="text" [(value)]="model.name"></app-form-input>
-  <app-form-input label="Description" type="text" [(value)]="model.description"></app-form-input>
+<div class="form-container-create-field">
+  <app-form-input label="Name" type="text" placeholder="{{model_type}} Name" [(value)]="model.name"></app-form-input>
+  <app-form-input label="Description" type="text" placeholder="{{model_type}} Description" [(value)]="model.description"></app-form-input>
 
   <button class="action-button" type="submit">
     <fa-icon [icon]="faPlus"></fa-icon>
