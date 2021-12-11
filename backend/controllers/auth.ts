@@ -1,4 +1,5 @@
 import express from 'express';
+import { loginValidationChain, validateLogin } from '../middelwares/inputValidation';
 import * as authService from '../services/auth';
 import { errorHandler } from '../util/errorHandler';
 
@@ -7,7 +8,7 @@ const router = express.Router();
 // @route   GET api/login
 // @desc    Get new JWT
 // @access  Public
-router.post('/login', (req: express.Request, res: express.Response) => {
+router.post('/login', loginValidationChain, validateLogin, (req: express.Request, res: express.Response) => {
     authService.login(req.body).then(result => {
         res.status(200).json(result);
     }).catch(err => {

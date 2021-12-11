@@ -110,7 +110,18 @@ export function validateUser(req: express.Request, res: express.Response, next: 
     next();
 }
 
-
+//Login validation
+export const loginValidationChain = [
+    body("email").isEmail().withMessage("Email must be a valid email").isLength({ min: 1 }).withMessage("Email is required"),
+    body("password").isString().withMessage("Password must be a string").isLength({ min: 1 }).withMessage("Password is required")
+];
+export function validateLogin(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    next();
+}
 
 export function validatePicture(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (req.files) {
