@@ -1,0 +1,5 @@
+<app-content-header title="Random Recipe from {{type}} {{name}}"></app-content-header>
+
+<div class="recipe-content">
+  <app-recipe-preview *ngIf="recipe !== undefined" [recipe]="recipe"></app-recipe-preview>
+</div>
