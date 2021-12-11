@@ -236,6 +236,124 @@ paths:
                   $ref: '#/components/schemas/Comment' 
         '400':
           description: 'invalid input, object invalid'
+  /recipes/{id}/comments/{commentId}:
+    get:
+      tags:
+        - recipes
+    delete:
+      tags:
+        - recipes
+  /recipes/{id}/picture:
+    patch:
+      tags:
+        - recipes
+      summary: Update a single recipe picture
+      description: |
+        Simply update one recipe picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+                  description: Picture to update
+      responses:
+        '200':
+          description: Recipe picture updated
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: Recipe ID not found
+    delete:
+      tags:
+        - recipes
+      summary: Delete a single recipe picture
+      description: |
+        Simply delete one recipe picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+                schema:
+                  type: object
+                  properties:
+                    picture_uri:
+                      type: string
+                      format: uri
+                      description: Picture to delete
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: Recipe ID not found
+        '500':
+          description: Picture URI not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                  error:
+                    type: string
+                    description: Error code
+  /recipes/{id}/rating:
+    get:
+    post:
+  /recipes/{id}/ratingStatus:
+    get:
+      tags:
+        - recipes
+      summary: Get rating status of user on recipe
+      description: |
+        Simply returns rating status of user on recipe.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id of one specific recipe
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Get rating status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    description: User ID
+                  recipe_id:
+                    type: string
+                    description: Recipe ID
+                  rating:
+                    type: number
+                    description: Rating
+        '404':
+          description: Recipe ID or Rating not found
   /recipes/random:
     get:
       tags:
