@@ -38,6 +38,9 @@ router.post('/', isAuthorized, recipeValidationChain, validateRequest, (req: exp
     });
 });
 
+// @route   GET api/recipes/random
+// @desc    Get random recipe by tag or category
+// @access  Public
 router.get('/random', (req: express.Request, res: express.Response) => {
     let categoryId = req.query.category as string;
     let tagId = req.query.tag as string;

@@ -83,8 +83,8 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
     });
 }
 
-export function getRandomRecipe(categoryId: string, tagId: string): Promise<Recipe> {
-    return new Promise<Recipe>((resolve, reject) => {
+export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<RecipeSmall> {
+    return new Promise<RecipeSmall>((resolve, reject) => {
         recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
             //Get all ingredients
             recipeDAO.getIngredients(recipe.id).then(ingredients => {
@@ -101,7 +101,10 @@ export function getRandomRecipe(categoryId: string, tagId: string): Promise<Reci
                         pictures.forEach(picture => {
                             recipe.picture_uri.push(picture.picture_id);
                         });
-                        resolve(recipe);
+                        let test: Recipe[] = [recipe]
+                        convertRecipeToRecipeSmall(test).then(recipeSmall => {
+                            resolve(recipeSmall[0]);
+                        });
                     }).catch(err => {
                         reject(err);
                     });
@@ -168,17 +171,22 @@ export function deleteRecipe(recipeID: string): Promise<void> {
         recipeDAO.getRecipe(recipeID).then(recipe => {
             if (recipe) {
                 //TODO Delete all ratings
-                Promise.all([commentDAO.deleteAllComments(recipeID), recipeDAO.deleteAllIngredients(recipeID), deleteAllPicturesFromRecipe(recipeID)]).then(() => {
-                    //Delete Recipe
-                    recipeDAO.deleteRecipe(recipeID).then(() => {
-                        resolve();
+                Promise.all([
+                    commentDAO.deleteAllComments(recipeID),
+                    recipeDAO.deleteAllIngredients(recipeID),
+                    deleteAllPicturesFromRecipe(recipeID),
+                    recipeDAO.deleteAllRatingsFromRecipe(recipeID),
+                    tagDAO.deleteRecipeTagByRecipeId(recipeID)]).then(() => {
+                        //Delete Recipe
+                        recipeDAO.deleteRecipe(recipeID).then(() => {
+                            resolve();
+                        }).catch(err => {
+                            reject(err);
+                        });
+
                     }).catch(err => {
                         reject(err);
                     });
-
-                }).catch(err => {
-                    reject(err);
-                });
             } else {
                 reject(new Error('Recipe does not exist'));
             }
