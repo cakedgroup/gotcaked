@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
-import { Recipe } from 'src/app/models/recipe.model';
+import { Rating, Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -122,6 +122,18 @@ export class ApiService {
 
   createComment(recipeID: string, commentText: string): Observable<RecipeComment> {
     return this.http.post<RecipeComment>(`${this.baseUrl}/recipes/${recipeID}/comments`, { "text": commentText }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  getRecipeRating(recipeID: string): Observable<Rating> {
+    return this.http.get<Rating>(`${this.baseUrl}/recipes/${recipeID}/rating`);
+  }
+
+  upVoteRecipe(recipeID: string): Observable<Recipe> {
+    return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": 1 }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  downVoteRecipe(recipeID: string): Observable<Recipe> {
+    return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": -1 }, { headers: this.authService.createAuthorizationHeader() });
   }
 
   //

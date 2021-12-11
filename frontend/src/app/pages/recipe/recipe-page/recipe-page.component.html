@@ -11,8 +11,6 @@
         <!--TOOD SLIDESHOW-->
         <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
           src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
       </div>
     </div>
 
@@ -31,9 +29,23 @@
         <p class="recipe-description-item" [routerLink]="['/category', recipe.category_id]">
           {{ recipe.category_id }}
         </p>
-        <p class="recipe-description-item">{{ recipe.rating }}10 Votes</p>
+        <p class="recipe-description-item">{{ recipe.rating }} Votes</p>
       </div>
       <!-- Recipe Interactions (Voting, Edit, Delete) -->
+      <div class="recipe-description-tags">
+        <button class="recipe-interaction-button" *ngIf="isUser" (click)="upVoteRecipe()">
+          <fa-icon [icon]="faThumbsUp"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button" *ngIf="isUser" (click)="downVoteRecipe()">
+          <fa-icon [icon]="faThumbsDown"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button" *ngIf="isAuthorized" (click)="editRecipe()">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button" *ngIf="isAuthorized" (click)="deleteRecipe()">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </div>
     </div>
 
     <!--- Ingredients Section -->
@@ -67,8 +79,7 @@
   <div class="recipe-comments">
     <h1>Comments</h1>
     <hr class="line" />
-    <app-recipe-comment-input (comment)="comments.push($event)" [recipeID]="recipeId"> </app-recipe-comment-input>
-    <hr class="line" />
+    <app-recipe-comment-input (comment)="comments.push($event)"> </app-recipe-comment-input>
     <app-recipe-comments class="comment-text" *ngFor="let comment of comments" [comment]="comment">
     </app-recipe-comments>
   </div>

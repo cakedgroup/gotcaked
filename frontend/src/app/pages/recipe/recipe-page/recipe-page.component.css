@@ -69,6 +69,15 @@
   font-size: 14pt;
 }
 
+.recipe-interaction-button{
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  border-radius: 1em;
+  font-size: 14pt;
+  border: none;
+}
+
 .comment-text {
   font-size: 18px;
   word-wrap: break-word;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Ingredients } from 'src/app/models/ingredients.model';
 
 @Component({
@@ -6,13 +6,8 @@ import { Ingredients } from 'src/app/models/ingredients.model';
   templateUrl: './ingredients-table-output.component.html',
   styleUrls: ['./ingredients-table-output.component.css']
 })
-export class IngredientsTableOutputComponent implements OnInit {
+export class IngredientsTableOutputComponent {
   @Input() ingredients: Ingredients[];
 
   constructor() { }
-
-  ngOnInit(): void {
-    console.log(this.ingredients);
-  }
-
 }

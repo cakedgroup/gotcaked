@@ -30,7 +30,6 @@ export class TagPageComponent implements OnInit {
   getRecipes() {
     this.apiService.getRecipesByTag(this.tag).subscribe(
       (recipes: Recipe[]) => {
-        console.log(recipes);
         this.recipes = recipes;
       },
       (error) => {
