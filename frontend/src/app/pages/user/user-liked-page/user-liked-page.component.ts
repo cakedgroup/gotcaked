@@ -29,7 +29,6 @@ export class UserLikedPageComponent implements OnInit {
   getLikedRecipes() {
     this.apiService.getLikedRecipesFromUser(this.userID).subscribe(recipes => {
       this.recipes = recipes;
-      console.log(this.recipes);
     }, error => {
       this.router.navigate(['/404']);
     });

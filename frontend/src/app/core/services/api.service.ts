@@ -2,12 +2,13 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
-import { Recipe } from 'src/app/models/recipe.model';
+import { Rating, Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 import { RecipeCreate } from '../../models/recipe.model';
 import { AuthService } from './auth.service';
+import { RecipeComment } from '../../models/comment.model';
 
 
 @Injectable({
@@ -38,11 +39,19 @@ export class ApiService {
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user);
+    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteUser(userID: string): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   getLikedRecipesFromUser(userID: string): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${this.baseUrl}/users/${userID}/liked/`);
+  }
+
+  updateUserPassword(userID: string, password: string): Observable<User> {
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}`, { "password": password }, { headers: this.authService.createAuthorizationHeader() });
   }
 
   //
@@ -99,6 +108,10 @@ export class ApiService {
     return this.http.get<Recipe[]>(`${this.baseUrl}/tags/${tagId}/recipes`);
   }
 
+  getRecipesByUser(userID: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${this.baseUrl}/users/${userID}/recipes`);
+  }
+
   getRecipe(id: string): Observable<Recipe> {
     return this.http.get<Recipe>(`${this.baseUrl}/recipes/${id}`);
   }
@@ -115,6 +128,26 @@ export class ApiService {
     return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${id}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
+  getCommentsByRecipe(recipeID: string): Observable<RecipeComment[]> {
+    return this.http.get<RecipeComment[]>(`${this.baseUrl}/recipes/${recipeID}/comments`);
+  }
+
+  createComment(recipeID: string, commentText: string): Observable<RecipeComment> {
+    return this.http.post<RecipeComment>(`${this.baseUrl}/recipes/${recipeID}/comments`, { "text": commentText }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  getRecipeRating(recipeID: string): Observable<Rating> {
+    return this.http.get<Rating>(`${this.baseUrl}/recipes/${recipeID}/rating`);
+  }
+
+  upVoteRecipe(recipeID: string): Observable<Recipe> {
+    return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": 1 }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  downVoteRecipe(recipeID: string): Observable<Recipe> {
+    return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": -1 }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
   //
   // Picture "Services"
   //
@@ -127,16 +160,16 @@ export class ApiService {
   uploadUserPicture(userID: string, file: File): Observable<User> {
     const formData = new FormData();
     formData.append('picture', file);
-    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/picture`, formData, {  headers: this.authService.createAuthorizationHeaderForm() });
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/picture`, formData, { headers: this.authService.createAuthorizationHeaderForm() });
   }
 
   deleteUserPicture(userID: string): Observable<User> {
-    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/picture`, {  headers: this.authService.createAuthorizationHeader() });
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/picture`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   deleteRecipePicture(recipeID: string, pictureURI: string): Observable<Recipe> {
     let pictureDeleteBody = { picture_uri: pictureURI };
-    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, {  headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
+    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, { headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
   }
 
 }
