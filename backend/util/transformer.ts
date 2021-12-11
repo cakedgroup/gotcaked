@@ -1,11 +1,6 @@
 import { JwtPayload } from "jsonwebtoken";
 import { JWTContent } from "../models/auth";
 import { User, UserPublic } from "../models/user";
-import { Rating, Recipe } from '../models/recipe';
-import { Tag } from '../models/tag';
-import { Category } from '../models/category';
-import { Comment } from '../models/comment';
-
 
 export function userTransformer(user: User): UserPublic {
     return {
