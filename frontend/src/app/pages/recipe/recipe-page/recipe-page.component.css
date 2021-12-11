@@ -1,12 +1,11 @@
 .recipe-container {
   font-family: "Darker Grotesque", sans-serif;
   margin: 10px auto;
-  width: 100%;
+  width: 90%;
   height: fit-content;
   border-radius: 1em;
   background-color: var(--secondary-background-color);
   padding: 10px;
-  max-width: fit-content;
 }
 
 .recipe-information-container {

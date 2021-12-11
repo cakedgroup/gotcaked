@@ -11,6 +11,8 @@
         <!--TOOD SLIDESHOW-->
         <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
           src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
       </div>
     </div>
 
@@ -73,7 +75,5 @@
 </div>
 
 <ng-template #noImage>
-  <img class="recipe-image"
-    src="/assets/icons/recipe_picture_placeholder.svg"
-    alt="Image" />
+  <img class="recipe-image" src="/assets/icons/recipe_picture_placeholder.svg" alt="Image" />
 </ng-template>
