@@ -120,6 +120,10 @@ export class ApiService {
     return this.http.get<RecipeComment[]>(`${this.baseUrl}/recipes/${recipeID}/comments`);
   }
 
+  createComment(recipeID: string, commentText: string): Observable<RecipeComment> {
+    return this.http.post<RecipeComment>(`${this.baseUrl}/recipes/${recipeID}/comments`, { "text": commentText }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
   //
   // Picture "Services"
   //
@@ -132,16 +136,16 @@ export class ApiService {
   uploadUserPicture(userID: string, file: File): Observable<User> {
     const formData = new FormData();
     formData.append('picture', file);
-    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/picture`, formData, {  headers: this.authService.createAuthorizationHeaderForm() });
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}/picture`, formData, { headers: this.authService.createAuthorizationHeaderForm() });
   }
 
   deleteUserPicture(userID: string): Observable<User> {
-    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/picture`, {  headers: this.authService.createAuthorizationHeader() });
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}/picture`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   deleteRecipePicture(recipeID: string, pictureURI: string): Observable<Recipe> {
     let pictureDeleteBody = { picture_uri: pictureURI };
-    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, {  headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
+    return this.http.delete<Recipe>(`${this.baseUrl}/recipes/${recipeID}/picture`, { headers: this.authService.createAuthorizationHeader(), body: pictureDeleteBody });
   }
 
 }

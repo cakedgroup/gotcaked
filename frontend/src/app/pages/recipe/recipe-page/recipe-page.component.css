@@ -6,6 +6,7 @@
   border-radius: 1em;
   background-color: var(--secondary-background-color);
   padding: 10px;
+  max-width: fit-content;
 }
 
 .recipe-information-container {
@@ -81,10 +82,9 @@
 }
 
 .line {
-  height: 1px;
-  border: 0;
-  background-color: lightgrey;
-  margin: 10px 10px 10px 0px;
+  width: 100%;
+  border: 0.5px solid;
+  color: teal;
 }
 
 @media (max-width: 800px) {
