@@ -79,7 +79,7 @@
   <div class="recipe-comments">
     <h1>Comments</h1>
     <hr class="line" />
-    <app-recipe-comment-input (comment)="comments.push($event)"> </app-recipe-comment-input>
+    <app-recipe-comment-input [recipeID]="recipe.id" (comment)="comments.push($event)"> </app-recipe-comment-input>
     <app-recipe-comments class="comment-text" *ngFor="let comment of comments" [comment]="comment">
     </app-recipe-comments>
   </div>

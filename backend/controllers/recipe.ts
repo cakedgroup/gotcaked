@@ -1,17 +1,16 @@
 import express from 'express';
-import { validateComment, validatePicture, validateRating, validateRecipe } from '../middelwares/inputValidation';
+import { commentValidationChain, ratingValidationChain, recipeUpdateValidationChain, recipeValidationChain, validateRequest, validatePicture } from '../middelwares/inputValidation';
 import { isAuthorized, isAuthorizedForComments, isAuthorizedForRecipes } from '../middelwares/jwtCheck';
 import * as commentService from '../services/comment';
 import * as recipeService from "../services/recipe";
 import { errorHandler } from '../util/errorHandler';
-
 
 const router = express.Router();
 
 // @route   GET api/recipes
 // @desc    Get all recipes
 // @access  Public
-router.get('/', (req, res) => {
+router.get('/', (req: express.Request, res: express.Response) => {
     let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
@@ -25,11 +24,12 @@ router.get('/', (req, res) => {
 // @route   POST api/recipes
 // @desc    Create a recipe
 // @access  User
-router.post('/', isAuthorized, validateRecipe, (req, res) => {
+router.post('/', isAuthorized, recipeValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }
+
     //Create recipe
     recipeService.createRecipe(req.body).then(recipe => {
         res.status(201).json(recipe);
@@ -41,7 +41,7 @@ router.post('/', isAuthorized, validateRecipe, (req, res) => {
 // @route   GET api/recipes/random
 // @desc    Get random recipe by tag or category
 // @access  Public
-router.get('/random', (req, res) => {
+router.get('/random', (req: express.Request, res: express.Response) => {
     let categoryId = req.query.category as string;
     let tagId = req.query.tag as string;
     recipeService.getRandomRecipe(categoryId, tagId).then(recipe => {
@@ -54,7 +54,7 @@ router.get('/random', (req, res) => {
 // @route   GET api/recipes/:id
 // @desc    Get recipe with id
 // @access  Public
-router.get('/:id', (req, res) => {
+router.get('/:id', (req: express.Request, res: express.Response) => {
     recipeService.getRecipe(req.params.id).then(recipe => {
         res.status(200).json(recipe);
     }).catch(err => {
@@ -65,7 +65,7 @@ router.get('/:id', (req, res) => {
 // @route   PATCH api/recipes/:id
 // @desc    Update recipe with id
 // @access  Author of Recipe
-router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
+router.patch('/:id', isAuthorizedForRecipes, recipeUpdateValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     recipeService.updateRecipe(req.params.id, req.body).then(recipe => {
         res.status(200).json(recipe);
     }).catch(err => {
@@ -76,7 +76,7 @@ router.patch('/:id', isAuthorizedForRecipes, (req, res) => {
 // @route   PATCH api/recipes/:id/picture
 // @desc    Add a picture to recipe
 // @access  Author of Recipe 
-router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req, res) => {
+router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req: express.Request, res: express.Response) => {
     let id: string = req.params.id;
 
     //Update User Picture in Service
@@ -90,7 +90,7 @@ router.patch('/:id/picture', isAuthorizedForRecipes, validatePicture, (req, res)
 // @route   DELETE api/recipes/:id
 // @desc    Delete recipe with id
 // @access  Author of Recipe
-router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
+router.delete('/:id', isAuthorizedForRecipes, (req: express.Request, res: express.Response) => {
     //Delete recipe
     recipeService.deleteRecipe(req.params.id).then(() => {
         res.status(204).send();
@@ -102,7 +102,7 @@ router.delete('/:id', isAuthorizedForRecipes, (req, res) => {
 // @route   DELETE api/recipes/:id/picture
 // @desc    Delete single picture from recipe
 // @access  Author of Recipe
-router.delete('/:id/picture/', isAuthorizedForRecipes, (req, res) => {
+router.delete('/:id/picture/', isAuthorizedForRecipes, (req: express.Request, res: express.Response) => {
     let id: string = req.params.id;
     let pictureID: string = req.body.picture_uri as string;
 
@@ -118,7 +118,7 @@ router.delete('/:id/picture/', isAuthorizedForRecipes, (req, res) => {
 // @route   GET api/recipes/:id/comments
 // @desc    Get comments of recipe
 // @access  Public
-router.get('/:id/comments', (req, res) => {
+router.get('/:id/comments', (req: express.Request, res: express.Response) => {
     let limit: number = req.query.limit ? parseInt(req.query.limit as string) : 0;
     let offset: number = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
@@ -134,7 +134,7 @@ router.get('/:id/comments', (req, res) => {
 // @route   POST api/recipes/:id/comments
 // @desc    Create comment on recipe
 // @access  User
-router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
+router.post('/:id/comments', isAuthorized, commentValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
@@ -154,7 +154,7 @@ router.post('/:id/comments', isAuthorized, validateComment, (req, res) => {
 // @route   GET api/recipes/:id/comments/:commentId
 // @desc    Get comment with commentId on recipe with id
 // @access  Public
-router.get('/:id/comments/:commentId', (req, res) => {
+router.get('/:id/comments/:commentId', (req: express.Request, res: express.Response) => {
     commentService.getComment(req.params.commentId, req.params.id).then(comment => {
         res.status(200).json(comment);
     }).catch(err => {
@@ -165,7 +165,7 @@ router.get('/:id/comments/:commentId', (req, res) => {
 // @route   DELETE api/recipes/:id/comments/:commentId
 // @desc    Delete comment with commentId on recipe with id
 // @access  Author of comment
-router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req, res) => {
+router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req: express.Request, res: express.Response) => {
     commentService.deleteComment(req.params.commentId).then(() => {
         res.status(204).send();
     }).catch(err => {
@@ -176,7 +176,7 @@ router.delete('/:id/comments/:commentId', isAuthorizedForComments, (req, res) =>
 // @route   POST api/recipes/:id/rating
 // @desc    Create rating on recipe with id
 // @access  User
-router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
+router.post('/:id/rating', isAuthorized, ratingValidationChain, validateRequest, (req: express.Request, res: express.Response) => {
     //Set user id
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
@@ -196,7 +196,7 @@ router.post('/:id/rating', isAuthorized, validateRating, (req, res) => {
 // @route   GET api/recipes/:id/rating
 // @desc    Get rating of recipe with id
 // @access  Public
-router.get('/:id/rating', (req, res) => {
+router.get('/:id/rating', (req: express.Request, res: express.Response) => {
     recipeService.getRecipeRating(req.params.id).then(rating => {
         res.status(200).json(rating);
     }).catch(err => {
@@ -207,7 +207,7 @@ router.get('/:id/rating', (req, res) => {
 // @route   GET api/recipes/:id/ratingStatus
 // @desc    Get rating status of user on recipe with id 
 // @access  User
-router.get('/:id/ratingStatus', isAuthorized, (req, res) => {
+router.get('/:id/ratingStatus', isAuthorized, (req: express.Request, res: express.Response) => {
     if (req.jwtContent?.id) {
         req.body.user_id = req.jwtContent.id;
     }

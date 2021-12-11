@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "83d807aa-5917-4dc7-9193-8f38369e9ce5",
+		"_postman_id": "ddd82532-500e-4007-a776-1650b9231e05",
 		"name": "gotCaked",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -124,7 +124,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
 									"pm.globals.set(\"randomAdminPassword\", userPassword);"
 								],
 								"type": "text/javascript"
@@ -322,7 +322,7 @@
 							"script": {
 								"exec": [
 									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
 									"pm.globals.set(\"randomUser\", userName);\r",
 									"pm.globals.set(\"randomPassword\", userPassword);"
 								],
@@ -386,7 +386,7 @@
 							"script": {
 								"exec": [
 									"let userName = pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
 									"pm.globals.set(\"randomUser3\", userName);\r",
 									"pm.globals.set(\"randomPassword3\", userPassword);"
 								],
@@ -1151,7 +1151,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}\")\r",
+									"let userPassword = pm.variables.replaceIn(\"{{$randomPassword}}!\")\r",
 									"pm.globals.set(\"randomPasswordNEW\", userPassword);"
 								],
 								"type": "text/javascript"
