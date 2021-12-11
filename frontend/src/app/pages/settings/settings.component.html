@@ -1,1 +1,44 @@
-<p>settings works!</p>
+<div class="settings-form-container">
+  <div class="empty-div">
+    <h1 class="form-title">User Settings</h1>
+    <!-- Information Section -->
+    <form class="form-container">
+      <h2 class="section-title">Information</h2>
+      <hr class="section-line">
+      <div class="recipe-information-container">
+        <app-form-input class="flex-item-container" label="User-Name" [(value)]="user.name"></app-form-input>
+        <app-form-input class="flex-item-container" label="User-Email" [(value)]="user.email"></app-form-input>
+        <app-form-input class="flex-item-container" label="User-Description" [(value)]="user.description">
+        </app-form-input>
+      </div>
+      <app-success-message class="message" *ngIf="success_info" [message]="this.successMessage"></app-success-message>
+      <app-error-message class="message" *ngIf="error_info" [errorMessage]="this.errorMessage"></app-error-message>
+      <button class="submit-button" type="button" (click)="informationHandler()">Save</button>
+    </form>
+
+    <!-- Security Section -->
+    <form>
+      <h2 class="section-title">Security</h2>
+      <hr class="section-line">
+      <div class="recipe-information-container">
+        <app-form-input class="flex-item-container" label="Current Password" type="password"
+          [(value)]="currentPassword">
+        </app-form-input>
+        <app-form-input class="flex-item-container" label="New Password" type="password" [(value)]="newPassword">
+        </app-form-input>
+        <app-form-input class="flex-item-container" label="Repeat new Password" type="password"
+          [(value)]="repeatNewPassword">
+        </app-form-input>
+      </div>
+      <app-success-message class="message" *ngIf="success_security" [message]="this.successMessage"></app-success-message>
+      <app-error-message class="message" *ngIf="error_security" [errorMessage]="this.errorMessage"></app-error-message>
+      <button class="submit-button" type="button" (click)="passwordHandler()">Save</button>
+    </form>
+
+    <!-- Danger Section -->
+    <h2 class="section-title">Danger</h2>
+    <hr class="section-line">
+    <app-error-message class="message" *ngIf="error_danger" [errorMessage]="this.errorMessage"></app-error-message>
+    <button class="submit-button" type="button" (click)="deleteUserHandler()">Delete Account</button>
+  </div>
+</div>

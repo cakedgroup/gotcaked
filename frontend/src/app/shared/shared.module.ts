@@ -14,6 +14,7 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
 import { PictureUploaderComponent } from './components/picture-uploader/picture-uploader.component';
 import { SuccessMessageComponent } from './components/success-message/success-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import { FormInputComponent } from './components/form-input/form-input.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { ErrorMessageComponent } from './components/error-message/error-message.
     RecipeInformationComponent,
     PictureUploaderComponent,
     SuccessMessageComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    FormInputComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { ErrorMessageComponent } from './components/error-message/error-message.
     RecipeInformationComponent,
     PictureUploaderComponent,
     SuccessMessageComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    FormInputComponent
   ]
 })
 export class SharedModule {
