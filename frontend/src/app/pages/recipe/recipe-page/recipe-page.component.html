@@ -33,10 +33,14 @@
       </div>
       <!-- Recipe Interactions (Voting, Edit, Delete) -->
       <div class="recipe-description-tags">
-        <button class="recipe-interaction-button" *ngIf="isUser" (click)="upVoteRecipe()">
+        <button class="recipe-interaction-button"
+          [ngClass]="{'recipe-interaction-button-selected' : userRating.vote > 0}" *ngIf="isUser"
+          (click)="upVoteRecipe()">
           <fa-icon [icon]="faThumbsUp"></fa-icon>
         </button>
-        <button class="recipe-interaction-button" *ngIf="isUser" (click)="downVoteRecipe()">
+        <button class="recipe-interaction-button"
+          [ngClass]="{'recipe-interaction-button-selected' : userRating.vote < 0}" *ngIf="isUser"
+          (click)="downVoteRecipe()">
           <fa-icon [icon]="faThumbsDown"></fa-icon>
         </button>
         <button class="recipe-interaction-button" *ngIf="isAuthorized" (click)="editRecipe()">
