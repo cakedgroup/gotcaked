@@ -132,3 +132,15 @@ export function deleteRecipeTagByTagName(tagName: string): Promise<void> {
         });
     });
 }
+
+export function deleteRecipeTagByRecipeId(recipeId: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        db.run(`DELETE FROM recipe_tag WHERE recipe_id = ?`, [recipeId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}

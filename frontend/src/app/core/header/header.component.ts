@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from '../../models/category.model';
 import { ApiService } from '../services/api.service';
+import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,14 +10,18 @@ import { ApiService } from '../services/api.service';
 })
 export class HeaderComponent implements OnInit {
   categories: Category[];
+  currentRoute: string = null;
+  routeType: string = null;
+  routeName: string = null;
   showUserMenu: boolean = false;
   showCategoryMenu: boolean = false;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.getCategories();
+    this.getCurrentRoute();
   }
 
   getCategories() {
@@ -42,4 +47,22 @@ export class HeaderComponent implements OnInit {
     this.showCategoryMenu = true;
   }
 
+  getCurrentRoute() {
+    this.router.events.subscribe((event: NavigationEvent) => {
+      if (event instanceof NavigationStart) {
+        this.currentRoute = event.url;
+        //Get type of route
+        if (this.currentRoute.includes('/category/')) {
+          this.routeType = 'category';
+          this.routeName = this.currentRoute.split('/category/')[1];
+        } else if (this.currentRoute.includes('/tag/')) {
+          this.routeType = 'tag';
+          this.routeName = this.currentRoute.split('/tag/')[1];
+        } else {
+          this.routeType = 'recipe';
+          this.routeName = '';
+        }
+      }
+    });
+  }
 }

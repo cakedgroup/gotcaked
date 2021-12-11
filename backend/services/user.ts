@@ -62,9 +62,13 @@ export function updateUser(id: string, newUser: User): Promise<UserPublic> {
 
       //Check Password
       if (newUser.password) {
-        bcrypt.hash(newUser.password, 10).then((hash) => (user.password = hash));
+        console.log("Password changed");
+        bcrypt.hash(newUser.password, 10).then((hash) => {
+          user.password = hash
+          userDAO.updateUser(user).then((user) => resolve(userTransformer(user))).catch(() => reject(new Error("Error Updating User")));
+          return;
+        });
       }
-
       //Update User in DB
       userDAO.updateUser(user).then((user) => resolve(userTransformer(user))).catch(() => reject(new Error("Error Updating User")));
     }).catch(() => reject(new Error("User not found")));

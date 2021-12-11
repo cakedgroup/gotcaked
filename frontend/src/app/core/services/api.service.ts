@@ -39,11 +39,19 @@ export class ApiService {
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user);
+    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`, user, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  deleteUser(userID: string): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/users/${userID}`, { headers: this.authService.createAuthorizationHeader() });
   }
 
   getLikedRecipesFromUser(userID: string): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${this.baseUrl}/users/${userID}/liked/`);
+  }
+
+  updateUserPassword(userID: string, password: string): Observable<User> {
+    return this.http.patch<User>(`${this.baseUrl}/users/${userID}`, { "password": password }, { headers: this.authService.createAuthorizationHeader() });
   }
 
   //
@@ -138,6 +146,18 @@ export class ApiService {
 
   downVoteRecipe(recipeID: string): Observable<Recipe> {
     return this.http.post<Recipe>(`${this.baseUrl}/recipes/${recipeID}/rating`, { "vote": -1 }, { headers: this.authService.createAuthorizationHeader() });
+  }
+
+  getRandomRecipe(): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`);
+  }
+
+  getRandomRecipeByCategory(categoryId: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`, { params: { category: categoryId } });
+  }
+
+  getRandomRecipeByTag(tagId: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.baseUrl}/recipes/random`, { params: { tag: tagId } });
   }
 
   //
