@@ -59,3 +59,7 @@
   gap: 10px;
   flex: 49%;
 }
+
+.picture-upload{
+  margin: auto;
+}

@@ -15,6 +15,7 @@ import { PictureUploaderComponent } from './components/picture-uploader/picture-
 import { SuccessMessageComponent } from './components/success-message/success-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { FormInputComponent } from './components/form-input/form-input.component';
+import { UserPictureUploaderComponent } from './components/user-picture-uploader/user-picture-uploader.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FormInputComponent } from './components/form-input/form-input.component
     PictureUploaderComponent,
     SuccessMessageComponent,
     ErrorMessageComponent,
-    FormInputComponent
+    FormInputComponent,
+    UserPictureUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { FormInputComponent } from './components/form-input/form-input.component
     PictureUploaderComponent,
     SuccessMessageComponent,
     ErrorMessageComponent,
-    FormInputComponent
+    FormInputComponent,
+    UserPictureUploaderComponent
   ]
 })
 export class SharedModule {
