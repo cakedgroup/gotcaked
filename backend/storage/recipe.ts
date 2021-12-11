@@ -1,5 +1,3 @@
-import { rejects } from 'assert';
-import { sqlite3 } from 'sqlite3';
 import { Ingredient, Rating, RatingCount, Recipe, RecipePicture } from '../models/recipe';
 import { sqlPager } from '../util/sql';
 import { generateUUID } from "../util/uuid";

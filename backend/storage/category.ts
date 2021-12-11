@@ -1,8 +1,7 @@
 import { Category } from '../models/category';
-import { generateUUID } from "../util/uuid";
 import { db } from './db';
 
-export function createCategory(category : Category): Promise<Category> {
+export function createCategory(category: Category): Promise<Category> {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO Category (name, description) VALUES (?, ?)`, [category.name, category.description], (err) => {
             if (err) {
@@ -55,7 +54,7 @@ export function getCategorys(): Promise<Category[]> {
     });
 }
 
-export function updateCategory(name: string, newCategory : Category): Promise<Category> {
+export function updateCategory(name: string, newCategory: Category): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
         db.run(`UPDATE Category SET name = ?, description = ? WHERE name = ?`, [newCategory.name, newCategory.description, name], (err) => {
             if (err) {
