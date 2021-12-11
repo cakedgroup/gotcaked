@@ -790,6 +790,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tag'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - tags
@@ -809,8 +815,18 @@ paths:
             application/json: 
               schema:
                   $ref: '#/components/schemas/Tag' 
-        '400':
-          description: 'invalid input, object invalid'    
+        '422':
+          description: 'invalid input, object invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /tags/{name}:
     get:
       tags:
@@ -820,12 +836,12 @@ paths:
         Simply returns a specifc tag.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific tag
+          description: Name of one specific tag
           schema:
             type: string
-            format: uuid
+            format: name
       responses:
         '200':
           description: Get tag
@@ -835,6 +851,10 @@ paths:
                 $ref: '#/components/schemas/Tag'
         '404':
           description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - tags
@@ -843,17 +863,27 @@ paths:
         Simply delete a specific tag.
       parameters:
         - in: path
-          name: id
+          name: name
           required: true
-          description: Id of one specific tag to update
+          description: Name of one specific tag to update
           schema:
             type: string
-            format: uuid
+            format: name
       responses:
         '204':
           description: Successfully deleted
         '404':
-          description: ID not found        
+          description: ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /tags/{name}/recipes:
     get:
       tags:
@@ -879,6 +909,10 @@ paths:
                   $ref: '#/components/schemas/Recipe'
         '404':
           description: Tag not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users:
     get:
       description: |
