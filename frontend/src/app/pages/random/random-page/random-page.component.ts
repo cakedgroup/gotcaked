@@ -24,6 +24,9 @@ export class RandomPageComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.type = params.type;
       this.name = params.name;
+      if (this.type === "recipe") {
+        this.type = "all Categories and Tags";
+      }
       this.loadRandomRecipe();
     });
   }
