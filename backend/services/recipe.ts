@@ -1,5 +1,6 @@
 import fileUpload from 'express-fileupload';
 import { Rating, RatingCount, Recipe, RecipeSmall } from '../models/recipe';
+import { Tag } from '../models/tag';
 import * as categoryDAO from '../storage/category';
 import * as commentDAO from '../storage/comment';
 import * as recipeDAO from '../storage/recipe';
@@ -26,19 +27,11 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
                             reject(err);
                         });
                     });
-                    //Create all tags and add them to recipe
-                    recipe.tags.forEach(tag => {
-                        //Create tag if not exists
-                        tagDAO.createTag(tag).then().catch(err => {
-                            //Dont catch error (tag already exists)
-                        }).finally(() => {
-                            //Add tag to recipe
-                            tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
-                                reject(err);
-                            });
-                        });
+                    addTagsToRecipe(recipe.id, recipe.tags).then(() => {
+                        resolve(recipe);
+                    }).catch(err => {
+                        reject(err);
                     });
-                    resolve(recipe);
                 }).catch(error => {
                     reject(error);
                 });
@@ -170,7 +163,6 @@ export function deleteRecipe(recipeID: string): Promise<void> {
         //Check if recipe exists
         recipeDAO.getRecipe(recipeID).then(recipe => {
             if (recipe) {
-                //TODO Delete all ratings
                 Promise.all([
                     commentDAO.deleteAllComments(recipeID),
                     recipeDAO.deleteAllIngredients(recipeID),
@@ -243,24 +235,11 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                                         reject(err);
                                     });
                                 });
-                                //Create all tags and add them to recipe
-                                recipe.tags.forEach(tag => {
-                                    //Create tag if not exists
-                                    tagDAO.createTag(tag).then().catch(err => {
-                                        //Dont catch error (tag already exists)
-                                    }).finally(() => {
-                                        //Add tag to recipe
-                                        tagDAO.getRecipeTag(tag.name, recipe.id).then(recipeTag => {
-                                            if (!recipeTag) {
-                                                tagDAO.addRecipeTag(recipe.id, tag.name).catch(err => {
-                                                    reject(err);
-                                                });
-
-                                            }
-                                        });
-                                    });
+                                addTagsToRecipe(recipeID, recipe.tags).then(() => {
+                                    resolve(recipe);
+                                }).catch(err => {
+                                    reject(err);
                                 });
-                                resolve(recipe);
                             });
                         }).catch(err => {
                             reject(err);
@@ -478,5 +457,27 @@ function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
             });
         }
         resolve(allRecipes);
+    });
+}
+
+function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        //Create all tags and add them to recipe
+        tags.forEach(tag => {
+            //Create tag if not exists
+            tagDAO.createTag(tag).then().catch(err => {
+                //Dont catch error (tag already exists)
+            }).finally(() => {
+                //Add tag to recipe
+                tagDAO.getRecipeTag(tag.name, recipeId).then(recipeTag => {
+                    if (!recipeTag) {
+                        tagDAO.addRecipeTag(recipeId, tag.name).catch(err => {
+                            reject(err);
+                        });
+                    }
+                });
+            });
+        });
+        resolve();
     });
 }
