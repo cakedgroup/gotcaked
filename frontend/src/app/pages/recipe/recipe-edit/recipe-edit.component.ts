@@ -88,9 +88,13 @@ export class RecipeEditComponent implements OnInit {
       } else {
         this.success = true;
       }
-    }, err => {
-      this.errorMessage = 'Error updating recipe ' + err.error.message;
+    }, error => {
       this.error = true;
+      if (error.error.errors) {
+        this.errorMessage = error.error.errors[0].msg;
+      } else {
+        this.errorMessage = error.error.message;
+      }
     });
   }
 
@@ -100,9 +104,13 @@ export class RecipeEditComponent implements OnInit {
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.recipe.id, file).subscribe(recipe => {
       this.success = true;
-    }, err => {
-      this.errorMessage = 'Error uploading picture ' + err.error.message;
+    }, error => {
       this.error = true;
+      if (error.error.errors) {
+        this.errorMessage = error.error.errors[0].msg;
+      } else {
+        this.errorMessage = error.error.message;
+      }
     });
   }
 
@@ -114,9 +122,13 @@ export class RecipeEditComponent implements OnInit {
     pictureURIs.forEach(pictureURI => {
       this.apiService.deleteRecipePicture(this.recipe.id, pictureURI).subscribe(recipe => {
         this.success = true;
-      }, err => {
-        this.errorMessage = 'Error deleting picture ' + err.error.message;
+      }, error => {
         this.error = true;
+        if (error.error.errors){
+          this.errorMessage = error.error.errors[0].msg;
+        } else {
+          this.errorMessage = error.error.message;
+        }
       });
     });
   }

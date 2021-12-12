@@ -16,6 +16,7 @@ export class RecipeUploadComponent {
   errorMessage: string = '';
   success: boolean = false;
   error: boolean = false;
+  recipeUploaded: boolean = false;
 
   //Temp Objects
   tempRecipe: RecipeCreate = {
@@ -55,25 +56,42 @@ export class RecipeUploadComponent {
   // Recipe Stuff
   //
   createRecipe(recipe: RecipeCreate) {
-    this.apiService.createRecipe(recipe).subscribe(recipe => {
-      this.createdRecipe = recipe;
-      if (this.pictureFiles.length > 0) {
-        this.addPictureHandler();
-      } else {
-        this.success = true;
-      }
-    }, err => {
-      this.errorMessage = 'Failed to create recipe: ' + err.error.message;
+    if (recipe.category_name) {
+      this.apiService.createRecipe(recipe).subscribe(recipe => {
+        this.createdRecipe = recipe;
+        this.recipeUploaded = true;
+        if (this.pictureFiles.length > 0) {
+          this.addPictureHandler();
+        } else {
+          this.success = true;
+        }
+      }, error => {
+        this.error = true;
+        if (error.error.errors) {
+          this.errorMessage = error.error.errors[0].msg;
+          if (this.errorMessage.includes('string' || 'numeric')) {
+            this.errorMessage = error.error.errors[1].msg;
+          }
+        } else {
+          this.errorMessage = error.error.message;
+        }
+      });
+    } else {
       this.error = true;
-    });
+      this.errorMessage = 'Category is required';
+    }
   }
 
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.createdRecipe.id, file).subscribe(recipe => {
       this.success = true;
-    }, err => {
-      this.errorMessage = 'Failed to upload picture';
+    }, error => {
       this.error = true;
+      if (error.error.errors) {
+        this.errorMessage = error.error.errors[0].msg;
+      } else {
+        this.errorMessage = error.error.message;
+      }
     });
   }
 
