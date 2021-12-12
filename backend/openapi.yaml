@@ -13,16 +13,16 @@ tags:
   - name: tags
     description: tag based requests
   - name: users
-    description: tag based users
+    description: user based requests
   - name: auth
-    description: tag based auth
+    description: auth based requests
 servers:
   - url: 'https://gotcaked.eu/api'
     description: production
   - url: 'https://dev.gotcaked.eu/api'
     description: development - live
   - url: 'http://127.0.0.1:3000/api'
-    description: development
+    description: development - local
 paths:
   /:
     get:
@@ -93,7 +93,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
+                  $ref: '#/components/schemas/RecipeSmall'
         '500':
           description: Internal Server Error
           content:
@@ -129,6 +129,12 @@ paths:
           description: 'Unauthorized'
           content:
             application/json: 
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
   /recipes/{id}:
@@ -192,6 +198,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: ID not found
           content:
@@ -223,6 +235,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -316,6 +334,12 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}/comments/{commentId}:
     get:
       tags:
@@ -387,6 +411,12 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}/picture:
     patch:
       tags:
@@ -421,6 +451,12 @@ paths:
                 $ref: '#/components/schemas/Recipe'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -466,6 +502,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -532,6 +574,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/{id}/ratingStatus:
     get:
       tags:
@@ -566,6 +620,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /recipes/random:
     get:
       tags:
@@ -596,7 +656,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
+                  $ref: '#/components/schemas/RecipeSmall'
         '404':
           description: Recipe not found
           content:
@@ -652,6 +712,12 @@ paths:
                 $ref: '#/components/schemas/InputError'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -722,6 +788,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - categories
@@ -747,6 +825,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -833,6 +917,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /tags/{name}:
     get:
       tags:
@@ -886,6 +976,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -972,6 +1068,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{id}:
     get:
       description: |
@@ -1040,6 +1142,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - users
@@ -1065,6 +1179,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -1169,6 +1289,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: ID not found
           content:
@@ -1200,6 +1326,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Forbidden'
           content:
             application/json:
               schema:
@@ -1294,10 +1426,13 @@ components:
           example: User123
         description:
           type: string
-          example: Hello..
+          example: Hello me is user
         picture_uri:
           type: string
           example: /static/pictures/users/{id}/pb.jpg
+        email:
+          type: string
+          example: user@gotcaked.eu
     UserCreate:
       type: object
       required:
@@ -1314,6 +1449,9 @@ components:
         password:
           type: string
           example: mySecretPassword
+        description:
+          type: string
+          example: Hello me is user
     UserUpdate:
       type: object
       required:
@@ -1326,9 +1464,9 @@ components:
         name:
           type: string
           example: ChangedMyCoolUserName
-        oldPassowrd:
+        description:
           type: string
-          example: mySecretPassword
+          example: Hello me is user after update
         password:
           type: string
           example: myNewSpecialPassword
@@ -1347,12 +1485,12 @@ components:
     LoginJWT:
       type: object
       properties:
-        jwt:
+        token:
           type: string
           example: mySpecialJWTeyWithUserInformation....
         status:
           type: string
-          example: logged in successfully
+          example: success
     Logout:
       type: object
       properties:
@@ -1364,7 +1502,7 @@ components:
       properties:
         status:
           type: string
-          example: logged out successfully
+          example: success
     Recipe:
       type: object
       required: 
@@ -1395,34 +1533,76 @@ components:
               unit:
                 type: string
                 example: g
+        time:
+          type: number
+          example: 30
+          format: int32
+        difficulty:
+          type: string
+          example: easy
         preparation:
           type: string
           example: Go to the Kitchen...
-        rating:
-          type: number
-          properties:
-            up:
-              type: number
-              example: 10
-            down:
-              type: number
-              example: 2
-        pictures:
+        picture_uri:
           type: array
           items:
             type: string
-            example: /static/pictures/thisRecipe/pic_01.jpg
+            example: /files/pictures/thisRecipe/pic_01.jpg
         tags:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-        category:
-          type: object
-          $ref: '#/components/schemas/Category'
+        category_name:
+          type: string
+          example: Dessert
+        user_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    RecipeSmall:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        time:
+          type: number
+          example: 30
+          format: int32
+        difficulty:
+          type: string
+          example: easy
+        picture_uri:
+          type: string
+          example: /files/pictures/thisRecipe/pic_01.jpg
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        category_name:
+          type: string
+          example: Dessert
+        user_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
     RecipeCreate:
       type: object
       required: 
         - name
+        - ingredients
+        - tags
+        - preparation
+        - difficulty
+        - time
+        - category_name
       properties:
         name:
           type: string
@@ -1441,9 +1621,23 @@ components:
               quantity:
                 type: string
                 example: 200g
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
         preparation:
           type: string
           example: Go to the Kitchen...
+        difficulty:
+          type: string
+          example: easy
+        time:
+          type: number
+          example: 30
+          format: int32
+        category_name:
+          type: string
+          example: Dessert
     Comment:
       type: object
       required:
@@ -1491,7 +1685,6 @@ components:
       type: object
       required:
         - name
-        - description
       properties:
         name:
           type: string
