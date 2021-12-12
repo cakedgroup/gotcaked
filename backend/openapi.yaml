@@ -50,13 +50,13 @@ paths:
                   status: /status
   /status:
     get:
-      description: Returns a Basic Informations.
+      description: Returns a Basic Information.
       summary: Current Backend Status.
       tags:
         - "Status"
       responses:
         '200':
-          description: Basic Informations.
+          description: Basic Information.
           content:
             application/json: 
               schema:
@@ -728,7 +728,7 @@ paths:
         - categories
       summary: Get a specific category
       description: |
-        Simply returns a specifc category.
+        Simply returns a specific category.
       parameters:
         - in: path
           name: name
@@ -929,7 +929,7 @@ paths:
         - tags
       summary: Get a specific tag
       description: |
-        Simply returns a specifc tag.
+        Simply returns a specific tag.
       parameters:
         - in: path
           name: name
@@ -1364,7 +1364,7 @@ paths:
     post:
       summary: Adds JWT Key to Blacklist
       description: |
-        To "Logout" a User, the jwt key will be blacklistet
+        To "Logout" a User, the jwt key will be blacklisted
       tags:
         - auth
       requestBody:
@@ -1429,7 +1429,7 @@ components:
           example: Hello me is user
         picture_uri:
           type: string
-          example: /static/pictures/users/{id}/pb.jpg
+          example: /files/img/users/840863ef-1eff-42e0-98ee-57b6ff8d8c58.png
         email:
           type: string
           example: user@gotcaked.eu
@@ -1547,7 +1547,7 @@ components:
           type: array
           items:
             type: string
-            example: /files/pictures/thisRecipe/pic_01.jpg
+            example: /files/img/recipes/840863ef-1eff-42e0-98aw-57b6ff8d8c58.jpg
         tags:
           type: array
           items:
@@ -1581,7 +1581,7 @@ components:
           example: easy
         picture_uri:
           type: string
-          example: /files/pictures/thisRecipe/pic_01.jpg
+          example: /files/img/recipes/840863ef-1eff-42e0-98aw-57b6ff8d8c58.jpg
         tags:
           type: array
           items:
