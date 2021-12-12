@@ -25,6 +25,7 @@
           {{ user.name }}
         </p>
         <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
+        <p class="recipe-description-item">{{ recipe.time }} Min</p>
         <p class="recipe-description-item">{{ recipe.difficulty }}</p>
         <p class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
           {{ recipe.category_name }}
