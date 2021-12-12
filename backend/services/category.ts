@@ -25,7 +25,18 @@ export function getCategoryByName(name: string): Promise<Category> {
  * @returns Promise with created category
  */
 export function createCategory(category: Category): Promise<Category> {
-    return categoryDAO.createCategory(category);
+    return new Promise<Category>((resolve, reject) => {
+        categoryDAO.getCategory(category.name).then(category => {
+            reject(new Error('Category already exists'));
+        }).catch(error => {
+            categoryDAO.createCategory(category).then(category => {
+                resolve(category);
+            }
+            ).catch(error => {
+                reject(error);
+            });
+        });
+    });
 }
 
 /**
