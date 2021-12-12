@@ -50,7 +50,6 @@ export class SettingsComponent implements OnInit {
   //
   informationHandler() {
     this.updateUser();
-    this.updateUserPicture();
   }
 
   pictureChangeHandler(file: File) {
@@ -74,8 +73,12 @@ export class SettingsComponent implements OnInit {
   updateUser() {
     this.apiService.updateUser(this.user).subscribe(user => {
       this.user = user;
-      this.successMessage = "Successfully updated User";
-      this.setSuccessInfo();
+      if (this.pictureFile){
+        this.updateUserPicture();
+      } else {
+        this.successMessage = "Successfully updated User";
+        this.setSuccessInfo();
+      }
     },
       error => {
         this.setErrorInfo();
@@ -91,7 +94,7 @@ export class SettingsComponent implements OnInit {
         this.setSuccessInfo();
       }, error => {
         this.setErrorInfo();
-        this.errorMessage = errorHandler(error);
+        this.errorMessage = error.error + "(Max. Size: 2MB)";
       });
     }
   }

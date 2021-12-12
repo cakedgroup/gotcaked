@@ -103,7 +103,7 @@ export class RecipeEditComponent implements OnInit {
       this.success = true;
     }, error => {
       this.error = true;
-      this.errorMessage = errorHandler(error);
+      this.errorMessage = error.error + "(Max. Size: 2MB)";
     });
   }
 
