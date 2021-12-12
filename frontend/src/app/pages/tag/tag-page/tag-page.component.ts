@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
-import { Tag } from 'src/app/models/tag.model';
 import { Recipe } from '../../../models/recipe.model';
 
 @Component({
@@ -13,7 +12,7 @@ export class TagPageComponent implements OnInit {
   tag: string;
   recipes: Recipe[];
 
-  constructor(private apiService: ApiService, private router : Router, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getParams();

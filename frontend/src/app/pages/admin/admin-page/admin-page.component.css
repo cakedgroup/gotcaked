@@ -1,6 +1,5 @@
 .settings-container {
   display: flex;
-  flex-wrap: row wrap;
 }
 
 .empty-div {
@@ -44,7 +43,6 @@
 
 .form-button-container {
   display: flex;
-  flex-wrap: row wrap;
   justify-content: center;
   gap: 10px;
 }

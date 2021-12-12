@@ -1,1 +1,36 @@
-<p>about-page works!</p>
+<app-content-header title="About Page"></app-content-header>
+
+<div class="form-container">
+  <p class="about-text">
+    This is a simple about page.
+  </p>
+
+  <h1 class="status-title">Current Status-Statistics</h1>
+  <hr class="line">
+  <table class="status-table" *ngIf="status">
+    <tr>
+      <th>Type</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>User-Count</td>
+      <td>{{status.userCount}}</td>
+    </tr>
+    <tr>
+      <td>Recipe-Count</td>
+      <td>{{status.recipeCount}}</td>
+    </tr>
+    <tr>
+      <td>Categories-Count</td>
+      <td>{{status.categoriesCount}}</td>
+    </tr>
+    <tr>
+      <td>Tags-Count</td>
+      <td>{{status.tagsCount}}</td>
+    </tr>
+    <tr>
+      <td>Comments-Count</td>
+      <td>{{status.commentsCount}}</td>
+    </tr>
+  </table>
+</div>

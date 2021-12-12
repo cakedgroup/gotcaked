@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
+import { errorHandler } from '../../../core/utils/errorHandler';
 import { Recipe, RecipeCreate } from '../../../models/recipe.model';
 
 @Component({
@@ -16,6 +17,7 @@ export class RecipeUploadComponent {
   errorMessage: string = '';
   success: boolean = false;
   error: boolean = false;
+  recipeUploaded: boolean = false;
 
   //Temp Objects
   tempRecipe: RecipeCreate = {
@@ -55,25 +57,31 @@ export class RecipeUploadComponent {
   // Recipe Stuff
   //
   createRecipe(recipe: RecipeCreate) {
-    this.apiService.createRecipe(recipe).subscribe(recipe => {
-      this.createdRecipe = recipe;
-      if (this.pictureFiles.length > 0) {
-        this.addPictureHandler();
-      } else {
-        this.success = true;
-      }
-    }, err => {
-      this.errorMessage = 'Failed to create recipe: ' + err.error.message;
+    if (recipe.category_name) {
+      this.apiService.createRecipe(recipe).subscribe(recipe => {
+        this.createdRecipe = recipe;
+        this.recipeUploaded = true;
+        if (this.pictureFiles.length > 0) {
+          this.addPictureHandler();
+        } else {
+          this.success = true;
+        }
+      }, error => {
+        this.error = true;
+        this.errorMessage = errorHandler(error);
+      });
+    } else {
       this.error = true;
-    });
+      this.errorMessage = 'Category is required';
+    }
   }
 
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.createdRecipe.id, file).subscribe(recipe => {
       this.success = true;
-    }, err => {
-      this.errorMessage = 'Failed to upload picture';
+    }, error => {
       this.error = true;
+      this.errorMessage = errorHandler(error);
     });
   }
 

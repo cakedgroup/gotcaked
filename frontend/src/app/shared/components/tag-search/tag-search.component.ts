@@ -29,8 +29,10 @@ export class TagSearchComponent implements OnInit {
   }
 
   addTag(tag: Tag) {
-    this.tagSelected.emit(tag);
-    this.tempTag.name = "";
-    this.tempTag.description = "";
+    if (tag.name.length > 0) {
+      this.tagSelected.emit(tag);
+      this.tempTag.name = "";
+      this.tempTag.description = "";
+    }
   }
 }

@@ -1,0 +1,31 @@
+.form-container {
+  max-width: 1200px;
+}
+
+.status-table {
+  width: 100%;
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  text-align: center;
+  margin-left: -5%;
+
+}
+
+.status-title {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 24pt;
+  text-align: center;
+  margin-bottom: -10px;
+}
+
+.about-text {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  text-align: center;
+  margin-top: -20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: break-word;
+  word-wrap: break-word;
+}

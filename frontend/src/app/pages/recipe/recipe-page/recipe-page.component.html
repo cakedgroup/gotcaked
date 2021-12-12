@@ -8,7 +8,6 @@
       <h1>Picture</h1>
       <hr class="line" />
       <div class="recipe-image-box">
-        <!--TOOD SLIDESHOW-->
         <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
           src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
       </div>
@@ -21,14 +20,15 @@
       <p class="recipe-text">{{ recipe.description }}</p>
       <!-- Stat Tags -->
       <div class="recipe-description-tags">
-        <p *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
+        <a *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
           {{ user.name }}
-        </p>
+        </a>
         <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
+        <p class="recipe-description-item">{{ recipe.time }} Min</p>
         <p class="recipe-description-item">{{ recipe.difficulty }}</p>
-        <p class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
+        <a class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
           {{ recipe.category_name }}
-        </p>
+        </a>
         <p class="recipe-description-item">{{ recipe.rating }} Votes</p>
       </div>
       <!-- Recipe Interactions (Voting, Edit, Delete) -->
@@ -71,11 +71,7 @@
     <div class="flex-item-container">
       <h1>Tags</h1>
       <hr class="line" />
-      <div class="recipe-tags-list">
-        <p class="recipe-tags-item" *ngFor="let tag of recipe.tags" [routerLink]="['/tag', tag.name]">
-          {{ tag.name }}
-        </p>
-      </div>
+      <app-tag-item [tags]="recipe.tags"></app-tag-item>
     </div>
   </div>
 

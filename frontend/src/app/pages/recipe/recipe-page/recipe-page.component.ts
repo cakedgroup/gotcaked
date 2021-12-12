@@ -137,6 +137,8 @@ export class RecipePageComponent implements OnInit {
   getRatingStatus() {
     this.apiService.getUserRatingStatus(this.recipeId).subscribe(data => {
       this.userRating = data;
+    }, error => {
+      this.userRating.vote = 0;
     });
   }
 

@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
@@ -6,9 +6,10 @@ import { Rating, Recipe, UserRating } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { User, UserRegister } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
-import { RecipeCreate } from '../../models/recipe.model';
-import { AuthService } from './auth.service';
 import { RecipeComment } from '../../models/comment.model';
+import { RecipeCreate } from '../../models/recipe.model';
+import { Status } from '../../models/status.model';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -23,8 +24,8 @@ export class ApiService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  getStatus(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/status`);
+  getStatus(): Observable<Status> {
+    return this.http.get<Status>(`${this.baseUrl}/status`);
   }
 
   //

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { UserLogin } from 'src/app/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -30,13 +31,18 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginHandler(): void {
-    this.authService.userLogin(this.userLogin).subscribe(jwt => {
-      this.authService.setJWTToken(jwt.token);
-      this.router.navigate(['/']);
-      this.error = false;
-    }, error => {
+    if (this.userLogin.email && this.userLogin.password) {
+      this.authService.userLogin(this.userLogin).subscribe(jwt => {
+        this.authService.setJWTToken(jwt.token);
+        this.router.navigate(['/']);
+        this.error = false;
+      }, error => {
+        this.error = true;
+        this.errorMessage = errorHandler(error);
+      });
+    } else {
       this.error = true;
-      this.errorMessage = error.error.message;
-    });
+      this.errorMessage = "Empty E-Mail or Password";
+    }
   }
 }

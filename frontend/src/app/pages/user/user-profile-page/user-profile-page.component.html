@@ -1,5 +1,7 @@
-<app-user-profile-header [user]="user"></app-user-profile-header>
+<app-user-profile-header *ngIf="user" [user]="user"></app-user-profile-header>
+
+<app-no-content *ngIf="recipes.length === 0" message="There are not Recipes for this User yet..."></app-no-content>
 
 <div class="recipe-content">
-    <app-recipe-preview *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-preview>
+  <app-recipe-preview *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-preview>
 </div>

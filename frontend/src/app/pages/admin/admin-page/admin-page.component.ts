@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { Category } from 'src/app/models/category.model';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
@@ -75,15 +76,23 @@ export class AdminPageComponent implements OnInit {
 
   //Add a new Category at the API
   addCategory(category: Category) {
-    this.apiService.createCategory(category).subscribe(category => {
-      this.loadCategories();
-      this.resetErrorMessages();
-      this.clearCategory();
-      this.success = false;
-    }, error => {
+    if (category.name.length > 0 && category.description.length > 0) {
+      this.apiService.createCategory(category).subscribe(category => {
+        this.loadCategories();
+        this.resetErrorMessages();
+        this.clearCategory();
+        this.success = false;
+      }, error => {
+        this.failedCategoryRequest = true;
+        this.success = false;
+        this.failedErrorMessage = errorHandler(error);
+      });
+    } else {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Creating Category " + error.error.message;;
-    });
+      this.success = false;
+      this.failedErrorMessage = "Error Creating Category: Category-Name and Description must not be empty";
+    }
+
   }
 
   //Update an existing Category at the API
@@ -94,7 +103,8 @@ export class AdminPageComponent implements OnInit {
       this.success = true;
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Updating Category " + error.error.message;;
+      this.success = false;
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 
@@ -105,7 +115,8 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Deleting Category " + error.error.message;;
+      this.success = false;
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 
@@ -123,14 +134,21 @@ export class AdminPageComponent implements OnInit {
 
   //Add a new Tag at the API
   addTag(tag: Tag) {
-    this.apiService.createTag(tag).subscribe(tag => {
-      this.loadTags();
-      this.resetErrorMessages();
-      this.clearTag();
-    }, error => {
+    if (tag.name.length > 0 && tag.description.length > 0) {
+      this.apiService.createTag(tag).subscribe(tag => {
+        this.loadTags();
+        this.resetErrorMessages();
+        this.clearTag();
+      }, error => {
+        this.failedTagRequest = true;
+        this.success = false;
+        this.failedErrorMessage = errorHandler(error);
+      });
+    } else {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Creating Tag " + error.error.message;
-    });
+      this.success = false;
+      this.failedErrorMessage = "Error Creating Tag: Tag-Name and Description must not be empty";
+    }
   }
 
   //Delete an existing Tag at the API
@@ -140,7 +158,8 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Deleting Tag " + error.error.message;;
+      this.success = false;
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 

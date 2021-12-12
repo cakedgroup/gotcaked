@@ -1,11 +1,10 @@
 <div class="header-box">
-    <img class="user-image" *ngIf="user.picture_uri; else noImage" src="{{this.baseUrl + user.picture_uri}}"
-        alt="Image">
-    <h1 class="header-title">{{ user.name }}</h1>
+  <img class="user-image" *ngIf="user.picture_uri; else noImage" src="{{this.baseUrl + user.picture_uri}}" alt="Image">
+  <h1 class="header-title">{{ user.name }}</h1>
 </div>
 
 <app-content-header *ngIf="user.description" title="{{user.description}}"></app-content-header>
 
 <ng-template #noImage>
-    <img class="user-image" src="/assets/icons/user_icon.svg" alt="Image">
+  <img class="user-image" src="/assets/icons/user_icon.svg" alt="Image">
 </ng-template>
