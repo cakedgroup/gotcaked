@@ -1,6 +1,6 @@
 {
-  "name": "GotCaked",
-  "version": "0.0.1",
+  "name": "GotCaked Backend",
+  "version": "0.0.2",
   "description": "Restful API for GotCaked",
   "main": "app.ts",
   "scripts": {
