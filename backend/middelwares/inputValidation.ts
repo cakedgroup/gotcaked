@@ -56,7 +56,7 @@ export const tagValidationChain = [
  * @description Schema for category validation
  */
 export const categoryValidationChain = [
-    body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
+    body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required").isAlphanumeric().withMessage("Name must be alphanumeric"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
 
