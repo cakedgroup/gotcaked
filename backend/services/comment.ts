@@ -32,17 +32,17 @@ export function createComment(comment: Comment): Promise<Comment> {
 
 /**
  * Get all comments for a recipe
- * @param recipeId Id of the recipe
+ * @param recipe_id Id of the recipe
  * @param limit limit of comments to be returned
  * @param offset offset of comments to be returned
  * @returns Promise with the comments
  */
-export function getAllComments(recipeId: string, limit: number, offset: number): Promise<Comment[]> {
+export function getAllComments(recipe_id: string, limit: number, offset: number): Promise<Comment[]> {
     //Check if recipe exits
     return new Promise<Comment[]>((resolve, reject) => {
-        recipeDAO.getRecipe(recipeId).then(recipe => {
+        recipeDAO.getRecipe(recipe_id).then(recipe => {
             if (recipe) {
-                commentDAO.getAllComments(recipeId, limit, offset).then(comments => {
+                commentDAO.getAllComments(recipe_id, limit, offset).then(comments => {
                     resolve(comments);
                 }).catch(error => {
                     reject(error);
@@ -58,16 +58,16 @@ export function getAllComments(recipeId: string, limit: number, offset: number):
 
 /**
  * Get a comment by id
- * @param commentId comment id
- * @param recipeId (optional) recipe id
+ * @param comment_id comment id
+ * @param recipe_id (optional) recipe id
  * @returns Promise with the comment
  */
-export function getComment(commentId: string, recipeId?: string): Promise<Comment> {
-    if (recipeId) {
+export function getComment(comment_id: string, recipe_id?: string): Promise<Comment> {
+    if (recipe_id) {
         return new Promise<Comment>((resolve, reject) => {
-            recipeDAO.getRecipe(recipeId).then(recipe => {
+            recipeDAO.getRecipe(recipe_id).then(recipe => {
                 if (recipe) {
-                    commentDAO.getComment(commentId).then(comment => {
+                    commentDAO.getComment(comment_id).then(comment => {
                         resolve(comment);
                     }).catch(error => {
                         reject(new Error("Comment not found"));
@@ -80,15 +80,15 @@ export function getComment(commentId: string, recipeId?: string): Promise<Commen
             });
         });
     } else {
-        return commentDAO.getComment(commentId);
+        return commentDAO.getComment(comment_id);
     }
 }
 
 /**
  * Delete a comment
- * @param commentId comment id
+ * @param comment_id comment id
  * @returns empty promise
  */
-export function deleteComment(commentId: string): Promise<void> {
-    return commentDAO.deleteComment(commentId);
+export function deleteComment(comment_id: string): Promise<void> {
+    return commentDAO.deleteComment(comment_id);
 }

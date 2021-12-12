@@ -39,12 +39,12 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
 
 /**
  * Get recipe by id
- * @param recipeID id of recipe
+ * @param recipe_id id of recipe
  * @returns Promise with recipe
  */
-export function getRecipe(recipeID: string): Promise<Recipe> {
+export function getRecipe(recipe_id: string): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
-        recipeDAO.getRecipe(recipeID).then(recipe => {
+        recipeDAO.getRecipe(recipe_id).then(recipe => {
             //Get all ingredients
             recipeDAO.getIngredients(recipe.id).then(ingredients => {
                 ingredients.forEach(ingredient => {
@@ -78,13 +78,13 @@ export function getRecipe(recipeID: string): Promise<Recipe> {
 
 /**
  * Get random recipes
- * @param categoryId category to filter recipes
+ * @param category_id category to filter recipes
  * @param tagId tag to filter recipes
  * @returns Promise with random recipe
  */
-export function getRandomRecipe(categoryId?: string, tagId?: string): Promise<RecipeSmall> {
+export function getRandomRecipe(category_id?: string, tagId?: string): Promise<RecipeSmall> {
     return new Promise<RecipeSmall>((resolve, reject) => {
-        recipeDAO.getRandomRecipe(categoryId, tagId).then(recipe => {
+        recipeDAO.getRandomRecipe(category_id, tagId).then(recipe => {
             //Get all ingredients
             recipeDAO.getIngredients(recipe.id).then(ingredients => {
                 ingredients.forEach(ingredient => {
@@ -183,22 +183,22 @@ export function getLikedRecipesFromUser(userID: string): Promise<RecipeSmall[]> 
 
 /**
  * Delete recipe by id
- * @param recipeID recipe id to delete
+ * @param recipe_id recipe id to delete
  * @returns empty promise
  */
-export function deleteRecipe(recipeID: string): Promise<void> {
+export function deleteRecipe(recipe_id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Check if recipe exists
-        recipeDAO.getRecipe(recipeID).then(recipe => {
+        recipeDAO.getRecipe(recipe_id).then(recipe => {
             if (recipe) {
                 Promise.all([
-                    commentDAO.deleteAllComments(recipeID),
-                    recipeDAO.deleteAllIngredients(recipeID),
-                    deleteAllPicturesFromRecipe(recipeID),
-                    recipeDAO.deleteAllRatingsFromRecipe(recipeID),
-                    tagDAO.deleteRecipeTagByRecipeId(recipeID)]).then(() => {
+                    commentDAO.deleteAllComments(recipe_id),
+                    recipeDAO.deleteAllIngredients(recipe_id),
+                    deleteAllPicturesFromRecipe(recipe_id),
+                    recipeDAO.deleteAllRatingsFromRecipe(recipe_id),
+                    tagDAO.deleteRecipeTagByRecipeId(recipe_id)]).then(() => {
                         //Delete Recipe
-                        recipeDAO.deleteRecipe(recipeID).then(() => {
+                        recipeDAO.deleteRecipe(recipe_id).then(() => {
                             resolve();
                         }).catch(err => {
                             reject(err);
@@ -218,19 +218,19 @@ export function deleteRecipe(recipeID: string): Promise<void> {
 
 /**
  * Delete all pictures from recipe
- * @param recipeID 
+ * @param recipe_id 
  * @returns empty promise
  */
-function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
+function deleteAllPicturesFromRecipe(recipe_id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Get all pictures and delete them on the file system and db
-        recipeDAO.getPicturesFromRecipe(recipeID).then(pictures => {
+        recipeDAO.getPicturesFromRecipe(recipe_id).then(pictures => {
             Promise.all(pictures.map(picture => {
                 fileHandler.deleteFile(picture.picture_id, "recipe").then(() => resolve()).catch(err => {
                     reject(new Error('Could not delete picture'));
                 });
             })).then(() => {
-                recipeDAO.deleteAllPicturesFromRecipe(recipeID).then(() => resolve()).catch(err => reject(err));
+                recipeDAO.deleteAllPicturesFromRecipe(recipe_id).then(() => resolve()).catch(err => reject(err));
             }).catch(err => reject(err));
         });
     });
@@ -238,17 +238,17 @@ function deleteAllPicturesFromRecipe(recipeID: string): Promise<void> {
 
 /**
  * Update recipe by id
- * @param recipeID id of recipe to update
+ * @param recipe_id id of recipe to update
  * @param updatedRecipe updated recipe
  * @returns Promise with updated recipe
  */
-export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<Recipe> {
+export function updateRecipe(recipe_id: string, updatedRecipe: Recipe): Promise<Recipe> {
     return new Promise<Recipe>((resolve, reject) => {
         //Check if category exits
         categoryDAO.getCategory(updatedRecipe.category_name).then((category) => {
             if (category) {
                 //Get current Recipe
-                recipeDAO.getRecipe(recipeID).then(recipe => {
+                recipeDAO.getRecipe(recipe_id).then(recipe => {
                     if (recipe) {
                         //Update recipe fields
                         recipe.name = updatedRecipe.name || recipe.name;
@@ -263,9 +263,9 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
                         //Update recipe
                         recipeDAO.updateRecipe(recipe).then(recipe => {
                             //Delete all ingredients
-                            recipeDAO.deleteAllIngredients(recipeID).then(() => {
+                            recipeDAO.deleteAllIngredients(recipe_id).then(() => {
                                 //Create new ingredients and create Tags and add them
-                                Promise.all([createAllIngredients(recipeID, recipe.ingredients), addTagsToRecipe(recipeID, recipe.tags)]).then(() => {
+                                Promise.all([createAllIngredients(recipe_id, recipe.ingredients), addTagsToRecipe(recipe_id, recipe.tags)]).then(() => {
                                     resolve(recipe);
                                 }).catch(err => {
                                     reject(err);
@@ -289,19 +289,19 @@ export function updateRecipe(recipeID: string, updatedRecipe: Recipe): Promise<R
 
 /**
  * Add picture to recipe
- * @param recipeID recipe id to add picture to
+ * @param recipe_id recipe id to add picture to
  * @param picture picture to add
  * @returns empty promise
  */
-export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): Promise<{}> {
+export function addPicture(recipe_id: string, picture: fileUpload.UploadedFile): Promise<{}> {
     return new Promise<{}>((resolve, reject) => {
         //Check if recipe exists
-        recipeDAO.getRecipe(recipeID).then(recipe => {
+        recipeDAO.getRecipe(recipe_id).then(recipe => {
             if (recipe) {
                 //Save Picture
                 fileHandler.saveFile(picture, "recipe").then((picture_uri) => {
-                    recipeDAO.createPicture(recipeID, picture_uri).then(() => {
-                        resolve(getRecipe(recipeID));
+                    recipeDAO.createPicture(recipe_id, picture_uri).then(() => {
+                        resolve(getRecipe(recipe_id));
                     }).catch(err => {
                         //Delete file, bc the reference was not saved to the db
                         fileHandler.deleteFile(picture_uri, "recipe")
@@ -320,25 +320,25 @@ export function addPicture(recipeID: string, picture: fileUpload.UploadedFile): 
 
 /**
  * Delete picture from recipe
- * @param recipeID recipe id to delete picture from
+ * @param recipe_id recipe id to delete picture from
  * @param pictureID picture id to delete
  * @returns empty promise
  */
-export function deletePicture(recipeID: string, pictureID: string): Promise<{}> {
+export function deletePicture(recipe_id: string, pictureID: string): Promise<{}> {
     return new Promise<{}>((resolve, reject) => {
         //Check if recipe exists
-        recipeDAO.getRecipe(recipeID).then(recipe => {
+        recipeDAO.getRecipe(recipe_id).then(recipe => {
             if (recipe) {
                 //Get Picture
-                recipeDAO.getPicturesFromRecipe(recipeID).then(pictures => {
+                recipeDAO.getPicturesFromRecipe(recipe_id).then(pictures => {
                     //Check if Picture exists in recipe
                     let pictureExists: boolean = pictures.filter(picture => picture.picture_id === pictureID).length > 0;
                     if (pictureExists) {
                         //Delete Picture
-                        recipeDAO.deletePictureFromRecipe(recipeID, pictureID).then(() => {
+                        recipeDAO.deletePictureFromRecipe(recipe_id, pictureID).then(() => {
                             //Delete file
                             fileHandler.deleteFile(pictureID, "recipe").then(() => {
-                                resolve(getRecipe(recipeID));
+                                resolve(getRecipe(recipe_id));
                             }).catch(err => {
                                 reject(new Error("Could not delete picture"));
                             });
@@ -539,11 +539,11 @@ function convertRecipeToRecipeSmall(recipes: Recipe[]): Promise<RecipeSmall[]> {
 
 /**
  * Add/Create all tags and add them to recipe
- * @param recipeId recipe id
+ * @param recipe_id recipe id
  * @param tags tags to add
  * @returns empty promise
  */
-function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
+function addTagsToRecipe(recipe_id: string, tags: Tag[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Create all tags and add them to recipe
         tags.forEach(tag => {
@@ -552,9 +552,9 @@ function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
                 //Dont catch error (tag already exists)
             }).finally(() => {
                 //Add tag to recipe
-                tagDAO.getRecipeTag(tag.name, recipeId).then(recipeTag => {
+                tagDAO.getRecipeTag(tag.name, recipe_id).then(recipeTag => {
                     if (!recipeTag) {
-                        tagDAO.addRecipeTag(recipeId, tag.name).catch(err => {
+                        tagDAO.addRecipeTag(recipe_id, tag.name).catch(err => {
                             reject(err);
                         });
                     }
@@ -567,16 +567,16 @@ function addTagsToRecipe(recipeId: string, tags: Tag[]): Promise<void> {
 
 /**
  * Create all ingredients and add them to recipe
- * @param recipeId recipe id
+ * @param recipe_id recipe id
  * @param ingredients ingredients to add
  * @returns empty promise
  */
-function createAllIngredients(recipeId: string, ingredients: Ingredient[]): Promise<void> {
+function createAllIngredients(recipe_id: string, ingredients: Ingredient[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         //Create all ingredients
         ingredients.forEach(ingredient => {
             ingredient.id = generateUUID();
-            ingredient.recipe_id = recipeId;
+            ingredient.recipe_id = recipe_id;
             //Create ingredient
             recipeDAO.createIngredient(ingredient).catch(err => {
                 reject(err);

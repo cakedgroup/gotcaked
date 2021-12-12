@@ -1,5 +1,8 @@
 import * as sqlite from 'sqlite3';
 
+/**
+ * Opens database connection and initializes tables.
+ */
 export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     if (err) {
         console.error(err.message);
@@ -9,6 +12,9 @@ export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     }
 });
 
+/**
+ * Creates all tables in database if they don't exist.
+ */
 function createTables() {
     //Create tables
     //Category

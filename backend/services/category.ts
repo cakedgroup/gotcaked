@@ -15,7 +15,7 @@ export function getAllCategories(): Promise<Category[]> {
  * @param name Name of the category
  * @returns Promise with category
  */
-export function getCategoryById(name: string): Promise<Category> {
+export function getCategoryByName(name: string): Promise<Category> {
     return categoryDAO.getCategory(name);
 }
 

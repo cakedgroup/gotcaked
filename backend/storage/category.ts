@@ -1,6 +1,11 @@
 import { Category } from '../models/category';
 import { db } from './db';
 
+/**
+ * Create new category in database
+ * @param category category to create
+ * @returns Promise with created category
+ */
 export function createCategory(category: Category): Promise<Category> {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO Category (name, description) VALUES (?, ?)`, [category.name, category.description], (err) => {
@@ -13,6 +18,11 @@ export function createCategory(category: Category): Promise<Category> {
     });
 }
 
+/**
+ * Get category by name from database
+ * @param name name of category
+ * @returns Promise with category
+ */
 export function getCategory(name: string): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
         db.get(`SELECT * FROM Category WHERE name = ?`, [name], (err, row) => {
@@ -34,6 +44,10 @@ export function getCategory(name: string): Promise<Category> {
     });
 }
 
+/**
+ * Get all categories from database
+ * @returns Promise with all categories
+ */
 export function getCategorys(): Promise<Category[]> {
     return new Promise<Category[]>((resolve, reject) => {
         db.all(`SELECT * FROM Category`, (err, rows) => {
@@ -54,6 +68,12 @@ export function getCategorys(): Promise<Category[]> {
     });
 }
 
+/**
+ * Update category in database
+ * @param name name of category
+ * @param newCategory updated category
+ * @returns Promise with updated category
+ */
 export function updateCategory(name: string, newCategory: Category): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
         db.run(`UPDATE Category SET name = ?, description = ? WHERE name = ?`, [newCategory.name, newCategory.description, name], (err) => {
@@ -66,6 +86,11 @@ export function updateCategory(name: string, newCategory: Category): Promise<Cat
     });
 }
 
+/**
+ * Delete category in database
+ * @param name name of category
+ * @returns empty Promise
+ */
 export function deleteCategory(name: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         db.run(`DELETE FROM Category WHERE name = ?`, [name], (err) => {
