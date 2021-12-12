@@ -1,5 +1,8 @@
 <app-content-header title="Random Recipe from {{type}} {{name}}"></app-content-header>
 
+
+<app-no-content *ngIf="!recipe" message="There are no Recipes for this yet..."></app-no-content>
+
 <div class="recipe-content">
   <app-recipe-preview *ngIf="recipe !== undefined" [recipe]="recipe"></app-recipe-preview>
 </div>

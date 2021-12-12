@@ -93,10 +93,16 @@ export class RecipeUploadComponent {
   }
 
   addTag(tag: Tag) {
-    //Cloning Object, to prevent using the reference
-    let tagToStore = Object.assign({}, tag);
-    this.clearInputTag();
-    this.tempRecipe.tags.push(tagToStore);
+    if (!tag.name.includes(' ')) {
+      //Cloning Object, to prevent using the
+      let tagToStore = Object.assign({}, tag);
+      this.clearInputTag();
+      this.tempRecipe.tags.push(tagToStore);
+      this.resetStatus();
+    } else {
+      this.error = true;
+      this.errorMessage = 'Tag name cannot contain spaces';
+    }
   }
 
   //

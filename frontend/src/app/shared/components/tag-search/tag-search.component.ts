@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
 
@@ -14,6 +15,8 @@ export class TagSearchComponent implements OnInit {
     name: "",
     description: "",
   };
+
+  faPlus = faPlus;
 
   constructor(private apiService: ApiService) {
   }

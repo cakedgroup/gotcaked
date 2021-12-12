@@ -134,7 +134,7 @@ export class AdminPageComponent implements OnInit {
 
   //Add a new Tag at the API
   addTag(tag: Tag) {
-    if (tag.name.length > 0 && tag.description.length > 0) {
+    if (tag.name.length > 0 && tag.description.length > 0 && !tag.name.includes(" ")) {
       this.apiService.createTag(tag).subscribe(tag => {
         this.loadTags();
         this.resetErrorMessages();
@@ -147,7 +147,7 @@ export class AdminPageComponent implements OnInit {
     } else {
       this.failedTagRequest = true;
       this.success = false;
-      this.failedErrorMessage = "Error Creating Tag: Tag-Name and Description must not be empty";
+      this.failedErrorMessage = "Error Creating Tag: Tag-Name and Description must not be empty and Tag-Name must not contain spaces";
     }
   }
 

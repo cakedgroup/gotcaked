@@ -4,4 +4,7 @@
   <datalist id="tag-search-list">
     <option *ngFor="let tag of tags" [value]="tag.name">
   </datalist>
+  <button class="action-button" (click)="addTag(tempTag)">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
 </div>

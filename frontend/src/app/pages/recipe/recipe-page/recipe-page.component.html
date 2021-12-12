@@ -9,7 +9,7 @@
       <hr class="line" />
       <div class="recipe-image-box">
         <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
-          src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
+          src="{{ this.baseUrl + recipe.picture_uri[0] }}" alt="Image" />
       </div>
     </div>
 
