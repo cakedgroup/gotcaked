@@ -13,16 +13,16 @@ tags:
   - name: tags
     description: tag based requests
   - name: users
-    description: tag based users
+    description: user based requests
   - name: auth
-    description: tag based auth
+    description: auth based requests
 servers:
   - url: 'https://gotcaked.eu/api'
     description: production
   - url: 'https://dev.gotcaked.eu/api'
     description: development - live
   - url: 'http://127.0.0.1:3000/api'
-    description: development
+    description: development - local
 paths:
   /:
     get:
@@ -50,13 +50,13 @@ paths:
                   status: /status
   /status:
     get:
-      description: Returns a Basic Informations.
+      description: Returns a Basic Information.
       summary: Current Backend Status.
       tags:
         - "Status"
       responses:
         '200':
-          description: Basic Informations.
+          description: Basic Information.
           content:
             application/json: 
               schema:
@@ -93,7 +93,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
+                  $ref: '#/components/schemas/RecipeSmall'
         '500':
           description: Internal Server Error
           content:
@@ -106,6 +106,8 @@ paths:
       summary: Creates a new recipe
       description: |
         Creates new recipe
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -130,7 +132,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}:
     get:
       tags:
@@ -165,6 +173,8 @@ paths:
       summary: Update a single recipe
       description: |
         Simply update one recipe.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -191,7 +201,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: ID not found
           content:
@@ -204,6 +220,8 @@ paths:
       summary: Delete a single recipe
       description: |
         Simply delete one recipe.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -226,7 +244,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/comments:
     get:
       tags:
@@ -277,6 +301,8 @@ paths:
       summary: Creates a new Comment for a recipe
       description: |
         Creates new comment
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -315,7 +341,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/comments/{commentId}:
     get:
       tags:
@@ -357,6 +389,8 @@ paths:
       summary: Delete a single Comment from a recipe
       description: |
         Simply delete one comment.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -386,7 +420,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/picture:
     patch:
       tags:
@@ -394,6 +434,8 @@ paths:
       summary: Update a single recipe picture
       description: |
         Simply update one recipe picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -424,7 +466,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: Recipe ID not found
           content:
@@ -437,6 +485,8 @@ paths:
       summary: Delete a single recipe picture
       description: |
         Simply delete one recipe picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -469,7 +519,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/rating:
     get:
       tags:
@@ -504,6 +560,8 @@ paths:
       summary: Creates a new rating for a recipe
       description: |
         Creates new rating
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -532,6 +590,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/ratingStatus:
     get:
       tags:
@@ -565,7 +635,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/random:
     get:
       tags:
@@ -596,7 +672,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Recipe'
+                  $ref: '#/components/schemas/RecipeSmall'
         '404':
           description: Recipe not found
           content:
@@ -630,7 +706,9 @@ paths:
         - categories
       summary: Creates a new category
       description: |
-        Creates new category
+        Creates new category (only admins are allowed)
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -655,7 +733,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '409':
           description: 'Category already exists'
           content:
@@ -668,7 +752,7 @@ paths:
         - categories
       summary: Get a specific category
       description: |
-        Simply returns a specifc category.
+        Simply returns a specific category.
       parameters:
         - in: path
           name: name
@@ -694,7 +778,9 @@ paths:
         - categories
       summary: Update a single category
       description: |
-        Simply update a specific category.
+        Simply update a specific category. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -728,12 +814,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
     delete:
       tags:
         - categories
       summary: Delete a single category
       description: |
-        Simply delete a specific category.
+        Simply delete a specific category. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -756,7 +856,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /categories/{name}/recipes:
     get:
       tags:
@@ -813,7 +919,9 @@ paths:
         - tags
       summary: Creates a new tag
       description: |
-        Creates new tags
+        Creates new Tag (only admins are allowed)
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -838,14 +946,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /tags/{name}:
     get:
       tags:
         - tags
       summary: Get a specific tag
       description: |
-        Simply returns a specifc tag.
+        Simply returns a specific tag.
       parameters:
         - in: path
           name: name
@@ -872,7 +986,9 @@ paths:
         - tags
       summary: Delete a single tag.
       description: |
-        Simply delete a specific tag.
+        Simply delete a specific tag. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: name
@@ -895,7 +1011,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /tags/{name}/recipes:
     get:
       tags:
@@ -977,7 +1099,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '409':
           description: 'User already exists'
           content:
@@ -1019,6 +1147,8 @@ paths:
       summary: Update a single user
       description: |
         Simply update one user.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1052,12 +1182,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
     delete:
       tags:
         - users
       summary: Delete a single user
       description: |
         Simply delete one user.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1080,7 +1224,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /users/{id}/recipes:
     get:
       tags:
@@ -1148,6 +1298,8 @@ paths:
       summary: Update a single user's picture
       description: |
         Simply update one user's picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1180,7 +1332,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: ID not found
           content:
@@ -1193,6 +1351,8 @@ paths:
       summary: Delete a single user's picture
       description: |
         Simply delete one user's picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1215,7 +1375,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
   /auth/login:
     post:
       summary: Returns a JWT Key
@@ -1244,7 +1410,7 @@ paths:
     post:
       summary: Adds JWT Key to Blacklist
       description: |
-        To "Logout" a User, the jwt key will be blacklistet
+        To "Logout" a User, the jwt key will be blacklisted
       tags:
         - auth
       requestBody:
@@ -1263,7 +1429,13 @@ paths:
         '400':
           description: 'No JWT Key'
 components:
-  schemas:
+  securitySchemes:
+    jwt:
+      type: apiKey
+      in: header
+      name: "jwt"
+      description: "JWT Token to Authorize User"
+  schemas:    
     Status:
       type: object
       required:
@@ -1306,10 +1478,13 @@ components:
           example: User123
         description:
           type: string
-          example: Hello..
+          example: Hello me is user
         picture_uri:
           type: string
-          example: /static/pictures/users/{id}/pb.jpg
+          example: /files/img/users/840863ef-1eff-42e0-98ee-57b6ff8d8c58.png
+        email:
+          type: string
+          example: user@gotcaked.eu
     UserCreate:
       type: object
       required:
@@ -1326,6 +1501,9 @@ components:
         password:
           type: string
           example: mySecretPassword
+        description:
+          type: string
+          example: Hello me is user
     UserUpdate:
       type: object
       required:
@@ -1338,9 +1516,9 @@ components:
         name:
           type: string
           example: ChangedMyCoolUserName
-        oldPassowrd:
+        description:
           type: string
-          example: mySecretPassword
+          example: Hello me is user after update
         password:
           type: string
           example: myNewSpecialPassword
@@ -1359,12 +1537,12 @@ components:
     LoginJWT:
       type: object
       properties:
-        jwt:
+        token:
           type: string
           example: mySpecialJWTeyWithUserInformation....
         status:
           type: string
-          example: logged in successfully
+          example: success
     Logout:
       type: object
       properties:
@@ -1376,7 +1554,7 @@ components:
       properties:
         status:
           type: string
-          example: logged out successfully
+          example: success
     Recipe:
       type: object
       required: 
@@ -1407,34 +1585,76 @@ components:
               unit:
                 type: string
                 example: g
+        time:
+          type: number
+          example: 30
+          format: int32
+        difficulty:
+          type: string
+          example: easy
         preparation:
           type: string
           example: Go to the Kitchen...
-        rating:
-          type: number
-          properties:
-            up:
-              type: number
-              example: 10
-            down:
-              type: number
-              example: 2
-        pictures:
+        picture_uri:
           type: array
           items:
             type: string
-            example: /static/pictures/thisRecipe/pic_01.jpg
+            example: /files/img/recipes/840863ef-1eff-42e0-98aw-57b6ff8d8c58.jpg
         tags:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-        category:
-          type: object
-          $ref: '#/components/schemas/Category'
+        category_name:
+          type: string
+          example: Dessert
+        user_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    RecipeSmall:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Best cake.
+        description:
+          type: string
+          example: The best cake recipe from my grandma!
+        time:
+          type: number
+          example: 30
+          format: int32
+        difficulty:
+          type: string
+          example: easy
+        picture_uri:
+          type: string
+          example: /files/img/recipes/840863ef-1eff-42e0-98aw-57b6ff8d8c58.jpg
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        category_name:
+          type: string
+          example: Dessert
+        user_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
     RecipeCreate:
       type: object
       required: 
         - name
+        - ingredients
+        - tags
+        - preparation
+        - difficulty
+        - time
+        - category_name
       properties:
         name:
           type: string
@@ -1453,9 +1673,23 @@ components:
               quantity:
                 type: string
                 example: 200g
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
         preparation:
           type: string
           example: Go to the Kitchen...
+        difficulty:
+          type: string
+          example: easy
+        time:
+          type: number
+          example: 30
+          format: int32
+        category_name:
+          type: string
+          example: Dessert
     Comment:
       type: object
       required:
@@ -1503,7 +1737,6 @@ components:
       type: object
       required:
         - name
-        - description
       properties:
         name:
           type: string
@@ -1545,6 +1778,17 @@ components:
         status:
           type: string
           example: 'error'
+    Unauthorized:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: 'You are not authorized to access this resource'
+        status:
+          type: string
+          example: 'Unauthorized'
     InputError:
       type: object
       required:
