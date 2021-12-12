@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { RecipeCreate } from '../../../models/recipe.model';
@@ -72,7 +73,7 @@ export class RecipeEditComponent implements OnInit {
         this.recipe = recipe;
         this.recipeToRecipeCreate(recipe);
       }, (error) => {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/404'], { skipLocationChange: true });
         this.errorMessage = 'Error getting recipe';
         this.error = true;
       }
@@ -88,9 +89,9 @@ export class RecipeEditComponent implements OnInit {
       } else {
         this.success = true;
       }
-    }, err => {
-      this.errorMessage = 'Error updating recipe ' + err.error.message;
+    }, error => {
       this.error = true;
+      this.errorMessage = errorHandler(error);
     });
   }
 
@@ -100,9 +101,9 @@ export class RecipeEditComponent implements OnInit {
   addPicture(file: File) {
     this.apiService.uploadRecipePicture(this.recipe.id, file).subscribe(recipe => {
       this.success = true;
-    }, err => {
-      this.errorMessage = 'Error uploading picture ' + err.error.message;
+    }, error => {
       this.error = true;
+      this.errorMessage = errorHandler(error);
     });
   }
 
@@ -114,9 +115,9 @@ export class RecipeEditComponent implements OnInit {
     pictureURIs.forEach(pictureURI => {
       this.apiService.deleteRecipePicture(this.recipe.id, pictureURI).subscribe(recipe => {
         this.success = true;
-      }, err => {
-        this.errorMessage = 'Error deleting picture ' + err.error.message;
+      }, error => {
         this.error = true;
+        this.errorMessage = errorHandler(error);
       });
     });
   }

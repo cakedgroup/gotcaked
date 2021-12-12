@@ -11,7 +11,7 @@ export const recipeValidationChain = [
     body("tags").isArray().withMessage("Tags must be an array"),
     body("preparation").isString().withMessage("Preparation must be a string").isLength({ min: 1 }).withMessage("Preparation is required"),
     body("difficulty").isString().withMessage("Difficulty must be a string").isLength({ min: 1 }).withMessage("Difficulty is required"),
-    body("time").isNumeric().withMessage("Time must be numeric"),
+    body("time").isNumeric().withMessage("Time must be numeric").isLength({ min: 1 }).withMessage("Time is required"),
     body("category_name").isString().withMessage("Category_name must be a string").isLength({ min: 1 }).withMessage("Category is required")
 ];
 
@@ -71,7 +71,7 @@ export const ratingValidationChain = [
 export const userValidationChain = [
     body("email").isEmail().withMessage("Email must be a valid email").isLength({ min: 1 }).withMessage("Email is required"),
     body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
-    body("password").isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase and one lowercase letter").isLength({ max: 50 }).withMessage("Password must be at most 50 characters long"),
+    body("password").isStrongPassword().withMessage("Password must be at least 8 characters long and contain at least one number, one uppercase lowercase letter and one symbol.").isLength({ max: 50 }).withMessage("Password must be at most 50 characters long"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long")
 ];
 

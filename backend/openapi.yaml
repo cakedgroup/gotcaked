@@ -740,6 +740,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Unauthorized'
+        '409':
+          description: 'Category already exists'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /categories/{name}:
     get:
       tags:
@@ -1093,9 +1099,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '409':
+          description: 'User already exists'
           content:
             application/json:
               schema:
