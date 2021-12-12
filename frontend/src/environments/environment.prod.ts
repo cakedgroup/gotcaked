@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  backend: "https://dev.gotcaked.eu/api",
-  baseServer: "https://dev.gotcaked.eu"
+  backend: "https://gotcaked.eu/api",
+  baseServer: "https://gotcaked.eu"
 };
