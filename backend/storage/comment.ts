@@ -2,6 +2,11 @@ import { Comment } from '../models/comment';
 import { sqlPager } from '../util/sql';
 import { db } from './db';
 
+/**
+ * Create a new comment in database
+ * @param comment comment to create
+ * @returns Promise with comment
+ */
 export function createComment(comment: Comment): Promise<Comment> {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO comment (id, text, user_id, recipe_id, time) VALUES (?, ?, ?, ?, ?)`,
@@ -12,23 +17,30 @@ export function createComment(comment: Comment): Promise<Comment> {
                 } else {
                     resolve(comment);
                 }
-            }  
+            }
         );
     });
 }
 
-export function getAllComments(recipeId: string, limit?:number, offset?:number): Promise<Comment[]> {
-    let query : string = "SELECT * FROM comment WHERE recipe_id = ?";
+/**
+ * Get all comments from recipe in database 
+ * @param recipe_id recipe id
+ * @param limit limit of comments to return
+ * @param offset offset of comments to return
+ * @returns Promise with comments
+ */
+export function getAllComments(recipe_id: string, limit?: number, offset?: number): Promise<Comment[]> {
+    let query: string = "SELECT * FROM comment WHERE recipe_id = ?";
     query = sqlPager(query, limit, offset);
 
     return new Promise((resolve, reject) => {
-        db.all(query, [recipeId], (err, rows) => {
+        db.all(query, [recipe_id], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
                 let comments: Comment[] = [];
                 rows.forEach((row) => {
-                    let comment : Comment = {
+                    let comment: Comment = {
                         id: row.id,
                         text: row.text,
                         user_id: row.user_id,
@@ -43,13 +55,18 @@ export function getAllComments(recipeId: string, limit?:number, offset?:number):
     });
 }
 
-export function getComment(commentId: string): Promise<Comment> {
+/**
+ * Get comment by id from database
+ * @param comment_id comment id
+ * @returns Promise with comment
+ */
+export function getComment(comment_id: string): Promise<Comment> {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM comment WHERE id = ?`, [commentId], (err, row) => {
+        db.get(`SELECT * FROM comment WHERE id = ?`, [comment_id], (err, row) => {
             if (err) {
                 reject(err);
             } else {
-                let comment : Comment = {
+                let comment: Comment = {
                     id: row.id,
                     text: row.text,
                     user_id: row.user_id,
@@ -62,9 +79,14 @@ export function getComment(commentId: string): Promise<Comment> {
     });
 }
 
-export function deleteComment(commentId: string): Promise<void> {
+/**
+ * Delete comment with id from database
+ * @param comment_id comment id
+ * @returns empty Promise
+ */
+export function deleteComment(comment_id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        db.run(`DELETE FROM comment WHERE id = ?`, [commentId], (err) => {
+        db.run(`DELETE FROM comment WHERE id = ?`, [comment_id], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -74,9 +96,14 @@ export function deleteComment(commentId: string): Promise<void> {
     });
 }
 
-export function deleteAllComments(recipeId: string): Promise<void> {
+/**
+ * Delete all comments from recipe from database
+ * @param recipe_id recipe id
+ * @returns empty Promise
+ */
+export function deleteAllComments(recipe_id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        db.run(`DELETE FROM comment WHERE recipe_id = ?`, [recipeId], (err) => {
+        db.run(`DELETE FROM comment WHERE recipe_id = ?`, [recipe_id], (err) => {
             if (err) {
                 reject(err);
             } else {

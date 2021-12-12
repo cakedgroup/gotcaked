@@ -21,7 +21,7 @@ export class RecipeUploadComponent {
   tempRecipe: RecipeCreate = {
     name: '',
     description: '',
-    category_id: null,
+    category_name: null,
     ingredients: [],
     preparation: "",
     picture_uri: null,
@@ -101,7 +101,7 @@ export class RecipeUploadComponent {
   clearInputRecipe() {
     this.tempRecipe.name = '';
     this.tempRecipe.description = '';
-    this.tempRecipe.category_id = null;
+    this.tempRecipe.category_name = null;
     this.tempRecipe.ingredients = [];
     this.tempRecipe.preparation = '';
     this.tempRecipe.picture_uri = null;

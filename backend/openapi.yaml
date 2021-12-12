@@ -1390,8 +1390,11 @@ components:
                 type: string
                 example: Flour
               quantity:
+                type: number
+                example: 200
+              unit:
                 type: string
-                example: 200g
+                example: g
         preparation:
           type: string
           example: Go to the Kitchen...
@@ -1444,9 +1447,7 @@ components:
     Comment:
       type: object
       required:
-        - id
         - text
-        - time
       properties:
         id:
           type: string
@@ -1458,15 +1459,14 @@ components:
         time:
           type: string
           format: date
-        raiting:
-          type: object
-          properties:
-            up:
-              type: number
-              example: 10
-            down:
-              type: number
-              example: 2
+        user_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        recipe_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
     CommentCreate:
       type: object
       required:
@@ -1478,14 +1478,9 @@ components:
     Tag:
       type: object
       required:
-        - id
         - name
         - description
       properties:
-        id:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
         name:
           type: string
           example: vegan
@@ -1507,14 +1502,9 @@ components:
     Category:
       type: object
       required:
-        - id
         - name
         - description
       properties:
-        id:
-          type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
         name:
           type: string
           example: Cake

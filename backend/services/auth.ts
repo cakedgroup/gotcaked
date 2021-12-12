@@ -6,6 +6,10 @@ import { getSecret } from '../util/secret';
 import { UserLogin } from '../models/user';
 import { jwtContentTransformer } from '../util/transformer';
 
+/**
+ * Login with email and password and return a JWT token if successful
+ * @param userCredentials Credentials of the user
+ */
 export function login(userCredentials: UserLogin): Promise<{}> {
     return new Promise((resolve, reject) => {
         //Get User from DB to check Credentials
@@ -31,6 +35,10 @@ export function login(userCredentials: UserLogin): Promise<{}> {
     });
 }
 
+/**
+ * Add JWT token to blacklist to prevent further use
+ * @param jwtKey JWT Token
+ */
 export function logout(jwtKey: string): Promise<{}> {
     return new Promise((resolve, reject) => {
         if (!jwtKey) { reject(new Error("No JWT Key")) };

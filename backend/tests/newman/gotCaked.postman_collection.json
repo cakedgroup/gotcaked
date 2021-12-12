@@ -2467,7 +2467,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Bananenkuchen\",\n    \"description\": \"This is a Bananenkuchen\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra hard\",\n    \"time\" : 55,\n    \"category_id\" : \"Cake\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\":\"Bananenkuchen\",\n    \"description\": \"This is a Bananenkuchen\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra hard\",\n    \"time\" : 55,\n    \"category_name\" : \"Cake\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2519,7 +2519,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_name\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2573,7 +2573,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Kuccccccccccccchhhhennn\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\":\"Bananenmuffin\",\n    \"description\": \"This is a Muffin\",\n    \"preparation\" : \"Do this do that.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_name\" : \"Kuccccccccccccchhhhennn\",\n    \"tags\" : [\n        {\n            \"name\":\"Tag1\",\n            \"description\": \"Tag1 is cool\"\n        },\n        {\n            \"name\":\"DiNkElMeHl\"\n        }\n    ],\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Kuchen\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2995,7 +2995,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Bananenmuffin YEAH\",\n    \"description\": \"This is a YEAH\",\n    \"preparation\" : \"Do that do this.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_id\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Apfel\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\":\"Bananenmuffin YEAH\",\n    \"description\": \"This is a YEAH\",\n    \"preparation\" : \"Do that do this.\",\n    \"difficulty\" : \"Ultra easy\",\n    \"time\" : 55,\n    \"category_name\" : \"Muffin\",\n    \"user_id\": \"{{userID-3}}\",\n    \"ingredients\" : [\n        {\n            \"name\": \"Banane\",\n            \"amount\": \"5\",\n            \"unit\": \"Stück\"\n        },\n        {\n            \"name\": \"Apfel\",\n            \"amount\": \"1\",\n            \"unit\": \"Stück\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

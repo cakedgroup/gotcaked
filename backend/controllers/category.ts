@@ -33,7 +33,7 @@ router.post('/', isAuthorizedAdmin, categoryValidationChain, validateRequest, (r
 // @desc    Get a category by name
 // @access  Public
 router.get('/:name', (req: express.Request, res: express.Response) => {
-    categoryService.getCategoryById(req.params.name).then(category => {
+    categoryService.getCategoryByName(req.params.name).then(category => {
         res.status(200).json(category);
     }).catch(err => {
         errorHandler(err, req, res);
