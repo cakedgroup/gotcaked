@@ -42,6 +42,8 @@ export class HeaderComponent implements OnInit {
         this.apiService.getUser(user.id).subscribe(user => {
           this.userPicture = user.picture_uri;
         });
+      } else {
+        this.userPicture = null;
       }
     });
   }
