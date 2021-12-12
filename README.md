@@ -45,6 +45,7 @@ npm run-script start
 
 The first registered user will be the admin. All registered users after that will be normal users.
 An admin should create at least one category, otherwise it's not possible to create recipes.
+To create a new category, login as admin and navigate to the admin-panel (menu on the top-right corner).
 Admins are able to edit/delete all recipes and add/remove tags/categories from the website.
 Normal users are able to create own recipes and edit/delete their own recipes.
 Users are also able to upvote/downvote recipes and post comments on them.
