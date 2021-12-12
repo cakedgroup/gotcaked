@@ -10,7 +10,7 @@ export interface Recipe {
     createdAt: Date;
     difficulty: string;
     time: Number;
-    category_id: string;
+    category_name: string;
     user_id: string;
     picture_uri: string[];
 }
@@ -19,11 +19,14 @@ export interface RecipeSmall {
     id: string;
     name: string;
     description: string;
+    tags: Tag[];
+    picture_uri: string;
     createdAt: Date;
     difficulty: string;
     time: Number;
-    category_id: string;
+    category_name: string;
     user_id: string;
+    rating: Number;
 }
 
 export interface Ingredient {
@@ -43,4 +46,8 @@ export interface Rating {
     user_id: string;
     recipe_id: string;
     vote: number;
+}
+
+export interface RatingCount {
+    rating: number;
 }

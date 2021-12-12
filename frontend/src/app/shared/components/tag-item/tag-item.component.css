@@ -1,0 +1,17 @@
+.recipe-tags-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.recipe-tags-item {
+  font-family: "Darker Grotesque", sans-serif;
+  margin: 10px;
+  background-color: var(--primary-color);
+  padding: 5px 10px;
+  border-radius: 1em;
+  font-size: 14pt;
+  text-decoration: none;
+  color: black;
+}

@@ -17,7 +17,8 @@
       <input class="form-input" [(ngModel)]="userRegister.passwordConfirmation" name="passwordConfirmation"
         type="password" placeholder="Password" required>
 
-      <button class="login-button right" type="submit">Register</button>
+      <app-error-message class="center-text" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
+      <button class="action-button right" type="submit">Register</button>
     </div>
   </form>
 </div>

@@ -1,5 +1,8 @@
 import * as sqlite from 'sqlite3';
 
+/**
+ * Opens database connection and initializes tables.
+ */
 export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     if (err) {
         console.error(err.message);
@@ -9,6 +12,9 @@ export const db = new sqlite.Database('./databases/db.sqlite', (err) => {
     }
 });
 
+/**
+ * Creates all tables in database if they don't exist.
+ */
 function createTables() {
     //Create tables
     //Category
@@ -34,10 +40,10 @@ function createTables() {
     //User
     db.run(`CREATE TABLE IF NOT EXISTS user (
         id VARCHAR(36) PRIMARY KEY,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
         description TEXT,
         picture_uri TEXT,
-        email TEXT,
+        email TEXT UNIQUE NOT NULL,
         role TEXT,
         password TEXT);`, (err) => {
         if (err) {
@@ -55,9 +61,9 @@ function createTables() {
         createdAt DATE,
         difficulty TEXT,
         time NUMBER,
-        category_id VARCHAR(36) NOT NULL,
+        category_name VARCHAR(36) NOT NULL,
         user_id VARCHAR(36) NOT NULL,
-        FOREIGN KEY (category_id) REFERENCES category(id),
+        FOREIGN KEY (category_name) REFERENCES category(name),
         FOREIGN KEY (user_id) REFERENCES user(id));`, (err) => {
         if (err) {
             console.error(err.message);

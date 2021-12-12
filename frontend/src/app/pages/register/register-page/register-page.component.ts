@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { User, UserRegister } from 'src/app/models/user.model';
-import { ApiService } from '../../../core/services/api.service';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
+import { UserRegister } from 'src/app/models/user.model';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.css']
 })
-export class RegisterPageComponent implements OnInit {
+export class RegisterPageComponent {
+  errorMessage: string = '';
+  error: boolean = false;
   userRegister: UserRegister = {
     name: '',
     email: '',
@@ -18,26 +21,23 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(private apiService: ApiService, private router: Router) { }
 
-  ngOnInit(): void {
-    console.log('RegisterPageComponent');
-  }
-
   registerHandler(): void {
-    console.log(this.userRegister);
-    //service
-    if (this.userRegister.password === this.userRegister.passwordConfirmation) {
-      this.apiService.createUser(this.userRegister).subscribe((res) => {
-        if (res.status === 201) {
-          console.log('User created');
-          //Navigate to login page and sent credentials
-          this.router.navigate(['/auth/login', { email: this.userRegister.email, password: this.userRegister.password }]);
-        } else {
-          //TODO Implement HTML Error Message
-          console.log('User not created');
-        }
-      });
+    //Check if passwords match
+    if (this.userRegister.name && this.userRegister.email && this.userRegister.password && this.userRegister.passwordConfirmation) {
+      if (this.userRegister.password === this.userRegister.passwordConfirmation) {
+        this.apiService.createUser(this.userRegister).subscribe(user => {
+          this.router.navigate(['/auth/login', { email: user.email, password: this.userRegister.password }]);
+        }, error => {
+          this.error = true;
+          this.errorMessage = errorHandler(error);
+        });
+      } else {
+        this.errorMessage = 'Passwords do not match';
+        this.error = true;
+      }
     } else {
-      //TODO Implement HTML Password Error Message
+      this.errorMessage = 'Please fill out all fields';
+      this.error = true;
     }
   }
 }

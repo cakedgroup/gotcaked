@@ -1,1 +1,48 @@
-<p>admin-page works!</p>
+<div class="form-container">
+  <div class="empty-div">
+    <h1 class="form-title">Admin-Settings</h1>
+
+    <!-- Category Section -->
+    <form>
+      <h2 class="section-title">Categories</h2>
+      <hr class="section-line">
+      <!--List Current Categories -->
+      <div class="settings-container" *ngFor="let category of categories;let index = index;">
+        <app-form-input label="Name" type="text" placeholder="Name" [disabled]="true" [(value)]="category.name">
+        </app-form-input>
+        <app-form-input label="Description" type="text" placeholder="Description" [(value)]="category.description">
+        </app-form-input>
+
+        <div class="form-button-container">
+          <button class="action-button" (click)="updateCategory(category)">
+            <fa-icon [icon]="faCheckCircle"></fa-icon>
+          </button>
+          <button class="action-button" (click)="deleteCategory(category.name)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- Add Category -->
+    <form class="settings-container" (submit)="addCategoryHandler()">
+      <app-form-create-field [(model)]="tempCategory" model_type="Category"></app-form-create-field>
+    </form>
+
+    <!-- Messages -->
+    <app-error-message class="center-text" *ngIf="this.failedCategoryRequest" [errorMessage]="this.failedErrorMessage">
+    </app-error-message>
+    <app-success-message class="center-text" *ngIf="success" [message]="this.successMessage"></app-success-message>
+
+    <!--Tags Section-->
+    <h2 class="section-title">Tags</h2>
+    <hr class="section-line">
+    <!--Add new a Tag -->
+    <form class="settings-container" (submit)="addTagHandler()">
+      <app-form-create-field [(model)]="tempTag" model_type="Tag"></app-form-create-field>
+    </form>
+    <app-error-message class="center-text" *ngIf="this.failedTagRequest" [errorMessage]="this.failedErrorMessage">
+    </app-error-message>
+    <!--List Current Tags -->
+    <app-tag-list [(tags)]="tags" (delete)="deleteTag($event.name)"></app-tag-list>
+  </div>
+</div>

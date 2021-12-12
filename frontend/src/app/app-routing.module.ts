@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { isAdmin, isLoggedIn, isLoggedOut, isLoggedInRedirect } from './core/services/authGuard';
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
-import { isLoggedIn, isLoggedOut, isAdmin } from './core/services/authGuard';
 
 const routes: Routes = [
   {
@@ -25,8 +25,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/category/category.module').then(m => m.CategoryModule)
   },
   {
+    path: 'tag',
+    loadChildren: () => import('./pages/tag/tag.module').then(m => m.TagModule)
+  },
+  {
+    path: 'random',
+    loadChildren: () => import('./pages/random/random.module').then(m => m.RandomModule)
+  },
+  {
     path: 'settings',
-    canActivate: [isLoggedIn],
+    canActivate: [isLoggedInRedirect],
     loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule)
   },
   {

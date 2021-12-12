@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
+import { Status } from 'src/app/models/status.model';
 
 @Component({
   selector: 'app-about-page',
@@ -7,22 +8,17 @@ import { ApiService } from 'src/app/core/services/api.service';
   styleUrls: ['./about-page.component.css']
 })
 export class AboutPageComponent implements OnInit {
+  status: Status;
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    console.log('about page');
     this.getStatus();
   }
 
   getStatus() {
-    this.apiService.getStatus().subscribe(
-      (data) => {
-        console.log(data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.apiService.getStatus().subscribe(status => {
+      this.status = status;
+    });
   }
 }

@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { SharedModule } from "../../shared/shared.module";
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { WelcomeRoutingModule } from './welcome-routing.module';
 
-import {WelcomeRoutingModule} from './welcome-routing.module';
-import {WelcomePageComponent} from './welcome-page/welcome-page.component';
-import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({

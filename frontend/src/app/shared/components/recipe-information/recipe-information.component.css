@@ -1,0 +1,11 @@
+.recipe-information-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .ingredients {
+    margin-left: -10px;
+  }
+}

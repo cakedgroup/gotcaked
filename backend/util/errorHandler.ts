@@ -5,9 +5,10 @@ export function errorHandler(err: Error, req: express.Request, _res: express.Res
         if (err.message === "User does not exist" || err.message === "User not found" ||
             err.message === "No users found" || err.message === "Credentials not found" ||
             err.message === "Category not found" || err.message === "Tag not found" ||
-            err.message === "Recipe not found" || err.message === "Comment not found") {
+            err.message === "Recipe not found" || err.message === "Comment not found" ||
+            err.message === "Rating not found" || err.message === "Picture does not exist") {
             _res.status(404).json({ status: "error", message: err.message });
-        } else if (err.message === "User already exists") {
+        } else if (err.message === "User already exists" || err.message === "Tag already exists" || err.message === "Category already exists") {
             _res.status(409).json({ status: "error", message: err.message });
         } else if (err.message === "No JWT Key") {
             _res.status(400).json({ status: "error", message: err.message });

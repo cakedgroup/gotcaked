@@ -1,0 +1,17 @@
+.information-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 49%;
+}
+
+.action-button {
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: -40px;
+}
+
+.picture-upload {
+  margin: auto;
+}

@@ -1,0 +1,15 @@
+.list-text {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 12pt;
+}
+
+.form-input {
+  width: 102%;
+  height: 36px;
+}
+
+@media (max-width: 600px) {
+  .form-input {
+    width: 109%;
+  }
+}

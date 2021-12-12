@@ -1,0 +1,18 @@
+<div class="upload-file">
+  <p class="text">You can upload some Pictures for your Recipe</p>
+  <label class="upload-button" for="file">
+    <fa-icon [icon]="faUpload"></fa-icon>
+  </label>
+  <input #file id="file" type="file" accept="image/*" (change)="addPicture(file)">
+</div>
+
+<div>
+  <div class="picture-preview-container">
+    <div *ngFor="let picture of tempUploadedPictures;let index = index;" class="picture-preview">
+      <img [src]="picture" alt="recipe" class="recipe-image">
+      <button class="recipe-button" (click)="removePicture(index)" type="button">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>

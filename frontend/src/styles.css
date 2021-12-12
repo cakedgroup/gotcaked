@@ -1,18 +1,162 @@
-html, body {
+html,
+body {
   background-color: var(--primary-background-color);
   width: 100%;
   height: 100%;
   margin: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
+.center-text {
+  text-align: center;
+}
+
+/*
+* Menu Styles
+*/
+.menu-item{
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+  text-decoration: none;
+  color: black;
+}
+
+/*
+* Form Input Styles
+*/
+.form-container{
+  background-color: var(--secondary-background-color);
+  border-radius: 1em;
+  margin: 0 auto;
+  padding: 3em;
+  padding-bottom: 5em;
+  max-width: fit-content;
+}
+
+.empty-div {
+  max-width: 1000px;
+  margin-top: 20px;
+}
+
+.form-input-container {
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.form-title {
+  font-family: "Darker Grotesque", sans-serif;
+  text-align: center;
+  font-size: 32pt;
+  margin-top: -60px;
+}
+
+.form-label {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 16pt;
+}
+
+.flex-item-container {
+  flex: 49%;
+}
+
+.form-input {
+  background-color: var(--primary-background-color);
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
+  border-style: solid;
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.text-input {
+  background-color: var(--primary-background-color);
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
+  border-style: solid;
+  width: 100%;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 10px;
+  margin-top: 5px;
+  resize: vertical;
+}
+
+/*
+* "Button Styles
+*/
+.action-button {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
+  background-color: var(--primary-color);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 3px 20px;
+  min-width: max-content;
+  height: 40px;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*
+* etc styles
+*/
+.line {
+  width: 100%;
+  border: 0.5px solid;
+  color: teal;
+}
+
+.right {
+  float: right;
+}
+
+.left{
+  float: left;
+}
+
+.center-message {
+  text-align: center;
+}
+
+
+/*
+* Pages Style
+*/
+.section-title {
+  font-family: "Darker Grotesque", sans-serif;
+  text-align: left;
+  font-size: 24pt;
+}
+
+.section-line {
+  margin-top: -25px;
+  width: 100%;
+  border: 0.5px solid;
+  color: teal;
+}
+
+.recipe-content {
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
 
 /* Colors */
 :root {
-  --primary-color: #A87C4F;
-  --secondary-color: #F2B6D3;
+  --primary-color: #a87c4f;
+  --secondary-color: #f2b6d3;
 
-  --primary-background-color: #FFF9F2;
-  --secondary-background-color: #FFEFD6;
+  --primary-background-color: #fff9f2;
+  --secondary-background-color: #ffefd6;
 
   --title-center-color: #000000;
 }

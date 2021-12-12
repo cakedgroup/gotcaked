@@ -1,1 +1,29 @@
-<p>recipe-upload works!</p>
+<div class="form-container">
+  <div class="empty-div">
+    <h1 class="form-title">Upload Recipe</h1>
+    <!-- Recipe Section -->
+    <form>
+      <!--- Title, Description, Ingredients, etc --->
+      <h2 class="section-title">Basic Information</h2>
+      <hr class="section-line">
+      <app-recipe-information [(recipe)]="tempRecipe"></app-recipe-information>
+
+      <!--- Tags and Pictures --->
+      <h2 class="section-title">Tags</h2>
+      <hr class="section-line">
+      <!-- List All Tags and add one -->
+      <app-tag-search (tagSelected)="addTag($event)"></app-tag-search>
+      <!--- List Added Tags --->
+      <app-tag-list [(tags)]="tempRecipe.tags" (delete)="deleteTag($event.name)"></app-tag-list>
+
+      <h2 class="section-title">Pictures</h2>
+      <hr class="section-line">
+      <!--- Upload Pictures -->
+      <app-picture-uploader [(pictures)]="pictureFiles"></app-picture-uploader>
+      <app-error-message class="center-message" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
+      <app-success-message class="center-message" *ngIf="success" [message]="this.successMessage"></app-success-message>
+      <button class="action-button" type="button" (click)="createRecipeHandler()" [disabled]="recipeUploaded">Create
+        Recipe</button>
+    </form>
+  </div>
+</div>

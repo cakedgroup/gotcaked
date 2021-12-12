@@ -1,0 +1,10 @@
+.comment-text {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 14pt;
+  margin-left: 5px;
+}
+
+.comment-text-header {
+  text-decoration: none;
+  color: black;
+}

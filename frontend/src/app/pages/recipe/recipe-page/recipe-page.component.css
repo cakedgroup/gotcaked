@@ -1,0 +1,83 @@
+.recipe-container {
+  font-family: "Darker Grotesque", sans-serif;
+  margin: 10px auto;
+  width: 90%;
+  height: fit-content;
+  border-radius: 1em;
+  background-color: var(--secondary-background-color);
+  padding: 10px;
+}
+
+.recipe-information-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 49%;
+}
+
+.recipe-name {
+  padding: 10px;
+  text-align: center;
+  font-size: 26pt;
+}
+
+.recipe-image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.recipe-image {
+  grid-area: image;
+  width: auto;
+  height: 300px;
+  object-fit: cover;
+}
+
+.recipe-description-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: -10px;
+}
+
+.recipe-description-item {
+  margin: 10px;
+  padding: 5px;
+  background-color: var(--secondary-color);
+  border-radius: 1em;
+  font-size: 14pt;
+  text-decoration: none;
+  color: black;
+}
+
+.recipe-interaction-button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  border-radius: 1em;
+  font-size: 14pt;
+  border: none;
+}
+.recipe-interaction-button-selected {
+  border: 2px solid black;
+}
+
+.comment-text {
+  font-size: 18px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.recipe-text {
+  font-size: 16pt;
+}
+
+@media (max-width: 800px) {
+  .recipe-image {
+    width: 250px;
+    height: auto;
+  }
+}

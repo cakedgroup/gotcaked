@@ -1,0 +1,9 @@
+.form-table {
+  width: 100%;
+  border-spacing: 10px;
+}
+.action-button {
+  min-width: 100%;
+  height: 40px;
+  margin-top: 5px;
+}

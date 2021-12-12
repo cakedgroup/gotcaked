@@ -1,0 +1,43 @@
+.header-box {
+  width: 95%;
+  min-height: 110px;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -10px;
+  margin-bottom: 60px;
+  border-radius: 1em;
+  background-color: var(--secondary-background-color);
+  text-align: center;
+}
+
+.user-image {
+  width: 95px;
+  height: 95px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: auto;
+  margin-left: 10px;
+  margin-top: 8px;
+  float: left;
+}
+
+.header-title {
+  font-family: "Darker Grotesque", sans-serif;
+  font-size: 32pt;
+  min-height: 100px;
+  height: fit-content;
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: -20px;
+  margin-left: -100px;
+}
+
+@media (max-width: 700px) {
+  .user-image {
+    float: left;
+  }
+  .header-title {
+    margin-left: 2px;
+  }
+}

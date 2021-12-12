@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { UserLogin } from 'src/app/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -9,6 +10,9 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
+  errorMessage: string = '';
+  error: boolean = false;
+
   userLogin: UserLogin = {
     email: '',
     password: ''
@@ -27,15 +31,18 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginHandler(): void {
-    console.log(this.userLogin);
-    this.authService.userLogin(this.userLogin).subscribe(res => {
-      if (res.status === 200) {
-        this.authService.setJWTToken(res.body.token);
+    if (this.userLogin.email && this.userLogin.password) {
+      this.authService.userLogin(this.userLogin).subscribe(jwt => {
+        this.authService.setJWTToken(jwt.token);
         this.router.navigate(['/']);
-      } else {
-        console.log(res.status);
-        //TODO Implement Error Message in HTML
-      }
-    });
+        this.error = false;
+      }, error => {
+        this.error = true;
+        this.errorMessage = errorHandler(error);
+      });
+    } else {
+      this.error = true;
+      this.errorMessage = "Empty E-Mail or Password";
+    }
   }
 }

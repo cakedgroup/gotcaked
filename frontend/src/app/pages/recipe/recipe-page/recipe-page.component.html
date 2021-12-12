@@ -1,1 +1,90 @@
-<p>recipe-page works!</p>
+<div *ngIf="recipe" class="recipe-container">
+  <h1 class="recipe-name">{{ recipe.name }}</h1>
+
+  <div class="recipe-information-container">
+
+    <!--- Recipe Image --->
+    <div class="flex-item-container ">
+      <h1>Picture</h1>
+      <hr class="line" />
+      <div class="recipe-image-box">
+        <img class="recipe-image" *ngIf="recipe.picture_uri[0]; else noImage"
+          src="{{ this.baseUrl + recipe.picture_uri }}" alt="Image" />
+      </div>
+    </div>
+
+    <!--- Basic Information Section --->
+    <div class="flex-item-container">
+      <h1>Description</h1>
+      <hr class="line" />
+      <p class="recipe-text">{{ recipe.description }}</p>
+      <!-- Stat Tags -->
+      <div class="recipe-description-tags">
+        <a *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
+          {{ user.name }}
+        </a>
+        <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
+        <p class="recipe-description-item">{{ recipe.time }} Min</p>
+        <p class="recipe-description-item">{{ recipe.difficulty }}</p>
+        <a class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
+          {{ recipe.category_name }}
+        </a>
+        <p class="recipe-description-item">{{ recipe.rating }} Votes</p>
+      </div>
+      <!-- Recipe Interactions (Voting, Edit, Delete) -->
+      <div class="recipe-description-tags">
+        <button class="recipe-interaction-button"
+          [ngClass]="{'recipe-interaction-button-selected' : userRating.vote > 0}" *ngIf="isUser"
+          (click)="upVoteRecipe()">
+          <fa-icon [icon]="faThumbsUp"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button"
+          [ngClass]="{'recipe-interaction-button-selected' : userRating.vote < 0}" *ngIf="isUser"
+          (click)="downVoteRecipe()">
+          <fa-icon [icon]="faThumbsDown"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button" *ngIf="isAuthorized" (click)="editRecipe()">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+        <button class="recipe-interaction-button" *ngIf="isAuthorized" (click)="deleteRecipe()">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <!--- Ingredients Section -->
+    <div class="flex-item-container">
+      <h1>Ingredients</h1>
+      <hr class="line" />
+      <app-ingredients-table-output class="recipe-text" [ingredients]="recipe.ingredients">
+      </app-ingredients-table-output>
+    </div>
+
+    <!-- Preparation Section -->
+    <div class="flex-item-container">
+      <h1>Preparation</h1>
+      <hr class="line" />
+      <p class="recipe-text">{{ recipe.preparation }}</p>
+    </div>
+
+    <!-- Tags Section -->
+    <div class="flex-item-container">
+      <h1>Tags</h1>
+      <hr class="line" />
+      <app-tag-item [tags]="recipe.tags"></app-tag-item>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <div class="recipe-comments">
+    <h1>Comments</h1>
+    <hr class="line" />
+    <app-recipe-comment-input [recipeID]="recipe.id" (comment)="comments.push($event)"> </app-recipe-comment-input>
+    <app-recipe-comments class="comment-text" *ngFor="let comment of comments" [comment]="comment">
+    </app-recipe-comments>
+  </div>
+</div>
+
+<ng-template #noImage>
+  <img class="recipe-image" src="/assets/icons/recipe_picture_placeholder.svg" alt="Image" />
+</ng-template>

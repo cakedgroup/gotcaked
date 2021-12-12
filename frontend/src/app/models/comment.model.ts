@@ -1,7 +1,7 @@
-export interface Comment {
+export interface RecipeComment {
     id: string;
     text: string;
-    userId: string;
-    recipeId: string;
+    user_id: string;
+    recipe_id: string;
     time: Date;
 }
