@@ -12,7 +12,7 @@
     </div>
 
     <img src="/assets/icons/dice_icon.svg" alt="dice-icon" class="dice-icon"
-      routerLink="/random/{{routeType}}/{{routeName}}">
+      routerLink="/random/{{routeType}}/{{routeName}}" (click)="reloadRandomPage()">
     <img *ngIf="userPicture; else noImage" src="{{this.baseUrl + userPicture}}" alt="user-icon" class="user-icon">
   </div>
 

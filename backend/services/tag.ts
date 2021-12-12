@@ -24,8 +24,19 @@ export function getTagByName(name: string): Promise<Tag> {
  * @returns Promise with created tag
  */
 export function createTag(tag: Tag): Promise<Tag> {
-    return tagDAO.createTag(tag);
+    return new Promise((resolve, reject) => {
+        tagDAO.getTag(tag.name).then(existingTag => {
+            if (existingTag) {
+                reject(new Error('Tag already exists'));
+            } else {
+                tagDAO.createTag(tag).then(resolve, reject);
+            }
+        }).catch(() => {
+            tagDAO.createTag(tag).then(resolve, reject);
+        });
+    });
 }
+
 
 /**
  * Delete tag with name

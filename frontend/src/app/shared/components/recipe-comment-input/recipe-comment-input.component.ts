@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ApiService } from '../../../core/services/api.service';
-import { RecipeComment } from '../../../models/comment.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { isLoggedIn } from '../../../core/services/authGuard';
 import { errorHandler } from 'src/app/core/utils/errorHandler';
+import { ApiService } from '../../../core/services/api.service';
+import { isLoggedIn } from '../../../core/services/authGuard';
+import { RecipeComment } from '../../../models/comment.model';
 
 @Component({
   selector: 'app-recipe-comment-input',

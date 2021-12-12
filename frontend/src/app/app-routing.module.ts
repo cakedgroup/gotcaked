@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { isAdmin, isLoggedIn, isLoggedOut } from './core/services/authGuard';
+import { isAdmin, isLoggedIn, isLoggedOut, isLoggedInRedirect } from './core/services/authGuard';
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 
 const routes: Routes = [
@@ -34,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'settings',
-    canActivate: [isLoggedIn],
+    canActivate: [isLoggedInRedirect],
     loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule)
   },
   {

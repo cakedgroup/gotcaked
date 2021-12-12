@@ -4,6 +4,8 @@ import { ApiService } from '../services/api.service';
 import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { environment } from 'src/environments/environment';
+import { RandomPageComponent } from '../../pages/random/random-page/random-page.component';
+import { RandomModule } from 'src/app/pages/random/random.module';
 
 @Component({
   selector: 'app-header',
@@ -38,7 +40,7 @@ export class HeaderComponent implements OnInit {
 
   getUserPicture() {
     this.authService.getUser().subscribe(user => {
-      if (user){
+      if (user) {
         this.apiService.getUser(user.id).subscribe(user => {
           this.userPicture = user.picture_uri;
         });
@@ -60,6 +62,12 @@ export class HeaderComponent implements OnInit {
 
   enableCategoryMenu() {
     this.showCategoryMenu = true;
+  }
+
+  reloadRandomPage() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([`random/${this.routeType}/${this.routeName}`]);
   }
 
   getCurrentRoute() {
