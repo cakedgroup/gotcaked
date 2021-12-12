@@ -3,5 +3,5 @@
 <app-no-content *ngIf="recipes.length === 0" message="There are not Recipes for this User yet..."></app-no-content>
 
 <div class="recipe-content">
-    <app-recipe-preview *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-preview>
+  <app-recipe-preview *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-preview>
 </div>

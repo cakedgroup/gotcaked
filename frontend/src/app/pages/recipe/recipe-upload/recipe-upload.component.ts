@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
-import { Recipe, RecipeCreate } from '../../../models/recipe.model';
 import { errorHandler } from '../../../core/utils/errorHandler';
+import { Recipe, RecipeCreate } from '../../../models/recipe.model';
 
 @Component({
   selector: 'app-recipe-upload',

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Event as NavigationEvent, NavigationStart, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { Category } from '../../models/category.model';
 import { ApiService } from '../services/api.service';
-import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { environment } from 'src/environments/environment';
-import { RandomPageComponent } from '../../pages/random/random-page/random-page.component';
-import { RandomModule } from 'src/app/pages/random/random.module';
 
 @Component({
   selector: 'app-header',

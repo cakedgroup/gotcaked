@@ -1,4 +1,4 @@
-.image-preview{
+.image-preview {
   display: flex;
   gap: 10px;
 }
@@ -15,7 +15,7 @@
   margin-top: 7px;
 }
 
-.user-image{
+.user-image {
   width: 50px;
   height: 50px;
   border-radius: 100%;
@@ -27,8 +27,7 @@
 }
 
 @media (max-width: 800px) {
-  .upload-button{
+  .upload-button {
     padding: 3px 10px;
   }
 }
-

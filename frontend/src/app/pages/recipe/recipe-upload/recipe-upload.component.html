@@ -22,7 +22,8 @@
       <app-picture-uploader [(pictures)]="pictureFiles"></app-picture-uploader>
       <app-error-message class="center-message" *ngIf="error" [errorMessage]="this.errorMessage"></app-error-message>
       <app-success-message class="center-message" *ngIf="success" [message]="this.successMessage"></app-success-message>
-      <button class="action-button" type="button" (click)="createRecipeHandler()" [disabled]="recipeUploaded">Create Recipe</button>
+      <button class="action-button" type="button" (click)="createRecipeHandler()" [disabled]="recipeUploaded">Create
+        Recipe</button>
     </form>
   </div>
 </div>

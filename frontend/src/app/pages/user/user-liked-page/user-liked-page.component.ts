@@ -21,7 +21,7 @@ export class UserLikedPageComponent implements OnInit {
 
   getUserID() {
     this.authService.getUser().subscribe(user => {
-      if (user){
+      if (user) {
         this.userID = user.id;
         this.getLikedRecipes();
       }

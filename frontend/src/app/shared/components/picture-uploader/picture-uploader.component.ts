@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faPlus, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/core/services/api.service';
 import { environment } from 'src/environments/environment';

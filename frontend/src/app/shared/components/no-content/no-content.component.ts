@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-no-content',
@@ -6,6 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./no-content.component.css']
 })
 export class NoContentComponent {
-  @Input() message:string = "No Content";
+  @Input() message: string = "No Content";
   constructor() { }
 }

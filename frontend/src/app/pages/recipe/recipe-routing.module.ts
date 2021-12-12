@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { isLoggedInRedirect } from '../../core/services/authGuard';
 import { RecipePageComponent } from './recipe-page/recipe-page.component';
-import { isLoggedIn, isLoggedInRedirect } from '../../core/services/authGuard';
 
 const routes: Routes = [
   {
