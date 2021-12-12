@@ -132,13 +132,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}:
     get:
       tags:
@@ -201,13 +201,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: ID not found
           content:
@@ -244,13 +244,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/comments:
     get:
       tags:
@@ -341,13 +341,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/comments/{commentId}:
     get:
       tags:
@@ -420,13 +420,13 @@ paths:
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/picture:
     patch:
       tags:
@@ -466,13 +466,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: Recipe ID not found
           content:
@@ -519,13 +519,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/rating:
     get:
       tags:
@@ -595,13 +595,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/{id}/ratingStatus:
     get:
       tags:
@@ -635,13 +635,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /recipes/random:
     get:
       tags:
@@ -733,13 +733,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /categories/{name}:
     get:
       tags:
@@ -813,13 +813,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
     delete:
       tags:
         - categories
@@ -850,13 +850,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /categories/{name}/recipes:
     get:
       tags:
@@ -940,13 +940,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /tags/{name}:
     get:
       tags:
@@ -1005,13 +1005,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /tags/{name}/recipes:
     get:
       tags:
@@ -1175,13 +1175,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
     delete:
       tags:
         - users
@@ -1212,13 +1212,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /users/{id}/recipes:
     get:
       tags:
@@ -1320,13 +1320,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '404':
           description: ID not found
           content:
@@ -1363,13 +1363,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
         '403':
           description: 'Forbidden'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Unauthorized'
   /auth/login:
     post:
       summary: Returns a JWT Key
@@ -1766,6 +1766,17 @@ components:
         status:
           type: string
           example: 'error'
+    Unauthorized:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: 'You are not authorized to access this resource'
+        status:
+          type: string
+          example: 'Unauthorized'
     InputError:
       type: object
       required:
