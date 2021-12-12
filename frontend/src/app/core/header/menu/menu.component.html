@@ -1,6 +1,7 @@
 <div class="menu-container" *ngIf="isLoggedOut()">
   <a routerLink="/auth/login" class="menu-item">Login</a> <br>
   <a routerLink="/register" class="menu-item">Register</a> <br>
+  <a routerLink="/tag" class="menu-item">Tags Overview</a> <br>
   <a routerLink="/about" class="menu-item">About</a>
 </div>
 
@@ -8,17 +9,19 @@
   <a [routerLink]="['/user', userID]" class="menu-item">Profile</a> <br>
   <a routerLink="/recipe/upload" class="menu-item">Upload Recipe</a> <br>
   <a routerLink="/user/liked" class="menu-item">Liked Recipes</a> <br>
+  <a routerLink="/tag" class="menu-item">Tags Overview</a> <br>
   <a routerLink="/settings" class="menu-item">Settings</a> <br>
   <a routerLink="/admin" class="menu-item">AdminPanel</a> <br>
-  <a routerLink="/auth/logout" class="menu-item">Logout</a> <br>
-  <a routerLink="/about" class="menu-item">About</a>
+  <a routerLink="/about" class="menu-item">About</a> <br>
+  <a routerLink="/auth/logout" class="menu-item">Logout</a>
 </div>
 
 <div class="menu-container" *ngIf="isLoggedIn()" ng-if>
   <a [routerLink]="['/user', userID]" class="menu-item">Profile</a> <br>
   <a routerLink="/recipe/upload" class="menu-item">Upload Recipe</a> <br>
   <a routerLink="/user/liked" class="menu-item">Liked Recipes</a> <br>
+  <a routerLink="/tag" class="menu-item">Tags Overview</a> <br>
   <a routerLink="/settings" class="menu-item">Settings</a> <br>
-  <a routerLink="/auth/logout" class="menu-item">Logout</a> <br>
-  <a routerLink="/about" class="menu-item">About</a>
+  <a routerLink="/about" class="menu-item">About</a> <br>
+  <a routerLink="/auth/logout" class="menu-item">Logout</a>
 </div>

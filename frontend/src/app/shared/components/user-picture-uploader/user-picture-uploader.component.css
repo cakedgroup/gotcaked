@@ -1,6 +1,5 @@
 .image-preview{
   display: flex;
-  flex-wrap: row wrap;
   gap: 10px;
 }
 

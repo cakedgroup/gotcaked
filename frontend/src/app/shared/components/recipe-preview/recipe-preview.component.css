@@ -48,7 +48,6 @@
 
 .recipe-stats {
   display: flex;
-  justify-content: space-right;
   align-items: center;
 }
 

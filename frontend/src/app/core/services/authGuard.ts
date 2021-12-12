@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { ActivatedRoute, CanActivate, Router } from '@angular/router';
 import * as JWTUtils from '../utils/jwt-utils';
 import { AuthService } from './auth.service';

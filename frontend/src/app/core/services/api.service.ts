@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { RecipeCreate } from '../../models/recipe.model';
 import { AuthService } from './auth.service';
 import { RecipeComment } from '../../models/comment.model';
+import { Status } from '../../models/status.model';
 
 
 @Injectable({
@@ -23,8 +24,8 @@ export class ApiService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  getStatus(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/status`);
+  getStatus(): Observable<Status> {
+    return this.http.get<Status>(`${this.baseUrl}/status`);
   }
 
   //
