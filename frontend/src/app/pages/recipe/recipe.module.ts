@@ -9,7 +9,7 @@ import { RecipeRoutingModule } from './recipe-routing.module';
 
 @NgModule({
   declarations: [
-      RecipePageComponent
+    RecipePageComponent
   ],
   imports: [
     CommonModule,

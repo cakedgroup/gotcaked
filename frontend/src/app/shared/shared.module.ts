@@ -20,6 +20,8 @@ import { TagListComponent } from './components/tag-list/tag-list.component';
 import { TagSearchComponent } from './components/tag-search/tag-search.component';
 import { UserPictureUploaderComponent } from './components/user-picture-uploader/user-picture-uploader.component';
 import { FormInputTextareaComponent } from './components/form-input-textarea/form-input-textarea.component';
+import { TagItemComponent } from './components/tag-item/tag-item.component';
+import { NoContentComponent } from './components/no-content/no-content.component';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { FormInputTextareaComponent } from './components/form-input-textarea/for
     RecipeCommentsComponent,
     IngredientsTableOutputComponent,
     RecipeCommentInputComponent,
-    FormInputTextareaComponent
+    FormInputTextareaComponent,
+    TagItemComponent,
+    NoContentComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +71,9 @@ import { FormInputTextareaComponent } from './components/form-input-textarea/for
     RecipeCommentsComponent,
     IngredientsTableOutputComponent,
     RecipeCommentInputComponent,
-    FormInputTextareaComponent
+    FormInputTextareaComponent,
+    TagItemComponent,
+    NoContentComponent
   ]
 })
 export class SharedModule {

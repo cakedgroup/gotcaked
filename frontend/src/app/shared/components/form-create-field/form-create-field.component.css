@@ -1,6 +1,5 @@
 .form-container-create-field {
   display: flex;
-  flex-wrap: row wrap;
 }
 
 @media (max-width: 600px) {

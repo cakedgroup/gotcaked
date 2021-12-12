@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { UserLogin } from 'src/app/models/user.model';
 import { User } from '../../models/user.model';
 
@@ -78,7 +79,7 @@ export class SettingsComponent implements OnInit {
     },
       error => {
         this.setErrorInfo();
-        this.errorMessage = "Error updating User " + error.error.message;
+        this.errorMessage = errorHandler(error);
       }
     );
   }
@@ -90,7 +91,7 @@ export class SettingsComponent implements OnInit {
         this.setSuccessInfo();
       }, error => {
         this.setErrorInfo();
-        this.errorMessage = "Error updating Picture " + error.error.message;
+        this.errorMessage = errorHandler(error);
       });
     }
   }
@@ -114,8 +115,8 @@ export class SettingsComponent implements OnInit {
         this.successMessage = "Successfully updated Password";
         this.setSuccessSecurity();
       }, error => {
-        this.errorMessage = "Error updating password " + error.error.message;
         this.setErrorSecurity();
+        this.errorMessage = errorHandler(error);
       });
     }, error => {
       this.errorMessage = "Current password is incorrect";

@@ -48,21 +48,8 @@
   background-color: var(--secondary-color);
   border-radius: 1em;
   font-size: 14pt;
-}
-
-.recipe-tags-list {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.recipe-tags-item {
-  margin: 10px;
-  padding: 5px;
-  background-color: var(--primary-color);
-  border-radius: 1em;
-  font-size: 14pt;
+  text-decoration: none;
+  color: black;
 }
 
 .recipe-interaction-button {

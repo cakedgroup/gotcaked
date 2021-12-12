@@ -1,0 +1,7 @@
+<app-content-header title="Overview of all Tags"></app-content-header>
+
+<div class="form-container" *ngIf="tags.length > 0">
+  <div>
+    <app-tag-item [tags]="tags" class="flex-item-container"></app-tag-item>
+  </div>
+</div>

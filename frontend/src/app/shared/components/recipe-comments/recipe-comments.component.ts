@@ -16,7 +16,7 @@ export class RecipeCommentsComponent implements OnInit {
     this.getUserName();
   }
 
-  getUserName(){
+  getUserName() {
     this.apiService.getUser(this.comment.user_id).subscribe(user => {
       this.userName = user.name;
     });

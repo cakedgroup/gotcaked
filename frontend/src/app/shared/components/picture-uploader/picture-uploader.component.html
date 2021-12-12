@@ -8,7 +8,7 @@
 
 <div>
   <div class="picture-preview-container">
-    <div *ngFor="let picture of tempUploadedPictures;let index = index;"  class="picture-preview">
+    <div *ngFor="let picture of tempUploadedPictures;let index = index;" class="picture-preview">
       <img [src]="picture" alt="recipe" class="recipe-image">
       <button class="recipe-button" (click)="removePicture(index)" type="button">
         <fa-icon [icon]="faTrash"></fa-icon>

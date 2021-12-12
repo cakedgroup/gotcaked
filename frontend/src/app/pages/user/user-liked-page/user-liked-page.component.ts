@@ -10,19 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-liked-page.component.css']
 })
 export class UserLikedPageComponent implements OnInit {
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
   userID: string;
 
   constructor(private authService: AuthService, private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.getUserID();
-    this.getLikedRecipes();
   }
 
   getUserID() {
     this.authService.getUser().subscribe(user => {
-      this.userID = user.id;
+      if (user) {
+        this.userID = user.id;
+        this.getLikedRecipes();
+      }
     });
   }
 
@@ -30,7 +32,7 @@ export class UserLikedPageComponent implements OnInit {
     this.apiService.getLikedRecipesFromUser(this.userID).subscribe(recipes => {
       this.recipes = recipes;
     }, error => {
-      this.router.navigate(['/404']);
+      this.router.navigate(['/404'], { skipLocationChange: true });
     });
   }
 }

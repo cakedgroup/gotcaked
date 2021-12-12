@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Category } from '../../../models/category.model';
 
 @Component({
@@ -6,12 +6,8 @@ import { Category } from '../../../models/category.model';
   templateUrl: './category-menu.component.html',
   styleUrls: ['./category-menu.component.css']
 })
-export class CategoryMenuComponent implements OnInit {
+export class CategoryMenuComponent {
   @Input() categories: Category[];
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

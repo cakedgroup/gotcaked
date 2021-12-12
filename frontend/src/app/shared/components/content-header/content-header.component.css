@@ -1,4 +1,4 @@
-.header-box{
+.header-box {
   width: 95%;
   height: fit-content;
   margin-left: auto;
@@ -8,8 +8,8 @@
   background-color: var(--secondary-background-color);
 }
 
-.header-message{
-  font-family: 'Darker Grotesque', sans-serif;
+.header-message {
+  font-family: "Darker Grotesque", sans-serif;
   text-align: center;
   font-size: 32pt;
   min-height: 100px;
