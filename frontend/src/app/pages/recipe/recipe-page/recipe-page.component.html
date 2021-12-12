@@ -71,11 +71,7 @@
     <div class="flex-item-container">
       <h1>Tags</h1>
       <hr class="line" />
-      <div class="recipe-tags-list">
-        <p class="recipe-tags-item" *ngFor="let tag of recipe.tags" [routerLink]="['/tag', tag.name]">
-          {{ tag.name }}
-        </p>
-      </div>
+      <app-tag-item [tags]="recipe.tags"></app-tag-item>
     </div>
   </div>
 

@@ -1,0 +1,3 @@
+<div class="recipe-tags-list" >
+  <a *ngFor="let tag of tags" class="recipe-tags-item" [routerLink]="['/tag', tag.name]"> {{ tag.name }} </a>
+</div>

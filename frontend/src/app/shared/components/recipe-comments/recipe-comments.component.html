@@ -1,7 +1,7 @@
 <div class="recipe-comment">
-  <p [routerLink]="['/user', comment.user_id]">
+  <a class="comment-text-header" [routerLink]="['/user', comment.user_id]">
     {{ userName }} on {{ comment.time | date }}
-  </p>
+  </a>
   <pre class="comment-text">{{ comment.text }}</pre>
   <hr class="line" />
 </div>
