@@ -106,6 +106,8 @@ paths:
       summary: Creates a new recipe
       description: |
         Creates new recipe
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -171,6 +173,8 @@ paths:
       summary: Update a single recipe
       description: |
         Simply update one recipe.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -216,6 +220,8 @@ paths:
       summary: Delete a single recipe
       description: |
         Simply delete one recipe.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -295,6 +301,8 @@ paths:
       summary: Creates a new Comment for a recipe
       description: |
         Creates new comment
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -381,6 +389,8 @@ paths:
       summary: Delete a single Comment from a recipe
       description: |
         Simply delete one comment.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -424,6 +434,8 @@ paths:
       summary: Update a single recipe picture
       description: |
         Simply update one recipe picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -473,6 +485,8 @@ paths:
       summary: Delete a single recipe picture
       description: |
         Simply delete one recipe picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -546,6 +560,8 @@ paths:
       summary: Creates a new rating for a recipe
       description: |
         Creates new rating
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -690,7 +706,9 @@ paths:
         - categories
       summary: Creates a new category
       description: |
-        Creates new category
+        Creates new category (only admins are allowed)
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -754,7 +772,9 @@ paths:
         - categories
       summary: Update a single category
       description: |
-        Simply update a specific category.
+        Simply update a specific category. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -805,7 +825,9 @@ paths:
         - categories
       summary: Delete a single category
       description: |
-        Simply delete a specific category.
+        Simply delete a specific category. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -891,7 +913,9 @@ paths:
         - tags
       summary: Creates a new tag
       description: |
-        Creates new tags
+        Creates new Tag (only admins are allowed)
+      security:
+        - jwt: []
       requestBody:
         content:
           application/json:
@@ -956,7 +980,9 @@ paths:
         - tags
       summary: Delete a single tag.
       description: |
-        Simply delete a specific tag.
+        Simply delete a specific tag. (only admins are allowed)
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: name
@@ -1109,6 +1135,8 @@ paths:
       summary: Update a single user
       description: |
         Simply update one user.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1160,6 +1188,8 @@ paths:
       summary: Delete a single user
       description: |
         Simply delete one user.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1256,6 +1286,8 @@ paths:
       summary: Update a single user's picture
       description: |
         Simply update one user's picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1307,6 +1339,8 @@ paths:
       summary: Delete a single user's picture
       description: |
         Simply delete one user's picture.
+      security:
+        - jwt: []
       parameters:
         - in: path
           name: id
@@ -1383,7 +1417,13 @@ paths:
         '400':
           description: 'No JWT Key'
 components:
-  schemas:
+  securitySchemes:
+    jwt:
+      type: apiKey
+      in: header
+      name: "jwt"
+      description: "JWT Token to Authorize User"
+  schemas:    
     Status:
       type: object
       required:
