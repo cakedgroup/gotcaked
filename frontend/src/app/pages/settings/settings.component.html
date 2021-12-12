@@ -5,7 +5,7 @@
     <form>
       <h2 class="section-title">Information</h2>
       <hr class="section-line">
-      <div class="information-container">
+      <div class="information-container" *ngIf="user">
         <app-form-input class="flex-item-container" label="User-Name" placeholder="Username" [(value)]="user.name">
         </app-form-input>
         <app-form-input class="flex-item-container" label="User-Email" placeholder="itsme@gotcaked.eu"
