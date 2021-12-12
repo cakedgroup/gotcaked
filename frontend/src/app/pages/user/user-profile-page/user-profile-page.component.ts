@@ -12,15 +12,8 @@ import { User } from 'src/app/models/user.model';
 export class UserProfilePageComponent implements OnInit {
 
   userID: string;
-  user: User = {
-    id: '',
-    name: '',
-    email: '',
-    description: '',
-    picture_uri: '',
-  };
-
-  recipes: Recipe[];
+  user: User;
+  recipes: Recipe[] = [];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
 

@@ -10,7 +10,7 @@ import { Recipe } from '../../../models/recipe.model';
 })
 export class CategoryPageComponent implements OnInit {
   category: string;
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
 
