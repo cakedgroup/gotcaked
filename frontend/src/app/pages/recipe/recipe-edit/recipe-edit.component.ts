@@ -126,10 +126,16 @@ export class RecipeEditComponent implements OnInit {
   // Tag Stuff
   //
   addTag(tag: Tag) {
-    //Cloning Object, to prevent using the reference
-    let tagToStore = Object.assign({}, tag);
-    this.clearInputTag();
-    this.recipeSmall.tags.push(tagToStore);
+    if (!tag.name.includes(' ')) {
+      //Cloning Object, to prevent using the reference
+      let tagToStore = Object.assign({}, tag);
+      this.clearInputTag();
+      this.recipeSmall.tags.push(tagToStore);
+    } else {
+      this.error = true;
+      this.errorMessage = 'Tag name cannot contain spaces';
+    }
+
   }
 
   deleteTag(tagName: string) {
