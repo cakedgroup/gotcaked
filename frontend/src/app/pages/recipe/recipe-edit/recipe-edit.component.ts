@@ -72,7 +72,7 @@ export class RecipeEditComponent implements OnInit {
         this.recipe = recipe;
         this.recipeToRecipeCreate(recipe);
       }, (error) => {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/404'], { skipLocationChange: true });
         this.errorMessage = 'Error getting recipe';
         this.error = true;
       }

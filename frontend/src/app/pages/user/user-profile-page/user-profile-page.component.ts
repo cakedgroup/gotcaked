@@ -42,7 +42,7 @@ export class UserProfilePageComponent implements OnInit {
         this.user = data;
         this.getRecipes();
       }, error => {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/404'], { skipLocationChange: true });
       });
   }
 

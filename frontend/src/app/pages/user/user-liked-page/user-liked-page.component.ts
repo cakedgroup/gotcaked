@@ -30,7 +30,7 @@ export class UserLikedPageComponent implements OnInit {
     this.apiService.getLikedRecipesFromUser(this.userID).subscribe(recipes => {
       this.recipes = recipes;
     }, error => {
-      this.router.navigate(['/404']);
+      this.router.navigate(['/404'], { skipLocationChange: true });
     });
   }
 }

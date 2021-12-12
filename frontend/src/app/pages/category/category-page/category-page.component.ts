@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
 import { Recipe } from '../../../models/recipe.model';
 
@@ -12,7 +12,7 @@ export class CategoryPageComponent implements OnInit {
   category: string;
   recipes: Recipe[];
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.getParams();
@@ -30,7 +30,8 @@ export class CategoryPageComponent implements OnInit {
     this.apiService.getRecipesByCategory(this.category).subscribe(
       (recipes: Recipe[]) => {
         this.recipes = recipes;
-      }
-    );
+      }, error => {
+        this.router.navigate(['/404'], { skipLocationChange: true });
+      });
   }
 }
