@@ -78,7 +78,11 @@ export class SettingsComponent implements OnInit {
     },
       error => {
         this.setErrorInfo();
-        this.errorMessage = "Error updating User " + error.error.message;
+        if (error.error.errors) {
+          this.errorMessage = error.error.errors[0].msg;
+        } else {
+          this.errorMessage = error.error.message;
+        }
       }
     );
   }
@@ -114,7 +118,11 @@ export class SettingsComponent implements OnInit {
         this.successMessage = "Successfully updated Password";
         this.setSuccessSecurity();
       }, error => {
-        this.errorMessage = "Error updating password " + error.error.message;
+        if (error.error.errors) {
+          this.errorMessage = error.error.errors[0].msg;
+        } else {
+          this.errorMessage = error.error.message;
+        }
         this.setErrorSecurity();
       });
     }, error => {
