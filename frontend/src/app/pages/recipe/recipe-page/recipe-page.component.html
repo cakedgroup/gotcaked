@@ -20,15 +20,15 @@
       <p class="recipe-text">{{ recipe.description }}</p>
       <!-- Stat Tags -->
       <div class="recipe-description-tags">
-        <p *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
+        <a *ngIf="user" class="recipe-description-item" [routerLink]="['/user', recipe.user_id]">
           {{ user.name }}
-        </p>
+        </a>
         <p class="recipe-description-item">{{ recipe.createdAt | date }}</p>
         <p class="recipe-description-item">{{ recipe.time }} Min</p>
         <p class="recipe-description-item">{{ recipe.difficulty }}</p>
-        <p class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
+        <a class="recipe-description-item" [routerLink]="['/category', recipe.category_name]">
           {{ recipe.category_name }}
-        </p>
+        </a>
         <p class="recipe-description-item">{{ recipe.rating }} Votes</p>
       </div>
       <!-- Recipe Interactions (Voting, Edit, Delete) -->

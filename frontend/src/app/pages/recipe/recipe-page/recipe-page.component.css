@@ -48,6 +48,8 @@
   background-color: var(--secondary-color);
   border-radius: 1em;
   font-size: 14pt;
+  text-decoration: none;
+  color: black;
 }
 
 .recipe-interaction-button {
