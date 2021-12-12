@@ -10,7 +10,7 @@ import { Recipe } from '../../../models/recipe.model';
 })
 export class TagPageComponent implements OnInit {
   tag: string;
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
