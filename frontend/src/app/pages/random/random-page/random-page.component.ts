@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class RandomPageComponent implements OnInit {
   type: string = '';
   name: string = '';
-  recipe: Recipe;
+  recipe: Recipe = undefined;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
@@ -46,18 +46,24 @@ export class RandomPageComponent implements OnInit {
   getRandomRecipeByCategory(category: string) {
     this.apiService.getRandomRecipeByCategory(category).subscribe(recipe => {
       this.recipe = recipe;
+    }, error => {
+      this.recipe = undefined;
     });
   }
 
   getRandomRecipeByTag(tag: string) {
     this.apiService.getRandomRecipeByTag(tag).subscribe(recipe => {
       this.recipe = recipe;
+    }, error => {
+      this.recipe = undefined;
     });
   }
 
   getRandomRecipe() {
     this.apiService.getRandomRecipe().subscribe(recipe => {
       this.recipe = recipe;
-    });
+    }, error => {
+      this.recipe = undefined;
+     });
   }
 }
