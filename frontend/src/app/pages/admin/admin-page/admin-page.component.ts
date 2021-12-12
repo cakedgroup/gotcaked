@@ -83,10 +83,16 @@ export class AdminPageComponent implements OnInit {
         this.success = false;
       }, error => {
         this.failedCategoryRequest = true;
-        this.failedErrorMessage = "Error Creating Category " + error.error.message;;
+        this.success = false;
+        if (error.error.errors) {
+          this.failedErrorMessage = error.error.errors[0].msg;
+        } else {
+          this.failedErrorMessage = error.error.message;
+        }
       });
     } else {
       this.failedCategoryRequest = true;
+      this.success = false;
       this.failedErrorMessage = "Error Creating Category: Category-Name and Description must not be empty";
     }
 
@@ -100,7 +106,12 @@ export class AdminPageComponent implements OnInit {
       this.success = true;
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Updating Category " + error.error.message;;
+      this.success = false;
+      if (error.error.errors) {
+        this.failedErrorMessage = error.error.errors[0].msg;
+      } else {
+        this.failedErrorMessage = error.error.message;
+      }
     });
   }
 
@@ -111,7 +122,12 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedCategoryRequest = true;
-      this.failedErrorMessage = "Error Deleting Category " + error.error.message;;
+      this.success = false;
+      if (error.error.errors) {
+        this.failedErrorMessage = error.error.errors[0].msg;
+      } else {
+        this.failedErrorMessage = error.error.message;
+      }
     });
   }
 
@@ -136,10 +152,16 @@ export class AdminPageComponent implements OnInit {
         this.clearTag();
       }, error => {
         this.failedTagRequest = true;
-        this.failedErrorMessage = "Error Creating Tag " + error.error.message;
+        this.success = false;
+        if (error.error.errors) {
+          this.failedErrorMessage = error.error.errors[0].msg;
+        } else {
+          this.failedErrorMessage = error.error.message;
+        }
       });
     } else {
       this.failedTagRequest = true;
+      this.success = false;
       this.failedErrorMessage = "Error Creating Tag: Tag-Name and Description must not be empty";
     }
   }
@@ -151,7 +173,12 @@ export class AdminPageComponent implements OnInit {
       this.resetErrorMessages();
     }, error => {
       this.failedTagRequest = true;
-      this.failedErrorMessage = "Error Deleting Tag " + error.error.message;;
+      this.success = false;
+      if (error.error.errors) {
+        this.failedErrorMessage = error.error.errors[0].msg;
+      } else {
+        this.failedErrorMessage = error.error.message;
+      }
     });
   }
 
