@@ -30,13 +30,22 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginHandler(): void {
-    this.authService.userLogin(this.userLogin).subscribe(jwt => {
-      this.authService.setJWTToken(jwt.token);
-      this.router.navigate(['/']);
-      this.error = false;
-    }, error => {
+    if (this.userLogin.email && this.userLogin.password) {
+      this.authService.userLogin(this.userLogin).subscribe(jwt => {
+        this.authService.setJWTToken(jwt.token);
+        this.router.navigate(['/']);
+        this.error = false;
+      }, error => {
+        this.error = true;
+        if (error.error.errors){
+          this.errorMessage = error.error.errors[0].msg;
+        } else {
+          this.errorMessage = error.error.message;
+        }
+      });
+    } else {
       this.error = true;
-      this.errorMessage = error.error.message;
-    });
+      this.errorMessage = "Empty E-Mail or Password";
+    }
   }
 }
