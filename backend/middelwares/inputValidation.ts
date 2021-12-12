@@ -1,5 +1,21 @@
 import express from "express";
-import { body, validationResult } from 'express-validator';
+import { body, CustomValidator, validationResult } from 'express-validator';
+
+
+/**
+ * Custom validator for checking if the tags have a valid format
+ */
+const isValidTagName: CustomValidator = tags => {
+    return new Promise((resolve, reject) => {
+        let error: boolean = false;
+        for (const tag of tags) {
+            if (tag.name.includes(" ")) {
+                reject('Tag name cannot contain spaces');
+            }
+        }
+        resolve('Tag name is valid');
+    });
+};
 
 /**
  * @description Schema for recipe validation
@@ -8,7 +24,7 @@ export const recipeValidationChain = [
     body("name").isString().withMessage("Name must be a string").isLength({ min: 1 }).withMessage("Name is required"),
     body("description").optional().isString().withMessage("Description must be a string").isLength({ min: 1 }).withMessage("Description must be at least 1 character long"),
     body("ingredients").isArray().withMessage("Ingredients must be an array"),
-    body("tags").isArray().withMessage("Tags must be an array"),
+    body("tags").isArray().withMessage("Tags must be an array").custom(isValidTagName).withMessage("Tag name is invalid"),
     body("preparation").isString().withMessage("Preparation must be a string").isLength({ min: 1 }).withMessage("Preparation is required"),
     body("difficulty").isString().withMessage("Difficulty must be a string").isLength({ min: 1 }).withMessage("Difficulty is required"),
     body("time").isNumeric().withMessage("Time must be numeric").isLength({ min: 1 }).withMessage("Time is required"),
