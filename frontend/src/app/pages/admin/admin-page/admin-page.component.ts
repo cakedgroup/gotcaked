@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { Category } from 'src/app/models/category.model';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
@@ -84,11 +85,7 @@ export class AdminPageComponent implements OnInit {
       }, error => {
         this.failedCategoryRequest = true;
         this.success = false;
-        if (error.error.errors) {
-          this.failedErrorMessage = error.error.errors[0].msg;
-        } else {
-          this.failedErrorMessage = error.error.message;
-        }
+        this.failedErrorMessage = errorHandler(error);
       });
     } else {
       this.failedCategoryRequest = true;
@@ -107,11 +104,7 @@ export class AdminPageComponent implements OnInit {
     }, error => {
       this.failedCategoryRequest = true;
       this.success = false;
-      if (error.error.errors) {
-        this.failedErrorMessage = error.error.errors[0].msg;
-      } else {
-        this.failedErrorMessage = error.error.message;
-      }
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 
@@ -123,11 +116,7 @@ export class AdminPageComponent implements OnInit {
     }, error => {
       this.failedCategoryRequest = true;
       this.success = false;
-      if (error.error.errors) {
-        this.failedErrorMessage = error.error.errors[0].msg;
-      } else {
-        this.failedErrorMessage = error.error.message;
-      }
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 
@@ -153,11 +142,7 @@ export class AdminPageComponent implements OnInit {
       }, error => {
         this.failedTagRequest = true;
         this.success = false;
-        if (error.error.errors) {
-          this.failedErrorMessage = error.error.errors[0].msg;
-        } else {
-          this.failedErrorMessage = error.error.message;
-        }
+        this.failedErrorMessage = errorHandler(error);
       });
     } else {
       this.failedTagRequest = true;
@@ -174,11 +159,7 @@ export class AdminPageComponent implements OnInit {
     }, error => {
       this.failedTagRequest = true;
       this.success = false;
-      if (error.error.errors) {
-        this.failedErrorMessage = error.error.errors[0].msg;
-      } else {
-        this.failedErrorMessage = error.error.message;
-      }
+      this.failedErrorMessage = errorHandler(error);
     });
   }
 

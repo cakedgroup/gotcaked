@@ -19,8 +19,6 @@ export class AboutPageComponent implements OnInit {
   getStatus() {
     this.apiService.getStatus().subscribe(status => {
       this.status = status;
-    }, error => {
-      console.log(error);
     });
   }
 }

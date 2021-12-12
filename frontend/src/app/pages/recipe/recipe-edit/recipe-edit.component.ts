@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api.service';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { Recipe } from 'src/app/models/recipe.model';
 import { Tag } from 'src/app/models/tag.model';
 import { RecipeCreate } from '../../../models/recipe.model';
@@ -90,11 +91,7 @@ export class RecipeEditComponent implements OnInit {
       }
     }, error => {
       this.error = true;
-      if (error.error.errors) {
-        this.errorMessage = error.error.errors[0].msg;
-      } else {
-        this.errorMessage = error.error.message;
-      }
+      this.errorMessage = errorHandler(error);
     });
   }
 
@@ -106,11 +103,7 @@ export class RecipeEditComponent implements OnInit {
       this.success = true;
     }, error => {
       this.error = true;
-      if (error.error.errors) {
-        this.errorMessage = error.error.errors[0].msg;
-      } else {
-        this.errorMessage = error.error.message;
-      }
+      this.errorMessage = errorHandler(error);
     });
   }
 
@@ -124,11 +117,7 @@ export class RecipeEditComponent implements OnInit {
         this.success = true;
       }, error => {
         this.error = true;
-        if (error.error.errors){
-          this.errorMessage = error.error.errors[0].msg;
-        } else {
-          this.errorMessage = error.error.message;
-        }
+        this.errorMessage = errorHandler(error);
       });
     });
   }

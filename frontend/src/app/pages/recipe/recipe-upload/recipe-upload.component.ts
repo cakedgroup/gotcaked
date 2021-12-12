@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Tag } from 'src/app/models/tag.model';
 import { ApiService } from '../../../core/services/api.service';
 import { Recipe, RecipeCreate } from '../../../models/recipe.model';
+import { errorHandler } from '../../../core/utils/errorHandler';
 
 @Component({
   selector: 'app-recipe-upload',
@@ -67,14 +68,7 @@ export class RecipeUploadComponent {
         }
       }, error => {
         this.error = true;
-        if (error.error.errors) {
-          this.errorMessage = error.error.errors[0].msg;
-          if (this.errorMessage.includes('string' || 'numeric')) {
-            this.errorMessage = error.error.errors[1].msg;
-          }
-        } else {
-          this.errorMessage = error.error.message;
-        }
+        this.errorMessage = errorHandler(error);
       });
     } else {
       this.error = true;
@@ -87,11 +81,7 @@ export class RecipeUploadComponent {
       this.success = true;
     }, error => {
       this.error = true;
-      if (error.error.errors) {
-        this.errorMessage = error.error.errors[0].msg;
-      } else {
-        this.errorMessage = error.error.message;
-      }
+      this.errorMessage = errorHandler(error);
     });
   }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { UserRegister } from 'src/app/models/user.model';
 import { ApiService } from '../../../core/services/api.service';
 
@@ -28,11 +29,7 @@ export class RegisterPageComponent {
           this.router.navigate(['/auth/login', { email: user.email, password: this.userRegister.password }]);
         }, error => {
           this.error = true;
-          if (error.error.errors) {
-            this.errorMessage = error.error.errors[0].msg;
-          } else {
-            this.errorMessage = error.error.message;
-          }
+          this.errorMessage = errorHandler(error);
         });
       } else {
         this.errorMessage = 'Passwords do not match';

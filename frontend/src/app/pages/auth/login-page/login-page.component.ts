@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 import { UserLogin } from 'src/app/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -37,11 +38,7 @@ export class LoginPageComponent implements OnInit {
         this.error = false;
       }, error => {
         this.error = true;
-        if (error.error.errors){
-          this.errorMessage = error.error.errors[0].msg;
-        } else {
-          this.errorMessage = error.error.message;
-        }
+        this.errorMessage = errorHandler(error);
       });
     } else {
       this.error = true;

@@ -4,6 +4,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { RecipeComment } from '../../../models/comment.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { isLoggedIn } from '../../../core/services/authGuard';
+import { errorHandler } from 'src/app/core/utils/errorHandler';
 
 @Component({
   selector: 'app-recipe-comment-input',
@@ -29,11 +30,7 @@ export class RecipeCommentInputComponent {
         this.error = false;
       }, error => {
         this.error = true;
-        if (error.error.errors){
-          this.errorMessage = error.error.errors[0].msg;
-        } else {
-          this.errorMessage = error.error.message;
-        }
+        this.errorMessage = errorHandler(error);
       });
     } else {
       this.error = true;

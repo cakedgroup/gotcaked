@@ -11,7 +11,7 @@ export const recipeValidationChain = [
     body("tags").isArray().withMessage("Tags must be an array"),
     body("preparation").isString().withMessage("Preparation must be a string").isLength({ min: 1 }).withMessage("Preparation is required"),
     body("difficulty").isString().withMessage("Difficulty must be a string").isLength({ min: 1 }).withMessage("Difficulty is required"),
-    body("time").isNumeric().withMessage("Time must be numeric"),
+    body("time").isNumeric().withMessage("Time must be numeric").isLength({ min: 1 }).withMessage("Time is required"),
     body("category_name").isString().withMessage("Category_name must be a string").isLength({ min: 1 }).withMessage("Category is required")
 ];
 
