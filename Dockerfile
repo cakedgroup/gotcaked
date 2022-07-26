@@ -1,10 +1,10 @@
-FROM node:16.14-alpine AS builder
+FROM node:16.16-alpine AS builder
 COPY ./frontend /frontend
 WORKDIR /frontend
 RUN npm install
 RUN npm run-script prod
 
-FROM node:16.14-alpine
+FROM node:16.16
 COPY ./backend /opt/gotcaked/backend
 COPY --from=builder /frontend/dist/ ./opt/gotcaked/frontend/dist
 WORKDIR /opt/gotcaked/backend
