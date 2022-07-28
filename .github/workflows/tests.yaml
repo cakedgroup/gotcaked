@@ -17,7 +17,7 @@ jobs:
       - name: npm-init
         run: cd backend && npm install
       - name: start backend
-        run: cd backend && npm start
+        run: cd backend && npm start &
       - uses: grossamos/rudra@v0.1.0
         name: init rudra
         with:
