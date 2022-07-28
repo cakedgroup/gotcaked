@@ -1,0 +1,37 @@
+name: deployment
+
+on:
+  pull_request:
+    
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: checkout code      
+      - uses: actions/setup-node@v3
+        name: npm setup
+        with:
+          entrypoint: backend
+          node-version: 16      
+      - name: npm-init
+        run: npm install
+      - name: start backend
+        run: npm start
+      - uses: grossamos/rudra@v0.1.0
+        name: init rudra
+        with:
+          stage: "preperation"
+          openapi-source: "backend/openapi.yaml"
+          instance-url: "http://localhost:3000"
+          account-for-security: false
+          test-coverage: "90%"
+      - uses: matt-ball/newman-action@master
+        name: run integration tests
+        with:
+          collection: backend/tests/newman/gotCaked.postman_collection.json
+          environment: backend/tests/newman/local.postman_environment.json
+      - uses: grossamos/rudra@v0.1.0
+        name: eval rudra
+        with:
+          stage: "evaluation"

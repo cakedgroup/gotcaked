@@ -166,7 +166,7 @@ export function deleteUser(id: string, blockJWT: boolean, jwtToken?: string): Pr
         } else {
           //Delete User Picture from filesystem 
           if (user.picture_uri !== null) {
-            fileHandler.deleteFile(user.picture_uri, "user");
+            fileHandler.deleteFile(user.picture_uri, "user").catch(err => new Error(err));
           }
 
           //Delete User from DB
