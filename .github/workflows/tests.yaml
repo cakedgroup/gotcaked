@@ -15,9 +15,9 @@ jobs:
           entrypoint: backend
           node-version: 16      
       - name: npm-init
-        run: npm install
+        run: cd backend && npm install
       - name: start backend
-        run: npm start
+        run: cd backend && npm start
       - uses: grossamos/rudra@v0.1.0
         name: init rudra
         with:
