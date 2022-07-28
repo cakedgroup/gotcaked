@@ -26,11 +26,8 @@ jobs:
           instance-url: "http://localhost:3000"
           account-for-security: false
           test-coverage: "90%"
-      - uses: matt-ball/newman-action@master
-        name: run integration tests
-        with:
-          collection: backend/tests/newman/gotCaked.postman_collection.json
-          environment: backend/tests/newman/local.postman_environment.json
+      - name: run integration tests
+        run: cd backend/tests/newman && ./run_tests.sh local
       - uses: grossamos/rudra@v0.1.0
         name: eval rudra
         with:
