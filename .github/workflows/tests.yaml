@@ -27,7 +27,7 @@ jobs:
           account-for-security: false
           test-coverage: "90%"
       - name: run integration tests
-        run: cd backend/tests/newman && ./run_test.sh local
+        run: cd backend/tests/newman && sleep 5 && ./run_test.sh local
       - uses: grossamos/rudra@v0.1.3
         name: eval rudra
         with:
