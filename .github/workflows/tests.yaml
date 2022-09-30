@@ -18,7 +18,7 @@ jobs:
         run: cd backend && npm install
       - name: start backend
         run: cd backend && npm start &
-      - uses: grossamos/rudra@v0.1.3
+      - uses: grossamos/rudra@v0.1.0
         name: init rudra
         with:
           stage: "preperation"
@@ -28,7 +28,7 @@ jobs:
           test-coverage: "90%"
       - name: run integration tests
         run: cd backend/tests/newman && sleep 5 && ./run_test.sh local
-      - uses: grossamos/rudra@v0.1.3
+      - uses: grossamos/rudra@v0.1.0
         name: eval rudra
         with:
           stage: "evaluation"
