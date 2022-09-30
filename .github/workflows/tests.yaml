@@ -9,13 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout code      
-      - uses: actions/setup-node@v3
-        name: npm setup
-        with:
-          entrypoint: backend
-          node-version: 16      
-      - name: npm-init
-        run: cd backend && npm install
       - uses: grossamos/rudra@v0.1.3
         name: init rudra
         with:
@@ -24,6 +17,13 @@ jobs:
           instance-url: "http://localhost:3000"
           account-for-security: false
           test-coverage: "90%"
+      - uses: actions/setup-node@v3
+        name: npm setup
+        with:
+          entrypoint: backend
+          node-version: 16      
+      - name: npm-init
+        run: cd backend && npm install
       - name: start backend
         run: cd backend && npm start && sleep 10 && cd tests/newman && ./run_test.sh local
       - uses: grossamos/rudra@v0.1.3
