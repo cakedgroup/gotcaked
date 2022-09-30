@@ -24,7 +24,8 @@ jobs:
           stage: "preperation"
           openapi-source: "backend/openapi.yaml"
           instance-url: "http://localhost:3000"
-          account-for-security: false
+          account-for-security-unautorized: true
+          account-for-security-forbidden: true
           test-coverage: "90%"
       - name: tests
         run: cd backend/tests/newman && ./run_test.sh local
