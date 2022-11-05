@@ -27,6 +27,8 @@ jobs:
           port: 3001
           debug: true
           test-coverage: "50%"
+      - name: debug hell
+        run: curl --location --request POST 'http://localhost:3001/api/users/' --header 'Content-Type: application/json' --data-raw '{"email":"admin@gotcaked.eu","name": "LeLItsMeAdmin","description": "I AM THE ADMIN","password":"TWFfr4cITdKgXAh1.aA"}'
       - uses: matt-ball/newman-action@master
         name: run integration tests
         with:
