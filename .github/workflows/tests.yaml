@@ -24,6 +24,7 @@ jobs:
           stage: "preperation"
           openapi-source: "backend/openapi.yaml"
           instance-url: "http://localhost:3000"
+          port: 3001
           test-coverage: "50%"
       - uses: matt-ball/newman-action@master
         name: run integration tests
