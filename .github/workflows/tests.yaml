@@ -29,7 +29,17 @@ jobs:
           test-coverage: "50%"
       - name: debug hell
         run: |
-          curl --location --request POST 'http://localhost:3001/api/users/' --header 'Content-Type: application/json' --data-raw '{"email":"admin@gotcaked.eu","name": "LeLItsMeAdmin","description": "I AM THE ADMIN","password":"TWFfr4cITdKgXAh1.aA"}'
+          wget --no-check-certificate --quiet \
+            --method POST \
+            --timeout=0 \
+            --header 'Content-Type: application/json' \
+            --body-data '{
+              "email":"admin@gotcaked.eu",
+              "name": "LeLItsMeAdmin",
+              "description": "I AM THE ADMIN",
+              "password":"TWFfr4cITdKgXAh1.aA"
+          }' \
+             'http://localhost:3001/api/users/'
       - uses: matt-ball/newman-action@master
         name: run integration tests
         with:
