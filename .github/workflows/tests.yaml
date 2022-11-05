@@ -36,5 +36,6 @@ jobs:
         run: cd backend/tests/newman && ./run_test.sh local
       - uses: grossamos/rudra@v0.1.3
         name: eval rudra
+        if: always()
         with:
           stage: "evaluation"
