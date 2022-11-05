@@ -32,8 +32,6 @@ jobs:
         with:
           collection: backend/tests/newman/gotCaked.postman_collection.json
           environment: backend/tests/newman/ci.postman_environment.json
-      - name: tests
-        run: cd backend/tests/newman && ./run_test.sh local
       - uses: grossamos/rudra@v0.1.3
         name: eval rudra
         if: always()
